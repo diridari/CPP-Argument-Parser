@@ -238,7 +238,7 @@ TEST(argvParser,requiredArgsNotSearchedButNotAllFoundCorrect){
 
 
 TEST(readConfigFromFileAndCallBack,test1){
-    char *arg[] = {"program", "../tests/config6" };
+    char *arg[] = {"program", "../tests/configFiles/config6" };
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-a","-aa","aa", callBackD,true));
     ASSERT_TRUE(parser.addArg("-b","-bb","bb", callBackD,false));
@@ -250,7 +250,7 @@ TEST(readConfigFromFileAndCallBack,test1){
 //123  b
 
 TEST(readConfigFromFileAndCallBack,test2){
-    char *arg[] = {"program", "../tests/config7" };
+    char *arg[] = {"program", "../tests/configFiles/config7" };
     argvParser parser("empty conf");
     port_ = "";
     ASSERT_TRUE(parser.addArg("-p","-pp","p", callBackD,true));
@@ -259,7 +259,7 @@ TEST(readConfigFromFileAndCallBack,test2){
     ASSERT_FALSE(parser.foundAllRequierdArgs());
 }
 TEST(readConfigFromFileAndCallBack,test3){
-    char *arg[] = {"program", "../tests/config7" };
+    char *arg[] = {"program", "../tests/configFiles/config7" };
     argvParser parser("empty conf");
     port_ = "";
     ASSERT_TRUE(parser.addArg("-p","-pp","p", callBackPortTestMeth,true));
@@ -270,7 +270,7 @@ TEST(readConfigFromFileAndCallBack,test3){
 }
 
 TEST(readConfigFromFileAndCallBack,test4){
-    char *arg[] = {"program", "-p", "xx", "../tests/config7" };
+    char *arg[] = {"program", "-p", "xx", "../tests/configFiles/config7" };
     argvParser parser("empty conf");
     port_ = "";
     ASSERT_TRUE(parser.addArg("-p","-pp","p", callBackPortTestMeth,true));

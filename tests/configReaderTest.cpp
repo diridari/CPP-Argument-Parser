@@ -160,7 +160,7 @@ TEST(configReader, justSeperatorWithAfter){
 
 
 TEST(confReaderFile,file1){
-    configFileReader *reader = new configFileReader("../tests/config1");
+    configFileReader *reader = new configFileReader("../tests/configFiles/config1");
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
     ASSERT_EQ(reader->readUntilNextSeparator(),"def");
     ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
@@ -170,7 +170,7 @@ TEST(confReaderFile,file1){
 }
 
 TEST(confReaderFile,file2){
-    configFileReader *reader = new configFileReader("../tests/config2");
+    configFileReader *reader = new configFileReader("../tests/configFiles/config2");
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
     ASSERT_EQ(reader->readUntilNextSeparator(),"def");
     ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
@@ -181,7 +181,7 @@ TEST(confReaderFile,file2){
 
 }
 TEST(confReaderFile,file3){
-    configFileReader *reader = new configFileReader("../tests/config3");
+    configFileReader *reader = new configFileReader("../tests/configFiles/config3");
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
     ASSERT_EQ(reader->readUntilNextSeparator(),"def");
     ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
@@ -193,7 +193,7 @@ TEST(confReaderFile,file3){
 }
 
 TEST(confReaderFile,file4){
-    configFileReader *reader = new configFileReader("../tests/config4");
+    configFileReader *reader = new configFileReader("../tests/configFiles/config4");
     ASSERT_FALSE(reader->faildToOpen());
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
     ASSERT_FALSE(reader->faildToOpen());
@@ -207,7 +207,7 @@ TEST(confReaderFile,file4){
 
 }
 TEST(confReaderFile,file5){
-    configFileReader *reader = new configFileReader("../tests/config5");
+    configFileReader *reader = new configFileReader("../tests/configFiles/config5");
     ASSERT_FALSE(reader->faildToOpen());
     ASSERT_FALSE(reader->isEOF());
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
