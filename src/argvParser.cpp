@@ -2,7 +2,7 @@
 // Created by basto on 4/15/18.
 //
 
-#include "argvParser.h"
+#include "../include/argvParser.h"
 #include "configFileReader.h"
 
 using namespace std;

@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "../src/argvParser.h"
+#include "../include/argvParser.h"
 #include "../src/configFileReader.h"
 
 TEST(configReader, readEmptyText){

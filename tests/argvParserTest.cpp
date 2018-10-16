@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include "../src/argvParser.h"
+#include "../include/argvParser.h"
 
 string port_ = "";
 bool d = false;
@@ -30,6 +30,7 @@ TEST(argvParser, CheckRequiredConfigFail2){
     parser.addArg("x", "xx","test",callBackD,false);
     char *arg[] = {"program","x" };
     ASSERT_FALSE(parser.analyseArgv(2,arg));
+
 }
 
 TEST(argvParser, CheckRequiredConfigFail3){
