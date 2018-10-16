@@ -5,15 +5,15 @@
 
 #include "configfileReader.h"
 
-string configfileReader::readUntilNextSeperator() {
+string configfileReader::readUntilNextSeparator() {
 
     string out;
     bool isInSeperator = false;
     // go to the next element
     while(!isEOF()){
-        typeOfSeperator tmp = isSeperator(peekNextChar());
-        if(tmp == typeOfSeperator::none || tmp == typeOfSeperator::seperator){
-            if(tmp == typeOfSeperator::seperator) {
+        typeOfSeparator tmp = isSeparator(peekNextChar());
+        if(tmp == typeOfSeparator::none || tmp == typeOfSeparator::seperator){
+            if(tmp == typeOfSeparator::seperator) {
                 isInSeperator = true;
                 skipNextChar(); // lift over seperator
             }
@@ -23,16 +23,16 @@ string configfileReader::readUntilNextSeperator() {
         skipNextChar();
     }
     while(!isEOF()){
-        typeOfSeperator tmp = isSeperator(peekNextChar());
-            if(tmp == typeOfSeperator::none){
+        typeOfSeparator tmp = isSeparator(peekNextChar());
+            if(tmp == typeOfSeparator::none){
                 out += getNextChar();
 
-            }else if(isInSeperator && tmp == typeOfSeperator::space) {
+            }else if(isInSeperator && tmp == typeOfSeparator::space) {
                 out += getNextChar();
             } else {
                 skipNextChar();
                 if (out == "")
-                    out = readUntilNextSeperator();
+                    out = readUntilNextSeparator();
                 return out;
             }
     }
@@ -41,15 +41,15 @@ string configfileReader::readUntilNextSeperator() {
 
 }
 
-configfileReader::typeOfSeperator configfileReader::isSeperator(char toCheck) {
+configfileReader::typeOfSeparator configfileReader::isSeparator(char toCheck) {
     for(int i = 0; i< septerators->size();i++){
         if(toCheck == septerators->at(i)){
-            return typeOfSeperator::seperator;
+            return typeOfSeparator::seperator;
         }else if (toCheck == ' ' || toCheck == '\n' ||toCheck == '\t' ){
-            return typeOfSeperator::space;
+            return typeOfSeparator::space;
         }
     }
-    return typeOfSeperator::none;
+    return typeOfSeparator::none;
 }
 
 bool configfileReader::isEndofFile() {
@@ -69,7 +69,7 @@ char configfileReader::getNextChar() {
         }
         out = (char)configFile->get();
     }
-    if(isSeperator(out) == typeOfSeperator::space)
+    if(isSeparator(out) == typeOfSeparator::space)
         out = ' ';
 
     return out;
@@ -116,4 +116,9 @@ bool configfileReader::isEOF() {
        }
        return (configFile->rdstate() && ios::eofbit) || configFile->rdstate() && ios::failbit || configFile->peek() == -1;
    }
+}
+
+bool configfileReader::faildToOpen() {
+    if(readFromString == false && isOpen && configFile->rdstate() && ios::failbit)
+    return false;
 }

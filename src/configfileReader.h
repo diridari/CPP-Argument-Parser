@@ -13,7 +13,7 @@ using  namespace std;
 
 class configfileReader {
 
-    enum typeOfSeperator{
+    enum typeOfSeparator{
         none,
         space,
         seperator
@@ -26,7 +26,7 @@ class configfileReader {
     bool readFromString = false;
 
     vector<char> * septerators = new vector<char>();
-    typeOfSeperator isSeperator(char toCHeck);
+    typeOfSeparator isSeparator(char toCHeck);
 
     char getNextChar();
     void skipNextChar();
@@ -51,8 +51,9 @@ public:
         readFromString = true;
     }
 
-    string readUntilNextSeperator();
+    string readUntilNextSeparator();
     bool isEndofFile();
+    bool faildToOpen();
 
 };
 
