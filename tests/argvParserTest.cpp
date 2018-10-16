@@ -2,7 +2,7 @@
 // Created by basto on 4/15/18.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "../src/argvParser.h"
 
 string port_ = "";

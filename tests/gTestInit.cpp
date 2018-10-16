@@ -2,7 +2,7 @@
 // Created by basto on 2/20/18.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <iostream>
 

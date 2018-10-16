@@ -2,7 +2,7 @@
 // Created by basto on 10/16/18.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include "../src/argvParser.h"
 #include "../src/configfileReader.h"
 
