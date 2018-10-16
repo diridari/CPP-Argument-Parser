@@ -55,7 +55,7 @@ class argvParser {
     string description;
     string requiredArgs;
 
-
+    int checkArgs(string param);
     bool existArg(string arg);
 
 public:

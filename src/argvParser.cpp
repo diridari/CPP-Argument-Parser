@@ -3,6 +3,7 @@
 //
 
 #include "argvParser.h"
+#include "configFileReader.h"
 
 using namespace std;
 
@@ -34,17 +35,42 @@ string argvParser::getHelpMessage() {
     return s;
 }
 
+int argvParser::checkArgs(string param) {
+    for (int x = 0; x < argconfig->size(); x++) {
+        if (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param) {
+           return x;
+        } else if (x + 1 == argconfig->size()) { // no args hit
+            lastFailedArg = param;
+            return -1;
+        }
+    }
+}
+
 bool argvParser::analyseArgv(int args, char **argv) {
 
 
     for (int i = 1; i < args; i++) {
-        for (int x = 0; x < argconfig->size(); x++) {
-            if (argconfig->at(x)->argShort == argv[i] || argconfig->at(x)->argLong == argv[i]) {
-                i = (*argconfig->at(x)->callBack)(i, argv);
-                argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
-                break;
-            } else if (x + 1 == argconfig->size()) { // no args hit
-                lastFailedArg = argv[i];
+        int x;
+        if((x = checkArgs(argv[i])) >=0){
+            i = (*argconfig->at(x)->callBack)(i, argv); // call function
+            argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+        }else{
+            configFileReader * reader = new configFileReader(argv[i]);
+            if(!reader->isEOF()){
+                vector <string> *arg  = new vector<string>();
+                arg->push_back("program Name");
+                while(!reader->isEOF()){
+                    string param = reader->readUntilNextSeparator();
+                   arg->push_back(param);
+                }
+                char*  buff[arg->size()];
+                for(int y = 0; y<arg->size();y++){
+                    buff[y] = const_cast<char *>(arg->at(y).c_str());
+                }
+                analyseArgv(arg->size(), buff);
+                delete reader;
+            }else {
+                delete reader;
                 return false;
             }
         }
@@ -69,3 +95,4 @@ bool argvParser::foundAllRequierdArgs() {
     }
     return true;
 }
+

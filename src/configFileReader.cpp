@@ -3,9 +3,9 @@
 //
 
 
-#include "configfileReader.h"
+#include "configFileReader.h"
 
-string configfileReader::readUntilNextSeparator() {
+string configFileReader::readUntilNextSeparator() {
 
     string out;
     bool isInSeperator = false;
@@ -41,7 +41,7 @@ string configfileReader::readUntilNextSeparator() {
 
 }
 
-configfileReader::typeOfSeparator configfileReader::isSeparator(char toCheck) {
+configFileReader::typeOfSeparator configFileReader::isSeparator(char toCheck) {
     for(int i = 0; i< septerators->size();i++){
         if(toCheck == septerators->at(i)){
             return typeOfSeparator::seperator;
@@ -52,21 +52,13 @@ configfileReader::typeOfSeparator configfileReader::isSeparator(char toCheck) {
     return typeOfSeparator::none;
 }
 
-bool configfileReader::isEndofFile() {
-    return index == text.size();
-}
-
-char configfileReader::getNextChar() {
+char configFileReader::getNextChar() {
     char out;
     if(readFromString){
         out = peekNextChar();
         index ++;
     }else{
-        if(!isOpen){
-            configFile = new ifstream();
-            configFile->open(fileName.c_str(),std::ifstream::in);
-            isOpen = true;
-        }
+        openFile();
         out = (char)configFile->get();
     }
     if(isSeparator(out) == typeOfSeparator::space)
@@ -75,50 +67,66 @@ char configfileReader::getNextChar() {
     return out;
 }
 
-char configfileReader::peekNextChar() {
+char configFileReader::peekNextChar() {
     char out;
         if(readFromString){
             out = text.at(index);
         }else{
-            if(!isOpen){
-                configFile = new ifstream();
-                configFile->open(fileName.c_str(),std::ifstream::in);
-                isOpen = true;
-            }
+            openFile();
             out = (char)configFile->peek();
         }
     return out;
 }
 
-void configfileReader::skipNextChar() {
+void configFileReader::skipNextChar() {
     if(readFromString){
         index++;
     }else{
-        if(!isOpen){
-            configFile = new ifstream();
-            configFile->open(fileName.c_str(),std::ifstream::in);
-            isOpen = true;
-        }
+        openFile();
        configFile->get();
     }
 
 
 }
 
-bool configfileReader::isEOF() {
+bool configFileReader::isEOF() {
    if(readFromString){
        return index >= text.length();
    }else{
-       if(!isOpen){
-           configFile = new ifstream();
-           configFile->open(fileName.c_str(),std::ifstream::in);
-           isOpen = true;
+       openFile();
+       if((configFile->rdstate() && ios::eofbit) || (configFile->rdstate() && ios::failbit)){
+           return true;
        }
-       return (configFile->rdstate() && ios::eofbit) || configFile->rdstate() && ios::failbit || configFile->peek() == -1;
+       int count = 0;
+       while (!(configFile->rdstate() && ios::eofbit) && !(configFile->rdstate() && ios::failbit) && isSeparator(peekNextChar()) == typeOfSeparator::space){
+           skipNextChar();
+           count ++;
+           if(isSeparator(peekNextChar()) != typeOfSeparator::space && peekNextChar() != -1 ) {
+               for(int i = 0; i<count;i++) {
+                   configFile->unget();
+               }
+               return false;
+           }
+
+       }
+       if(peekNextChar() != -1 )
+           return false;
+
+       return true;
+
    }
 }
 
-bool configfileReader::faildToOpen() {
+bool configFileReader::faildToOpen() {
+    openFile();
     if(readFromString == false && isOpen && configFile->rdstate() && ios::failbit)
     return false;
+}
+
+void configFileReader::openFile() {
+    if(!isOpen){
+        configFile = new ifstream();
+        configFile->open(fileName.c_str(),std::ifstream::in);
+        isOpen = true;
+    }
 }

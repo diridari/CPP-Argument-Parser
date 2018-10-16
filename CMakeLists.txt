@@ -7,7 +7,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 set(CMAKE_CXX_STANDARD 11)
 
 set(tests_src tests/argvParserTest.cpp tests/configReaderTest.cpp)
-set(src src/argvParser.cpp src/argvParser.h src/configfileReader.cpp src/configfileReader.h)
+set(src src/argvParser.cpp src/argvParser.h src/configFileReader.cpp src/configFileReader.h)
 
 
 add_executable(CPP_Argument_Parser main.cpp ${src})

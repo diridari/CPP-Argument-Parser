@@ -11,7 +11,7 @@
 
 using  namespace std;
 
-class configfileReader {
+class configFileReader {
 
     enum typeOfSeparator{
         none,
@@ -31,12 +31,12 @@ class configfileReader {
     char getNextChar();
     void skipNextChar();
     char peekNextChar();
-    bool isEOF();
+    void openFile();
     ifstream *configFile;
     bool isOpen = false;
 public:
 
-    configfileReader(string configFile){
+    configFileReader(string configFile){
         fileName = configFile;
         text = "";
         septerators->push_back('"');
@@ -50,9 +50,8 @@ public:
         text = searchText;
         readFromString = true;
     }
-
+    bool isEOF();
     string readUntilNextSeparator();
-    bool isEndofFile();
     bool faildToOpen();
 
 };
