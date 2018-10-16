@@ -39,3 +39,7 @@ CTestTestfile.cmake
 *.exe
 *.out
 *.app
+
+\.idea/
+
+cmake-build-debug/
