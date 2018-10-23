@@ -233,3 +233,12 @@ TEST(confReaderFile,noSuchFile){
 
 }
 
+
+
+TEST(configReader, unfinishedJoin){
+    configFileReader *reader = new configFileReader("");
+    reader->inputSourceIsString("abc \"def");
+    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
+    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+}

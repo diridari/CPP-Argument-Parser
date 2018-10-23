@@ -12,10 +12,10 @@ string configFileReader::readUntilNextSeparator() {
     // go to the next element
     while(!isEOF()){
         typeOfSeparator tmp = isSeparator(peekNextChar());
-        if(tmp == typeOfSeparator::none || tmp == typeOfSeparator::seperator){
-            if(tmp == typeOfSeparator::seperator) {
+        if(tmp == typeOfSeparator::none || tmp == typeOfSeparator::separator){
+            if(tmp == typeOfSeparator::separator) {
                 isInSeperator = true;
-                skipNextChar(); // lift over seperator
+                skipNextChar(); // lift over separator
             }
             break;
         }
@@ -42,9 +42,9 @@ string configFileReader::readUntilNextSeparator() {
 }
 
 configFileReader::typeOfSeparator configFileReader::isSeparator(char toCheck) {
-    for(int i = 0; i< septerators->size();i++){
-        if(toCheck == septerators->at(i)){
-            return typeOfSeparator::seperator;
+    for(int i = 0; i< septarators->size();i++){
+        if(toCheck == septarators->at(i)){
+            return typeOfSeparator::separator;
         }else if (toCheck == ' ' || toCheck == '\n' ||toCheck == '\t' ){
             return typeOfSeparator::space;
         }
