@@ -43,3 +43,5 @@ CTestTestfile.cmake
 \.idea/
 
 cmake-build-debug/
+
+build/CPPArgParserTest
