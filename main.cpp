@@ -1,41 +1,25 @@
 #include <iostream>
-#include <argvParser.h>
-
+#include "include/argvParser.h"
 using namespace std;
 
-
-int callBackPort(int i,char *buff[]){
-    cout << "set port to "<<buff[i]<<endl;
-    (i++);
-    return i;
+int testCallBacl(int index,char** buff){
+    cout << "got \"test\""<<endl;
+    return index; // no further arguments used
 }
-
-int yourCallBack(int i,char *buff[]){
-    cout << "Call Back "<<endl;
-
-    return i;
+int fooCallBack(int index, char** buff){
+    index++;
+    cout << "got \"foo\" with : " << buff[index]<<endl;
+    return index; // +1 because one further argument has been used
 }
-
-int requiredCallBack(int i,char *buff[]) {
-    cout << "Call Back required method"<<endl;
-    return i;
-}
-
-int main(int args, char ** argv) {
-    argvParser *parser = new argvParser("bla bla bla");
-    parser->addArg("-p","--port","set port to <Value>",callBackPort);
-    parser->addArg("-a","--aa","e.g call back",yourCallBack);
-    parser->addArg("-r","--req","required arg",requiredCallBack,true);
-
-
-    if(parser->analyseArgv(args,argv)){
-        cout << "parsed all args with success"<<endl;
-    }else{
-        cout <<parser->getHelpMessage()<<endl;
-        if(!parser->foundAllRequierdArgs()){
-            cout<<"you have forgotten at least on required argument"<<endl;
-        }
+int main(int argvs, char** argv) {
+    argvParser *p = new argvParser("example Programm\n\t this application intens to be an example ");
+    p->addArg("-t","--test","test argument",testCallBacl);
+    p->addArg("-f","--foo","foo test argument ",fooCallBack,true);
+    if(!p->analyseArgv(argvs,argv)){
+        cout << p->getHelpMessage()<<endl;
     }
-
+    if(!p->foundAllRequierdArgs()){
+        cout << "you have not entert at least one required argument"<<endl;
+    }
     return 0;
 }
