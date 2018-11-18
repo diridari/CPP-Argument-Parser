@@ -87,10 +87,16 @@ public:
 
     /**
      * Help Message.
+     * print colored helpmessage to the cli
+     */
+    void printHelpMessage();
+
+    /**
+     * Help Message.
      * returns the generated Help Message. And if analyseArgv() failed with the failed argument
      * @return help string
      */
-    void printHelpMessage();
+    string getHelpMessage();
 
     /**
      * check if all required argument are found

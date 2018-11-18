@@ -106,7 +106,15 @@ bool argvParser::analyseArgv(int args, char **argv) {
     }
     return foundAllRequierdArgs();
 }
-
+string argvParser::getHelpMessage() {
+    string s = "\u001B[1;32m";
+    if (lastFailedArg != "")
+        s += "unknown argument : " + lastFailedArg + "\n";
+    s += description + "usage:\n" + helpMessage + "\033[0m \n";
+    if (requiredArgs != "")
+        s += "\n\033[1;31mrequired arguments are : \n " + requiredArgs + "\033[0;0m\n";
+    return s;
+}
 bool argvParser::existArg(string arg) {
     for (int x = 0; x < argconfig->size(); x++) {
         if (argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) {
