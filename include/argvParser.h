@@ -90,7 +90,7 @@ public:
      * returns the generated Help Message. And if analyseArgv() failed with the failed argument
      * @return help string
      */
-    string getHelpMessage();
+    void printHelpMessage();
 
     /**
      * check if all required argument are found

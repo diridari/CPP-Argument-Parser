@@ -16,7 +16,7 @@ int main(int argvs, char** argv) {
     p->addArg("-t","--test","test argument",testCallBacl);
     p->addArg("-f","--foo","foo test argument ",fooCallBack,true);
     if(!p->analyseArgv(argvs,argv)){
-        cout << p->getHelpMessage()<<endl;
+        p->printHelpMessage();
     }
     if(!p->foundAllRequierdArgs()){
         cout << "you have not entert at least one required argument"<<endl;

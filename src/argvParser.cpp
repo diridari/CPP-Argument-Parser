@@ -4,11 +4,35 @@
 
 #include "../include/argvParser.h"
 #include "configFileReader.h"
-
-using namespace std;
-
 #include <iostream>
 
+#ifdef __WIN32
+#include <windows.h>
+#endif
+using namespace std;
+
+#ifdef __WIN32
+void printRed(){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+}
+void resetCLI(){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+}
+void printGreen(){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+}
+#endif
+#ifdef __linux__
+void printRed(){
+ cout << "\033[1;31m";
+}
+void resetCLI(){
+ cout << "\033[0;0m";
+}
+void printGreen(){
+cout << "\u001B[1;32m";
+}
+#endif
 bool argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), bool required) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong, callBack, required));
@@ -25,14 +49,19 @@ argvParser::argvParser(string description_) {
     requiredArgs = "";
 }
 
-string argvParser::getHelpMessage() {
-    string s = "\u001B[1;32m";
-    if (lastFailedArg != "")
-        s += "unknown argument : " + lastFailedArg + "\n";
-    s += description + "usage:\n" + helpMessage + "\033[0m \n";
-    if (requiredArgs != "")
-        s += "\n\033[1;31mrequired arguments are : \n " + requiredArgs + "\033[0;0m\n";
-    return s;
+void argvParser::printHelpMessage() {
+    if (lastFailedArg != "") {
+        printRed();
+        cout<< "unknown argument : " + lastFailedArg <<endl;
+    }
+    printGreen();
+    cout<<description + "usage:\n" + helpMessage <<endl;
+    if (requiredArgs != "") {
+        printRed();
+        cout << "\nrequired arguments are : \n " + requiredArgs<<endl;
+
+    }
+    resetCLI();
 }
 
 int argvParser::checkArgs(string param) {
