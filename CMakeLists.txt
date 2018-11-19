@@ -10,7 +10,7 @@ set(tests_src tests/argvParserTest.cpp tests/configReaderTest.cpp tests/exampleT
 set(src src/argvParser.cpp include/argvParser.h src/configFileReader.cpp src/configFileReader.h)
 
 
-add_executable(CPP_Argument_Parser ${src} main.cpp)
+add_executable(CPP_Argument_Parser ${src} exampleMain.cpp)
 add_executable(CPP_Argument_Parser_Test  ${tests_src} ${src})
 
 target_link_libraries(CPP_Argument_Parser_Test  ${GTEST_BOTH_LIBRARIES} pthread)

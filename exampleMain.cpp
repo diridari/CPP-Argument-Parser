@@ -11,10 +11,19 @@ int fooCallBack(int index, char** buff){
     cout << "got \"foo\" with : " << buff[index]<<endl;
     return index; // +1 because one further argument has been used
 }
+
+int printCallBack(int index, char** buff){
+    index++;
+    cout << "print : " << buff[index]<<endl;
+    return index; // +1 because one further argument has been used
+}
+
+
 int main(int argvs, char** argv) {
     argvParser *p = new argvParser("example Programm\n\t this application intens to be an example ");
     p->addArg("-t","--test","test argument",testCallBacl);
     p->addArg("-f","--foo","foo test argument ",fooCallBack,true);
+    p->addArg("-p","--print","echo text",printCallBack);
     if(!p->analyseArgv(argvs,argv)){
         p->printHelpMessage();
     }
