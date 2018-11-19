@@ -8,6 +8,8 @@ Each argument is separated by an space or is can be joined by  <”>
 
 If one argument needs e.g. an parameter like -p <portNumber> your callback function has access to further parameters.
 
+![Alt text](doc/wrongArg.PNG?raw=true "example")
+
 ## Usage
 	
 ### Register an Argument
