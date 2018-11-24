@@ -10,6 +10,19 @@ If one argument needs e.g. an parameter like -p <portNumber> your callback funct
 
 ![Alt text](doc/wrongArg.PNG?raw=true "example")
 
+source:
+
+    argvParser *parser = new argvParser("example Programm\n\t this application intens to be an example ");
+    parser->addArg("-t","--test","test argument",testCallBacl);
+    parser->addArg("-f","--foo","foo test argument ",fooCallBack,true);
+    parser->addArg("-p","--print","echo text",printCallBack);
+    if(!parser->analyseArgv(argvs,argv)){
+        parser->printHelpMessage();
+    }
+    if(!p->foundAllRequierdArgs()){
+        cout << "you have not entert at least one required argument"<<endl;
+}
+
 ## Usage
 
 ### Register an Argument
