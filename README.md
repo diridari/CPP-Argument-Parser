@@ -21,7 +21,7 @@ source:
     }
     if(!p->foundAllRequierdArgs()){
         cout << "you have not entert at least one required argument"<<endl;
-}
+    }
 
 ## Usage
 
