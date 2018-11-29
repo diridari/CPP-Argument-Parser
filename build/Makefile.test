@@ -23,8 +23,10 @@ APP_SRCS =	$(shell find \
 
 APP_INCS =
 
-APP_SLIB = pthread \
-           gtest \
-           gtest_main
+APP_SLIB =  gtest \
+		gtest_main \
+		pthread \
+          
+          
 
 include		linux.mk
