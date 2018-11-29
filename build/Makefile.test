@@ -1,0 +1,30 @@
+#
+#  CONTENT
+#    simple Makefile.app to build all source for GdbManipulator
+#
+#  AUTHOR
+#   Sebastian Balz
+##		based on Norbert Stoeffler
+#
+#  DATE
+#    29.11.2018
+#
+#  LANGUAGE
+#    make
+#
+
+APP =		CPP-Argument-Parser-Test
+TEST =		CPP-Argument-Parser-TEST
+APP_SRCS =	$(shell find \
+			../src \
+			../tests \
+			-name "*.cpp")
+
+
+APP_INCS =
+
+APP_SLIB = pthread \
+           gtest \
+           gtest_main
+
+include		linux.mk

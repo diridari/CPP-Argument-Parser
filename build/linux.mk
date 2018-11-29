@@ -14,8 +14,9 @@
 #
 
 CXXFLAGS +=		$(addprefix -I,$(APP_INCS)) -std=c++11
-_APP_OBJS1 = 	$(patsubst %.cc,%.o,$(patsubst %.cpp,%.o,$(APP_SRCS)))
+_APP_OBJS1 = 	$(patsubst %.cc,%.o,$(patsubst %.cpp,%.o,$(APP_SRCS) ))
 _APP_OBJS = 	$(notdir $(_APP_OBJS1))
+
 VPATH =			$(sort $(dir $(_APP_OBJS1)))
 
 all:: $(APP)
@@ -26,8 +27,6 @@ clean::
 run:	all
 	./$(APP)
 
-test:	all
-	./$(APP)
 
 $(APP): $(_APP_OBJS)
 	g++ -o $@ $^ $(addprefix -l,$(APP_SLIB))
@@ -35,4 +34,5 @@ $(APP): $(_APP_OBJS)
 debug::
 	@echo APP_SRCS = $(APP_SRCS)
 	@echo _APP_OBJS = $(_APP_OBJS)
+	@echo _TEST_OBJS = $(_TEST_OBJS)
 	@echo VPATH=$(VPATH)
