@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(CPP_Argument_Parser)
 
-#find_package(GTest REQUIRED)
+find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(include)
 set(CMAKE_CXX_STANDARD 11)
