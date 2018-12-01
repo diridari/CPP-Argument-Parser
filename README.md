@@ -1,7 +1,9 @@
 # CPP Argument Parser
 ## Goal
-This library shall help you the receive program arguments in C++
+This library shall help you the receive program arguments in C++.
+
 It is possible to define call back function that gets invoked if the corresponding argument get parsed.
+
 For each argument is it possible to define a short version, a long version a help message and if this argument is required to get called by the user.
 
 Each argument is separated by an space or is can be joined by  <”>
