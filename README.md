@@ -15,6 +15,7 @@ If one argument needs e.g. an parameter like -p <portNumber> your callback funct
 source:
 
     argvParser *parser = new argvParser("example Programm\n\t this application intens to be an example ");
+                // short | long | description | callBackFunction | required default = false
     parser->addArg("-t","--test","test argument",testCallBacl);
     parser->addArg("-f","--foo","foo test argument ",fooCallBack,true);
     parser->addArg("-p","--print","echo text",printCallBack);
