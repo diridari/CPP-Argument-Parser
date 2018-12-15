@@ -56,6 +56,15 @@ Each call back function must have following signature:
 
 this allows the call back function to access the buffer for further buffer elements like a argument.
 If the function does access those buffer it had to increase the index variable by the additional used elements and return it.
+## Defined number of Parathers
+It is possible to define the number of additional parameters. For Each Argument the framework does check if there is enough given arguments to fulfil the callback function. 
+
+      parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1,<number of additional arguments>);
+      parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1,1);
+      
+ If the value is -1 no check gets executet.
+ 
+The default value is -1.      
 
 ## Configfile
 It is possible to swap often used arguments to an config file.
