@@ -5,6 +5,7 @@
 #include "../include/argvParser.h"
 #include "configFileReader.h"
 #include <iostream>
+#include <iostream>
 
 #ifdef __WIN32
 #include <windows.h>
@@ -33,9 +34,11 @@ void printGreen(){
 cout << "\u001B[1;32m";
 }
 #endif
-bool argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), bool required) {
+
+
+bool argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), bool required, int numberOfArguments) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
-        argconfig->push_back(new argument(argvShort, argvLong, callBack, required));
+        argconfig->push_back(new argument(argvShort, argvLong, callBack, required,numberOfArguments));
         helpMessage += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
         if (required)
             requiredArgs += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
@@ -80,9 +83,16 @@ bool argvParser::analyseArgv(int args, char **argv) {
 
     for (int i = 1; i < args; i++) {
         int x;
-        if((x = checkArgs(argv[i])) >=0){
-            i = (*argconfig->at(x)->callBack)(i, argv); // call function
-            argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+
+        if( (x = checkArgs(argv[i])) >=0){
+            int reqSize = argconfig->at(x)->numberOfArguments +i +1;
+            bool enoughSpace =args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
+            if(enoughSpace) {
+                i = (*argconfig->at(x)->callBack)(i, argv); // call function
+                argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+            }else{
+                return false;
+            }
         }else{
             configFileReader * reader = new configFileReader(argv[i]);
             if(!reader->isEOF()){

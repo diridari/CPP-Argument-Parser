@@ -5,7 +5,7 @@ project(CPP_Argument_Parser)
 include_directories(include)
 set(CMAKE_CXX_STANDARD 11)
 
-
+set(tests_src tests/argvParserTest.cpp tests/configReaderTest.cpp tests/exampleTest.cpp tests/definedNumberOfArgs.cpp)
 set(src src/argvParser.cpp include/argvParser.h src/configFileReader.cpp src/configFileReader.h)
 
 

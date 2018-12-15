@@ -38,15 +38,10 @@ class argvParser {
         string argLong;
 
         int (*callBack)(int, char **);
-
         bool requiredAndNotHitJet;
-
-        argument(string argS, string argL, int (*callBack_)(int, char **), bool required_ = false) : argLong(argL),
-                                                                                                     argShort(argS),
-                                                                                                     callBack(
-                                                                                                             callBack_),
-                                                                                                     requiredAndNotHitJet(
-                                                                                                             required_) {};
+        int numberOfArguments;
+        argument(string argS, string argL, int (*callBack_)(int, char **), bool required_ = false, int numberOfArguments = -1) : argLong(argL),
+                                    argShort(argS), callBack(callBack_),requiredAndNotHitJet(required_),numberOfArguments(numberOfArguments) {};
     } argument;
 
     vector<argument *> *argconfig = new vector<argument *>();
@@ -83,7 +78,7 @@ public:
      * @param required      is this argument required
      * @return added to commands
      */
-    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), bool required = false);
+    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), bool required = false, int numberifArguments = -1);
 
     /**
      * Help Message.
