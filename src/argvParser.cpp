@@ -80,8 +80,6 @@ int argvParser::checkArgs(string param) {
 }
 
 bool argvParser::analyseArgv(int args, char **argv) {
-
-
     for (int i = 1; i < args; i++) {
         int x;
 
@@ -92,6 +90,7 @@ bool argvParser::analyseArgv(int args, char **argv) {
                 i = (*argconfig->at(x)->callBack)(i, argv); // call function
                 argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
             }else{
+            helpMessage += "\n\nthe argument " + argconfig->at(x)->argLong + "does require: " + to_string(argconfig->at(x)->numberOfArguments) + "  arguments ";
                 return false;
             }
         }else{
