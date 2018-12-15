@@ -36,7 +36,8 @@ cout << "\u001B[1;32m";
 #endif
 
 
-bool argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), bool required, int numberOfArguments) {
+bool argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments,
+                        bool required) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong, callBack, required,numberOfArguments));
         helpMessage += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";

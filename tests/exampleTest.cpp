@@ -28,8 +28,8 @@ int callBack3(int i,char *buff[]){
 
 TEST(argvParser, systemtest1){
     argvParser parser("test");
-    parser.addArg("a", "aa","test",callBack1,true);
-    parser.addArg("b", "bb","test",callBack2,true);
+    parser.addArg("a", "aa", "test", callBack1, 0, true);
+    parser.addArg("b", "bb", "test", callBack2, 0, true);
 
     char *arg[] = {"program", "../tests/configFiles/config1.txt" ,"../tests/configFiles/config2.txt"};
 
@@ -41,8 +41,8 @@ TEST(argvParser, systemtest1){
 
 TEST(argvParser, systemtest2){
     argvParser parser("test");
-    parser.addArg("a", "aa","test",callBack1,true);
-    parser.addArg("b", "bb","test",callBack2,false);
+    parser.addArg("a", "aa", "test", callBack1, 0, true);
+    parser.addArg("b", "bb", "test", callBack2, 0, false);
 
     char *arg[] = {"program", "../tests/configFiles/config1.txt" };
 
@@ -54,11 +54,11 @@ TEST(argvParser, systemtest2){
 TEST(argvParser, systemtest3){
     a1 = false;
     argvParser parser("test");
-    parser.addArg("a", "aa","test",callBack1,true);
-    parser.addArg("b", "bb","test",callBack2,false);
-    parser.addArg("t1", "tt1","test",callBack3,true);
-    parser.addArg("t2", "tt2","test",callBack3,true);
-    parser.addArg("t3", "tt3","test",callBack3,true);
+    parser.addArg("a", "aa", "test", callBack1, 0, true);
+    parser.addArg("b", "bb", "test", callBack2, 0, false);
+    parser.addArg("t1", "tt1", "test", callBack3, 0, true);
+    parser.addArg("t2", "tt2", "test", callBack3, 0, true);
+    parser.addArg("t3", "tt3", "test", callBack3, 0, true);
 
     char *arg[] = {"program", "../tests/configFiles/config1.txt" ,"../tests/configFiles/config2.txt"};
 
@@ -72,11 +72,11 @@ TEST(argvParser, systemtest3){
 TEST(argvParser, systemtest4){
     a1 = false;
     argvParser parser("test");
-    parser.addArg("a", "aa","test",callBack1,true);
-    parser.addArg("b", "bb","test",callBack2,false);
-    parser.addArg("t1", "tt1","test",callBack3,true);
-    parser.addArg("t2", "tt2","test",callBack3,true);
-    parser.addArg("t3", "tt3","test",callBack3,true);
+    parser.addArg("a", "aa", "test", callBack1, 0, true);
+    parser.addArg("b", "bb", "test", callBack2, 0, false);
+    parser.addArg("t1", "tt1", "test", callBack3, 0, true);
+    parser.addArg("t2", "tt2", "test", callBack3, 0, true);
+    parser.addArg("t3", "tt3", "test", callBack3, 0, true);
 
     char *arg[] = {"program","a", "b","c", "../tests/configFiles/config1.txt" ,"../tests/configFiles/config2.txt"};
 
