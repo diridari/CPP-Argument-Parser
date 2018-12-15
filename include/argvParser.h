@@ -75,10 +75,11 @@ public:
      * @param argvLong      long version of the argument
      * @param help          argument description message
      * @param callBack      call back function
+     * @param numberOfArguments number of additional paramethers -1 == no check   default = -1
      * @param required      is this argument required
      * @return added to commands
      */
-    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberifArguments = -1,
+    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments = -1,
                 bool required = false);
 
     /**

@@ -20,7 +20,7 @@ int callBackD1(int i,char *buff[]){
 TEST(DefinedNumerOfArgsr, numberOfARgsShould1is0){
     port_x = "";
     argvParser parser("test");
-    parser.addArg("p", "port","test",callBackPortTestMeth1,false,1);
+    parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1,1);
     char *arg[] = {"program", "p",};
     ASSERT_FALSE(parser.analyseArgv(2,arg));
 }
@@ -28,7 +28,7 @@ TEST(DefinedNumerOfArgsr, numberOfARgsShould1is0){
 TEST(DefinedNumerOfArgsr, numberOfARgsShould1is1){
     port_x = "";
     argvParser parser("test");
-    parser.addArg("p", "port","test",callBackPortTestMeth1,false,1);
+    parser.addArg("p", "port","test",callBackPortTestMeth1,1);
     char *arg[] = {"program","p", "abc",};
     ASSERT_TRUE(parser.analyseArgv(3,arg));
     ASSERT_EQ(port_x,"abc");
@@ -37,14 +37,14 @@ TEST(DefinedNumerOfArgsr, numberOfARgsShould1is1){
 TEST(DefinedNumerOfArgsr, numberOfARgsShould2is1){
     port_x = "";
     argvParser parser("test");
-    parser.addArg("p", "port","test",callBackPortTestMeth1,false,2);
+    parser.addArg("p", "port","test",callBackPortTestMeth1,2);
     char *arg[] = {"program","p", "abc",};
     ASSERT_FALSE(parser.analyseArgv(3,arg));
 }
 TEST(DefinedNumerOfArgsr, numberOfARgsShould3is1){
     port_x = "";
     argvParser parser("test");
-    parser.addArg("p", "port","test",callBackPortTestMeth1,false,3);
+    parser.addArg("p", "port","test",callBackPortTestMeth1,3);
     char *arg[] = {"program","p", "abc",};
     ASSERT_FALSE(parser.analyseArgv(3,arg));
 }
@@ -52,7 +52,7 @@ TEST(DefinedNumerOfArgsr, numberOfARgsShould0is0){
     port_x = "";
     x = false;
     argvParser parser("test");
-    parser.addArg("p", "port","test",callBackD1,false,0);
+    parser.addArg("p", "port","test",callBackD1,0);
     char *arg[] = {"program","p", "abc",};
     ASSERT_FALSE(parser.analyseArgv(3,arg));
     ASSERT_TRUE(x);
