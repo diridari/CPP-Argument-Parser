@@ -62,7 +62,10 @@ It is possible to define the number of additional parameters. For Each Argument 
       parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1,<number of additional arguments>);
       parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1,1);
       
-      
+ If the value is -1 no check gets executet.
+ 
+The default value is -1.      
+
 ## Configfile
 It is possible to swap often used arguments to an config file.
 Each additional unknown arguments gets checked whether it is an configfile or not. Is this the case the configfile gets decoded (like usual arguments)?
