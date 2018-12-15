@@ -78,8 +78,8 @@ public:
      * @param required      is this argument required
      * @return added to commands
      */
-    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberifArguments,
-                bool required);
+    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberifArguments = -1,
+                bool required = false);
 
     /**
      * Help Message.
