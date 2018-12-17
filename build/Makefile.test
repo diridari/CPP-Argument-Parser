@@ -21,7 +21,7 @@ APP_SRCS =	$(shell find \
 			-name "*.cpp")
 
 
-APP_INCS =
+APP_INCS = ../include
 
 APP_SLIB =  gtest \
 		gtest_main \

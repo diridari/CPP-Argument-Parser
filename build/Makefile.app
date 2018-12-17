@@ -19,7 +19,7 @@ APP_SRCS =	../exampleMain.cpp $(shell find \
 			../src \
 			-name "*.cpp")
 
-APP_INCS =
+APP_INCS = ../include
 TEST_INCS =
 APP_SLIB =
 
