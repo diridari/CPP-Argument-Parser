@@ -7,6 +7,8 @@
 
 #include <string>
 #include <vector>
+#include <cstdarg>
+
 
 using namespace std;
 
@@ -33,10 +35,10 @@ using namespace std;
         }
  */
 class argvParser {
+
     typedef struct argument {
         string argShort;
         string argLong;
-
         int (*callBack)(int, char **);
         bool requiredAndNotHitJet;
         int numberOfArguments;
@@ -45,14 +47,14 @@ class argvParser {
     } argument;
 
     vector<argument *> *argconfig = new vector<argument *>();
-    string helpMessage;
+
     string lastFailedArg;
     string description;
     string requiredArgs;
-
     int checkArgs(string param);
     bool existArg(string arg);
 
+    string helpMessage;
 public:
 
     /**
@@ -79,7 +81,7 @@ public:
      * @param required      is this argument required
      * @return added to commands
      */
-    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments = -1,
+    argvParser* addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments = -1,
                 bool required = false);
 
     /**
@@ -107,7 +109,13 @@ public:
      */
     bool analyseArgv(int args, char *argv[]);
 
+    /**
+     * to order arguments in groups
+     * @param sectionName section name
+     */
+    void addSection(string sectionName);
 
+    bool addEnun(string enums, ...);
 };
 
 

@@ -36,16 +36,19 @@ cout << "\u001B[1;32m";
 #endif
 
 
-bool argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments,
+
+argvParser* argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments,
                         bool required) {
+
+
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong, callBack, required,numberOfArguments));
         helpMessage += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
         if (required)
             requiredArgs += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
-        return true;
+        return nullptr;
     }
-    return false;
+    return this;
 }
 
 argvParser::argvParser(string description_) {
@@ -141,5 +144,20 @@ bool argvParser::foundAllRequierdArgs() {
         }
     }
     return true;
+}
+
+void argvParser::addSection(string sectionName) {
+    helpMessage += "\n "+sectionName+":\n";
+}
+
+bool argvParser::addEnun(string enums, ...) {
+    va_list vl;
+    va_start(vl,enums);
+    helpMessage += "\n\t\t\t\t accepted arguments : {";
+
+
+    helpMessage.erase(helpMessage.size()-2,2);
+    helpMessage += "}\n";
+
 }
 
