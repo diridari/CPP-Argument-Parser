@@ -46,7 +46,19 @@ class argvParser {
                                     argShort(argS), callBack(callBack_),requiredAndNotHitJet(required_),numberOfArguments(numberOfArguments) {};
     } argument;
 
+    typedef struct enumDesciption{
+        string enums;
+        string toplevelComannd;
+        string toplevelShort;
+    }enumDesciption;
+
     vector<argument *> *argconfig = new vector<argument *>();
+
+    // auto compleation
+    string topLevelArgs = "";
+    string lastToplevelLong = "";
+    string lastToplevelShort = "";
+    vector<enumDesciption> enumsList = vector<enumDesciption>();
 
     string lastFailedArg;
     string description;
@@ -55,6 +67,7 @@ class argvParser {
     bool existArg(string arg);
 
     string helpMessage;
+    string generateAutoCompletion();
 public:
 
     /**
@@ -115,7 +128,7 @@ public:
      */
     void addSection(string sectionName);
 
-    bool addEnun(string enums, ...);
+    bool addEnum(int numberOfEnums, const char *enums, ...);
 };
 
 

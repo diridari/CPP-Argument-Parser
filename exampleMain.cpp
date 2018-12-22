@@ -18,12 +18,12 @@ int printCallBack(int index, char** buff){
     return index; // +1 because one further argument has been used
 }
 int loggingCallBack(int index, char** buff){
-    cout << "enable logging";
+    cout << "enable logging"<<endl;
     return index; // +1 because one further argument has been used
 }
 int logFileCallBack(int index, char** buff){
     index++;
-    cout << "log to "<< buff[index];
+    cout << "log to "<< buff[index]<<endl;
     return index; // +1 because one further argument has been used
 }
 
@@ -32,10 +32,11 @@ int enumCallBack(int index, char** buff){
     string got = string(buff[index]);
     if(got == "abc" || got == "def" || got == "xyz")
     {
-        cout << "got enum " << buff[index];
+        cout << "got enum " << buff[index]<<endl;
     }else{
         cout << "gor wrong enum"<<endl;
     }
+    return index;
 }
 
 
@@ -49,7 +50,7 @@ int main(int argvs, char** argv) {
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
     p->addArg("-logf","--logFile","generate logfile",logFileCallBack);
     p->addSection("enum example");
-    p->addArg("-e","--enums","enum example",enumCallBack,1);
+    p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->addEnum(3, "abc", "def", "xyz");
 
     if(!p->analyseArgv(argvs,argv)){
         p->printHelpMessage();

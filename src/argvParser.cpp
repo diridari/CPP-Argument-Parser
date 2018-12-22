@@ -6,6 +6,8 @@
 #include "configFileReader.h"
 #include <iostream>
 #include <iostream>
+#include <argvParser.h>
+
 
 #ifdef __WIN32
 #include <windows.h>
@@ -34,19 +36,55 @@ void printGreen(){
 cout << "\u001B[1;32m";
 }
 #endif
+static string autoCompletionScript;
+int callBackInstallAutoCompletion(int index, char **buff){
+#ifdef __linux__
+    string programName = string(buff[0]);
+    int i = 0;
+    // extreact Binary name
+    while ((i = programName.find("/")) != string::npos){
+        programName.erase(0,i+1);
+    }
+    cout << "install auto completion for " << programName << " [y] = yes"<<endl;
+    string s;
+    std::getline(std::cin,s);
+    if(s.size()>0 && s.at(0) == 'y'){
+        cout << "install auto completion"<<endl;
+        string location = programName+".bash";
+        string script = autoCompletionScript + programName + " \n\n";
+        fstream fileWirte,profile;
+        fileWirte.open(location,fstream::out | ios::trunc);
+        if(!fileWirte.is_open()){
+            cout << "failed to open " + location<<endl;
+            return  index;
+        }
+        fileWirte << script;
+        fileWirte.close();
 
+        cout << "try it temporary out use : \"source "+programName + ".bash\""<<endl;
+        cout << "to persis the autocompetion coppy the bash file into /etc/bash_completion.d with :  \"cp "
+                ""+ programName + ".bash  /etc/bash_completion.d/" + programName + ".bash\" " <<endl;
+    }else{
+        cout << "install aborted"<<endl;
+    }
 
+#elif __WIN32
+    cout << "Auto completion not (jet) suportet under Windows"<<endl;
+#endif
+    return index;
+}
 
-argvParser* argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments,
-                        bool required) {
-
-
+argvParser* argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **),
+        int numberOfArguments, bool required) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong, callBack, required,numberOfArguments));
         helpMessage += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
         if (required)
             requiredArgs += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
-        return nullptr;
+        topLevelArgs += argvLong +" " ;
+        lastToplevelLong = argvLong;
+        lastToplevelShort = argvShort;
+        return this;
     }
     return this;
 }
@@ -83,6 +121,9 @@ int argvParser::checkArgs(string param) {
 }
 
 bool argvParser::analyseArgv(int args, char **argv) {
+    this->addSection("Argument auto completion");
+    this->addArg("-instAutoCompl","","install auto completion for cli usage", callBackInstallAutoCompletion,0);
+    generateAutoCompletion();
     for (int i = 1; i < args; i++) {
         int x;
 
@@ -119,6 +160,7 @@ bool argvParser::analyseArgv(int args, char **argv) {
     }
     return foundAllRequierdArgs();
 }
+
 string argvParser::getHelpMessage() {
     string s = "\u001B[1;32m";
     if (lastFailedArg != "")
@@ -128,6 +170,7 @@ string argvParser::getHelpMessage() {
         s += "\n\033[1;31mrequired arguments are : \n " + requiredArgs + "\033[0;0m\n";
     return s;
 }
+
 bool argvParser::existArg(string arg) {
     for (int x = 0; x < argconfig->size(); x++) {
         if (argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) {
@@ -150,14 +193,38 @@ void argvParser::addSection(string sectionName) {
     helpMessage += "\n "+sectionName+":\n";
 }
 
-bool argvParser::addEnun(string enums, ...) {
+bool argvParser::addEnum(int numberOfEnums, const char *enums, ...) {
+    string list;
     va_list vl;
     va_start(vl,enums);
-    helpMessage += "\n\t\t\t\t accepted arguments : {";
-
-
+    helpMessage += "\t\t\t\t accepted arguments : {";
+    for(int i = 0; i< numberOfEnums;i++){
+        helpMessage += string(enums) + ", ";
+        list += " "+ string(enums);
+        enums = va_arg(vl,const char *);
+    }
     helpMessage.erase(helpMessage.size()-2,2);
     helpMessage += "}\n";
+    enumDesciption t;
+    t.enums = list;
+    t.toplevelComannd = lastToplevelLong;
+    t.toplevelShort = lastToplevelShort;
+    enumsList.push_back(t);
+}
 
+string argvParser::generateAutoCompletion() {
+
+    string script = "#/usr/bin/env bash\n_function()\n{\n";
+        for(int i = 0; i< enumsList.size();i++){
+
+            script += " if [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelComannd+"\" ] || [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelShort+"\" ]; then\n";
+            script += "    COMPREPLY=($(compgen -W \""+enumsList.at(i).enums +"\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+            script += "  else \n";
+        }
+        script += "     COMPREPLY=($(compgen -W \""+topLevelArgs +"\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+        script += "  fi\n}\n";
+        script += "complete -F _function ";
+    autoCompletionScript = script;
+    return  script;
 }
 
