@@ -50,6 +50,7 @@ class argvParser {
         string enums;
         string toplevelComannd;
         string toplevelShort;
+        bool asFile;
     }enumDesciption;
 
     vector<argument *> *argconfig = new vector<argument *>();
@@ -129,6 +130,7 @@ public:
     void addSection(string sectionName);
 
     bool addEnum(int numberOfEnums, const char *enums, ...);
+    bool asFile();
 };
 
 
