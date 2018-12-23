@@ -45,29 +45,23 @@ int callBackInstallAutoCompletion(int index, char **buff){
     while ((i = programName.find("/")) != string::npos){
         programName.erase(0,i+1);
     }
-    cout << "install auto completion for " << programName << " [y] = yes"<<endl;
-    string s;
-    std::getline(std::cin,s);
-    if(s.size()>0 && s.at(0) == 'y'){
-        cout << "install auto completion"<<endl;
-        string location = programName+".bash";
-        string script = autoCompletionScript + programName + " \n\n";
-        fstream fileWirte,profile;
-        fileWirte.open(location,fstream::out | ios::trunc);
-        if(!fileWirte.is_open()){
-            cout << "failed to open " + location<<endl;
-            return  index;
-        }
-        fileWirte << script;
-        fileWirte.close();
-
-        cout << "try it temporary out use : \"source "+programName + ".bash\""<<endl;
-        cout << "to persis the autocompetion coppy the bash file into /etc/bash_completion.d with :  \"cp "
-                ""+ programName + ".bash  /etc/bash_completion.d/" + programName + ".bash\" " <<endl;
-    }else{
-        cout << "install aborted"<<endl;
+    cout << "install auto completion"<<endl;
+    string location = programName+".bash";
+    string script = autoCompletionScript + programName + " \n\n";
+    fstream fileWirte,profile;
+    fileWirte.open(location,fstream::out | ios::trunc);
+    if(!fileWirte.is_open()){
+        cout << "failed to open " + location<<endl;
+        return  index;
     }
+    fileWirte << script;
+    fileWirte.close();
 
+    cout << "try it temporary with: \"source "+programName + ".bash\""<<endl;
+    cout << "to persist the atuocompletion by copying the bash file with:  \"cp "
+            ""+ programName + ".bash  /etc/bash_completion.d/" + programName + ".bash\" " <<endl;
+
+    exit(0);
 #elif __WIN32
     cout << "Auto completion not (jet) suportet under Windows"<<endl;
 #endif
@@ -209,22 +203,37 @@ bool argvParser::addEnum(int numberOfEnums, const char *enums, ...) {
     t.enums = list;
     t.toplevelComannd = lastToplevelLong;
     t.toplevelShort = lastToplevelShort;
+    t.asFile = false;
     enumsList.push_back(t);
 }
 
 string argvParser::generateAutoCompletion() {
 
-    string script = "#/usr/bin/env bash\n_function()\n{\n";
+    string script = "#/usr/bin/env bash\n_function()\n{\n\n";
         for(int i = 0; i< enumsList.size();i++){
-
-            script += " if [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelComannd+"\" ] || [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelShort+"\" ]; then\n";
-            script += "    COMPREPLY=($(compgen -W \""+enumsList.at(i).enums +"\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
-            script += "  else \n";
+            script += "if [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelComannd+"\" ] || [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelShort+"\" ]; then\n";
+            if(enumsList.at(i).asFile){
+                script += "\tcompopt -o nospace -o dirnames -o filenames\n"
+                          "\tCOMPREPLY=($(compgen  -f \"${COMP_WORDS[${COMP_CWORD}]}\"))      \n";
+            }else {
+                script += "\t COMPREPLY=($(compgen -W \"" + enumsList.at(i).enums +
+                          "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+            }
+            script += "\n   el";
         }
-        script += "     COMPREPLY=($(compgen -W \""+topLevelArgs +"\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
-        script += "  fi\n}\n";
+        script += "se\n     COMPREPLY=($(compgen -W \""+topLevelArgs +"\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+        script += "  fi\n compgen -o bashdefault\n}\n";
         script += "complete -F _function ";
     autoCompletionScript = script;
     return  script;
+}
+
+bool argvParser::asFile() {
+    enumDesciption t;
+    t.asFile = true;
+    t.toplevelComannd = lastToplevelLong;
+    t.toplevelShort = lastToplevelShort;
+    enumsList.push_back(t);
+    return true;
 }
 
