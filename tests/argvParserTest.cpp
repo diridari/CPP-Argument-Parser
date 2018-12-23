@@ -179,8 +179,6 @@ TEST(argvParser,addShortArgTwice){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-p", "-abc", "add Port", callBackPortTestMeth, 0, false));
     ASSERT_FALSE(parser.addArg("-p", "-dd", "add d", callBackD, 0, false));
-
-
 }
 
 TEST(argvParser,addLongArgTwice1){
@@ -188,16 +186,13 @@ TEST(argvParser,addLongArgTwice1){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-xx", "-abc", "add Port", callBackPortTestMeth, 0, false));
     ASSERT_FALSE(parser.addArg("-p", "-abc", "add d", callBackD, 0, false));
-
-
 }
+
 TEST(argvParser,addLongArgumentEqToExistingShortArg){
     char *arg[] = {"program", "-a" };
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-abc", "-xx", "add Port", callBackPortTestMeth, 0, false));
     ASSERT_FALSE(parser.addArg("-p", "-abc", "add d", callBackD, 0, false));
-
-
 }
 
 TEST(argvParser,requiredArgsNotSearchedJet){

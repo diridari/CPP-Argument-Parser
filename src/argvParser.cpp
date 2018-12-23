@@ -86,7 +86,7 @@ argvParser* argvParser::addArg(string argvShort, string argvLong, string help, i
         lastToplevelShort = argvShort;
         return this;
     }
-    return this;
+    return nullptr;
 }
 
 argvParser::argvParser(string description_) {

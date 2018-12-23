@@ -44,13 +44,18 @@ int main(int argvs, char** argv) {
     argvParser *p = new argvParser("example Programm\n\t this application intens to be an example ");
     p->addSection("usage example section");
     p->addArg("-t","--test","test argument",testCallBacl);
+    p->addSection("required argument example");
     p->addArg("-f","--foo","foo test argument ",fooCallBack,true);
+    p->addSection("auto check for additional parameter");
     p->addArg("-p","--print","echo text",printCallBack,1);
+    p->addSection("enum example");
+    p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->addEnum(3, "abc", "def", "xyz");
+    p->addSection("example file auto completion (enable autoCompletion with -instAutoCompl)");
+    p->addArg("-o","--open","example to complete a file/dir",printCallBack,1);
     p->addSection("logging");
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
     p->addArg("-logf","--logFile","generate logfile",logFileCallBack);
-    p->addSection("enum example");
-    p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->addEnum(3, "abc", "def", "xyz");
+
 
     if(!p->analyseArgv(argvs,argv)){
         p->printHelpMessage();
