@@ -42,15 +42,10 @@ int enumCallBack(int index, char** buff){
 
 int main(int argvs, char** argv) {
     argvParser *p = new argvParser("example Programm\n\t this application intens to be an example ");
-    p->addSection("usage example section");
     p->addArg("-t","--test","test argument",testCallBacl);
-    p->addSection("required argument example");
-    p->addArg("-f","--foo","foo test argument ",fooCallBack,true);
-    p->addSection("auto check for additional parameter");
+    p->addArg("-f","--foo","foo test argument  equired argument example",fooCallBack,0,true);
     p->addArg("-p","--print","echo text",printCallBack,1);
-    p->addSection("enum example");
     p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->addEnum(3, "abc", "def", "xyz");
-    p->addSection("example file auto completion (enable autoCompletion with -instAutoCompl)");
     p->addArg("-o","--open","example to complete a file/dir",printCallBack,1);
     p->addSection("logging");
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
@@ -61,7 +56,7 @@ int main(int argvs, char** argv) {
         p->printHelpMessage();
     }
     if(!p->foundAllRequierdArgs()){
-        cout << "you have not entert at least one required argument"<<endl;
+        cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
     }
     return 0;
 }

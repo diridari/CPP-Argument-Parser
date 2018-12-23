@@ -13,7 +13,7 @@
 #    make
 #
 
-APP =		CargParserExp-Test
+APP =		argParserExp-Test
 TEST =		argParserExp-TEST
 APP_SRCS =	$(shell find \
 			../src \

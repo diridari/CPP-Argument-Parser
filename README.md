@@ -10,6 +10,13 @@ Each argument is separated by an space or is can be joined by  <”>
 
 If one argument needs e.g. an parameter like -p <portNumber> your callback function has access to further parameters.
 
+## Features
+* easy argument registration
+* help message generator
+* mark arguments as required
+* add section to order the arguments
+* linux bash auto completion 
+
 ![Alt text](doc/wrongArg.PNG?raw=true "example")
 
 source:
