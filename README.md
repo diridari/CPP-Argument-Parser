@@ -15,7 +15,7 @@ If one argument needs e.g. an parameter like -p <portNumber> your callback funct
 * help message generator
 * mark arguments as required
 * add section to order the arguments
-* linux bash auto completion 
+* linux bash auto completion
 
 ![Alt text](doc/wrongArg.PNG?raw=true "example")
 

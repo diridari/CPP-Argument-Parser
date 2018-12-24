@@ -18,5 +18,5 @@ else()
     message( WARNING "to enable self test install gtest")
 endif()
 
-#ADD_LIBRARY( CPPArgvParsLib STATIC ${src})
+ADD_LIBRARY( CPPArgvParsLib STATIC ${src})
 #ADD_LIBRARY(CPPArgvParsTestLib STATIC ${tests_src} ${src})
