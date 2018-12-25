@@ -33,7 +33,7 @@ void resetCLI(){
  cout << "\033[0;0m";
 }
 void printGreen(){
-cout << "\u001B[1;32m";
+ cout << "\u001B[1;32m";
 }
 #endif
 extern int callBackInstallAutoCompletion(int index, char **buff);
@@ -83,7 +83,7 @@ void argvParser::printHelpMessage(bool colored) {
     if (!foundAllRequierdArgs()) {
         if(colored)
             printRed();
-        cout<< "\nrequired arguments are : \n " << requiredArgs <<endl;
+        cout<< "\nrequired arguments are : \n" << requiredArgs <<endl;
         if(colored)
             resetCLI();
     }
@@ -146,28 +146,18 @@ bool argvParser::analyseArgv(int args, char **argv) {
     return foundAllRequierdArgs();
 }
 
-string argvParser::getHelpMessage(bool colored) {
+string argvParser::getHelpMessage() {
     string s;
     s += description + "usage:\n" + helpMessage + "\n";
-    if(colored)
-        s += "\033[0m ";
     if (!foundAllRequierdArgs()) {
-        if(colored)
-            s += "\033[1;31m";
-        s += "\nrequired arguments are : \n " + requiredArgs + "\n";
-        if(colored)
-            s += "\033[0;0m";
+        s += "\nrequired arguments are : \n" + requiredArgs + "\n";
     }
 
     if (!lastFailedArg.empty()){
-        if(colored)
-            s+= "\u001B[1;32m";
         s += "failed argument : " + lastFailedArg;
         if(!errorMessage.empty()){
             s+= "\n  "+errorMessage;
         }
-        if(colored)
-            s += "\033[0;0m";
     }
 
     return s;
@@ -213,9 +203,9 @@ bool argvParser::checkNextArgumentIfEnum(string arg, char * nextElement) {
         if(!s.empty()){
             for(int x = 0; x < enumsList.size();x++){
                 if(enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong || enumsList.at(x).toplevelShort == argconfig->at(i)->argShort){
-                    if(enumsList.at(x).enums.find(string(nextElement)) != string::npos)
+                    if( enumsList.at(x).enums.find(string(nextElement )+" ") != string::npos)
                         return true;
-                    else{
+                    else if(!enumsList.at(x).enums.empty() ){
                         lastFailedArg = arg;
                         errorMessage += "\""+ arg+"\" does  accept \"" + enumsList.at(x).enums+"\" but not \"" + nextElement + "\"\n";
                         return false;

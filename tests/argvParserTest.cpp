@@ -86,21 +86,21 @@ TEST(argvParser, CheckRequiredConfigFail8){
 TEST(argvParser,emptyConfig_testHelpMessage){
     argvParser parser("empty conf");
     ASSERT_EQ("empty conf\nusage:\n\n"
-              , parser.getHelpMessage(false));
+              , parser.getHelpMessage());
 }
 
 TEST(argvParser,testHelpMessage){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr, 0, false));
     ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n\n"
-              , parser.getHelpMessage(false));
+              , parser.getHelpMessage());
 }
 TEST(argvParser,testHelpMessageTwoArgs){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr, 0, false));
     ASSERT_TRUE(parser.addArg("b", "bbb", "helpMessage2", nullptr, 0, false));
     ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n     <b>         <bbb>                        : helpMessage2\n\n"
-              , parser.getHelpMessage(false));
+              , parser.getHelpMessage());
 }
 
 

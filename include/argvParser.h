@@ -85,7 +85,7 @@ public:
      * @param colored return string with cli highlighting
      * @return help string
      */
-    string getHelpMessage(bool colored = true);
+    string getHelpMessage();
 
     /**
      * check if all required argument are found

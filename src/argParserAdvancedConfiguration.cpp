@@ -58,7 +58,7 @@ bool argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const c
     helpMessage.erase(helpMessage.size()-2,2);
     helpMessage += "}\n";
     enumDesciption t;
-    t.enums = list;
+    t.enums = list + " ";
     t.toplevelComannd = lastToplevelLong;
     t.toplevelShort = lastToplevelShort;
     t.asFile = false;
