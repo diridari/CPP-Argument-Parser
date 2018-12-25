@@ -1,4 +1,4 @@
-# CPP Argument Parser [![Build Status](https://travis-ci.org/diridari/CPP-Argument-Parser.svg?branch=dev)](https://travis-ci.org/diridari/CPP-Argument-Parser) 
+# CPP Argument Parser 
 ## Goal
 This library shall help you the receive program arguments in C++.
 
