@@ -156,6 +156,8 @@ TEST(argvParser,argWithCallBackLong){
 
 TEST(argvParser,NoArgumentsPassed){
     char *arg[] = {"program", "a" };
+    port_ = "61234";
+    d = true;
     argvParser parser("empty conf");
     parser.addArg("-p", "-port", "add Port", callBackPortTestMeth, 0, false);
     parser.addArg("-d", "-dd", "add d", callBackD, 0, false);

@@ -12,10 +12,14 @@ if( GTest_FOUND)
     message(" -- gtest found at " ${GTEST_INCLUDE_DIRS})
     include_directories(${GTEST_INCLUDE_DIRS})
     set(tests_src tests/argvParserTest.cpp tests/configReaderTest.cpp tests/exampleTest.cpp tests/definedNumberOfArgs.cpp)
-    add_executable(argParserExp_Test  ${tests_src} ${src})
-    target_link_libraries(argParserExp_Test  ${GTEST_BOTH_LIBRARIES} pthread)
+    add_executable(argParser_Test  ${tests_src} ${src})
+    target_link_libraries(argParser_Test  ${GTEST_BOTH_LIBRARIES} pthread)
+    enable_testing()
+    gtest_discover_tests(argParser_Test tests
+            )
 else()
     message( WARNING "to enable self test install gtest")
+
 endif()
 
 ADD_LIBRARY( CPPArgvParsLib STATIC ${src})
