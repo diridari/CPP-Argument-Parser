@@ -4,7 +4,7 @@ project(CPP_Argument_Parser)
 include_directories(include)
 set(CMAKE_CXX_STANDARD 11)
 
-set(src src/argvParser.cpp include/argvParser.h src/configFileReader.cpp src/configFileReader.h)
+set(src src/argvParser.cpp include/argvParser.h src/configFileReader.cpp src/configFileReader.h src/argParserAdvancedConfiguration.h src/argParserAdvancedConfiguration.cpp)
 add_executable(argParserExp ${src} exampleMain.cpp)
 
 find_package(GTest)

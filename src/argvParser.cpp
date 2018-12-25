@@ -36,45 +36,16 @@ void printGreen(){
 cout << "\u001B[1;32m";
 }
 #endif
-static string autoCompletionScript;
-int callBackInstallAutoCompletion(int index, char **buff){
-#ifdef __linux__
-    string programName = string(buff[0]);
-    int i = 0;
-    // extreact Binary name
-    while ((i = programName.find("/")) != string::npos){
-        programName.erase(0,i+1);
-    }
-    cout << "install auto completion"<<endl;
-    string location = programName+".bash";
-    string script = autoCompletionScript + programName + " \n\n";
-    fstream fileWirte,profile;
-    fileWirte.open(location,fstream::out | ios::trunc);
-    if(!fileWirte.is_open()){
-        cout << "failed to open " + location<<endl;
-        return  index;
-    }
-    fileWirte << script;
-    fileWirte.close();
+extern int callBackInstallAutoCompletion(int index, char **buff);
 
-    cout << "try it temporary with: \"source "+programName + ".bash\""<<endl;
-    cout << "to persist the atuocompletion by copying the bash file with:  \"cp "
-            ""+ programName + ".bash  /etc/bash_completion.d/" + programName + ".bash\" " <<endl;
 
-    exit(0);
-#elif __WIN32
-    cout << "Auto completion not (jet) suportet under Windows"<<endl;
-#endif
-    return index;
-}
-
-argvParser* argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **),
-        int numberOfArguments, bool required) {
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **),
+                                          int numberOfArguments, bool required) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong, callBack, required,numberOfArguments));
-        helpMessage += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
+        helpMessage += buildHelpLine(argvShort, argvLong, help);
         if (required)
-            requiredArgs += "\t<" + argvShort + "> \t <" + argvLong + "> \t : " + help + "\n";
+            requiredArgs += buildHelpLine(argvShort,argvLong,help);
         topLevelArgs += argvLong +" " ;
         lastToplevelLong = argvLong;
         lastToplevelShort = argvShort;
@@ -83,55 +54,75 @@ argvParser* argvParser::addArg(string argvShort, string argvLong, string help, i
     return nullptr;
 }
 
-argvParser::argvParser(string description_) {
+string argvParser::buildHelpLine(const string argvShort, const string argvLong, const string help) {
+    string s = "";
+    if(!argvShort.empty())
+         s +=  "     <" + argvShort + ">";
+    while(s.size() < 16)
+        s += " ";
+    if(!argvLong.empty())
+        s += " <" + argvLong + "> ";
+    while(s.size() < 45)
+        s += " ";
+    s += " : " + help + "\n";
+    return s;
+}
+
+argvParser::argvParser(string description_):argParserAdvancedConfiguration() {
     description = description_ + "\n";
     requiredArgs = "";
+
 }
 
-void argvParser::printHelpMessage() {
-    if (lastFailedArg != "") {
-        printRed();
-        cout<< "unknown argument : " + lastFailedArg <<endl;
-    }
-    printGreen();
-    cout<<description + "usage:\n" + helpMessage <<endl;
-    if (requiredArgs != "") {
-        printRed();
-        cout << "\nrequired arguments are : \n " + requiredArgs<<endl;
+void argvParser::printHelpMessage(bool colored) {
+    string s;
+    if(colored)
+        printGreen();
+    cout<<description <<"usage:\n" << helpMessage <<endl;
 
+    if (!foundAllRequierdArgs()) {
+        if(colored)
+            printRed();
+        cout<< "\nrequired arguments are : \n " << requiredArgs <<endl;
+        if(colored)
+            resetCLI();
     }
-    resetCLI();
-}
-
-int argvParser::checkArgs(string param) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param) {
-           return x;
-        } else if (x + 1 == argconfig->size()) { // no args hit
-            lastFailedArg = param;
-            return -1;
+    if (!lastFailedArg.empty()){
+        if(colored)
+            printRed();
+        cout<< "failed argument : " << lastFailedArg;
+        if(!errorMessage.empty()){
+            cout<< "\n  "+errorMessage;
         }
+        if(colored)
+            resetCLI();
     }
+
 }
+
+
 
 bool argvParser::analyseArgv(int args, char **argv) {
+#ifdef __linux__ // auto completion jet just under linux supported
     this->addSection("Argument auto completion");
     this->addArg("-instAutoCompl","","install auto completion for cli usage", callBackInstallAutoCompletion,0);
-    generateAutoCompletion();
+   generateAutoCompletion();
+#endif
     for (int i = 1; i < args; i++) {
         int x;
-
         if( (x = checkArgs(argv[i])) >=0){
             int reqSize = argconfig->at(x)->numberOfArguments +i +1;
             bool enoughSpace =args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
             if(enoughSpace) {
-                i = (*argconfig->at(x)->callBack)(i, argv); // call function
-                argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+                if(checkNextArgumentIfEnum(argv[i],argv[i+1])) {
+                    i = (*argconfig->at(x)->callBack)(i, argv); // call function
+                    argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+                }
             }else{
-            helpMessage += "\n\nthe argument " + argconfig->at(x)->argLong + "does require: " + to_string(argconfig->at(x)->numberOfArguments) + "  arguments ";
+            helpMessage += "\n\nthe argument \"" + argconfig->at(x)->argLong + "\" does require: " + to_string(argconfig->at(x)->numberOfArguments) + "  arguments ";
                 return false;
             }
-        }else{
+        }else{ // check config file
             configFileReader * reader = new configFileReader(argv[i]);
             if(!reader->isEOF()){
                 vector <string> *arg  = new vector<string>();
@@ -155,14 +146,42 @@ bool argvParser::analyseArgv(int args, char **argv) {
     return foundAllRequierdArgs();
 }
 
-string argvParser::getHelpMessage() {
-    string s = "\u001B[1;32m";
-    if (lastFailedArg != "")
-        s += "unknown argument : " + lastFailedArg + "\n";
-    s += description + "usage:\n" + helpMessage + "\033[0m \n";
-    if (requiredArgs != "")
-        s += "\n\033[1;31mrequired arguments are : \n " + requiredArgs + "\033[0;0m\n";
+string argvParser::getHelpMessage(bool colored) {
+    string s;
+    s += description + "usage:\n" + helpMessage + "\n";
+    if(colored)
+        s += "\033[0m ";
+    if (!foundAllRequierdArgs()) {
+        if(colored)
+            s += "\033[1;31m";
+        s += "\nrequired arguments are : \n " + requiredArgs + "\n";
+        if(colored)
+            s += "\033[0;0m";
+    }
+
+    if (!lastFailedArg.empty()){
+        if(colored)
+            s+= "\u001B[1;32m";
+        s += "failed argument : " + lastFailedArg;
+        if(!errorMessage.empty()){
+            s+= "\n  "+errorMessage;
+        }
+        if(colored)
+            s += "\033[0;0m";
+    }
+
     return s;
+}
+int argvParser::checkArgs(string param) {
+    for (int x = 0; x < argconfig->size(); x++) {
+        if (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param) {
+            return x;
+        } else if (x + 1 == argconfig->size()) { // no args hit
+            lastFailedArg = param;
+            return -1;
+        }
+    }
+    return -1;
 }
 
 bool argvParser::existArg(string arg) {
@@ -187,53 +206,28 @@ void argvParser::addSection(string sectionName) {
     helpMessage += "\n "+sectionName+":\n";
 }
 
-bool argvParser::addEnum(int numberOfEnums, const char *enums, ...) {
-    string list;
-    va_list vl;
-    va_start(vl,enums);
-    helpMessage += "\t\t\t\t accepted arguments : {";
-    for(int i = 0; i< numberOfEnums;i++){
-        helpMessage += string(enums) + ", ";
-        list += " "+ string(enums);
-        enums = va_arg(vl,const char *);
-    }
-    helpMessage.erase(helpMessage.size()-2,2);
-    helpMessage += "}\n";
-    enumDesciption t;
-    t.enums = list;
-    t.toplevelComannd = lastToplevelLong;
-    t.toplevelShort = lastToplevelShort;
-    t.asFile = false;
-    enumsList.push_back(t);
-}
-
-string argvParser::generateAutoCompletion() {
-
-    string script = "#/usr/bin/env bash\n_function()\n{\n\n";
-        for(int i = 0; i< enumsList.size();i++){
-            script += "if [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelComannd+"\" ] || [ \"${COMP_WORDS[${COMP_CWORD} -1 ]}\" == \""+enumsList.at(i).toplevelShort+"\" ]; then\n";
-            if(enumsList.at(i).asFile){
-                script += "\tcompopt -o nospace -o dirnames -o filenames\n"
-                          "\tCOMPREPLY=($(compgen  -f \"${COMP_WORDS[${COMP_CWORD}]}\"))      \n";
-            }else {
-                script += "\t COMPREPLY=($(compgen -W \"" + enumsList.at(i).enums +
-                          "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+bool argvParser::checkNextArgumentIfEnum(string arg, char * nextElement) {
+    int i = checkArgs(arg);
+    if(i >= 0){
+        string s = argconfig->at(i)->argShort;
+        if(!s.empty()){
+            for(int x = 0; x < enumsList.size();x++){
+                if(enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong || enumsList.at(x).toplevelShort == argconfig->at(i)->argShort){
+                    if(enumsList.at(x).enums.find(string(nextElement)) != string::npos)
+                        return true;
+                    else{
+                        lastFailedArg = arg;
+                        errorMessage += "\""+ arg+"\" does  accept \"" + enumsList.at(x).enums+"\" but not \"" + nextElement + "\"\n";
+                        return false;
+                    }
+                }
             }
-            script += "\n   el";
         }
-        script += "se\n     COMPREPLY=($(compgen -W \""+topLevelArgs +"\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
-        script += "  fi\n compgen -o bashdefault\n}\n";
-        script += "complete -F _function ";
-    autoCompletionScript = script;
-    return  script;
-}
-
-bool argvParser::asFile() {
-    enumDesciption t;
-    t.asFile = true;
-    t.toplevelComannd = lastToplevelLong;
-    t.toplevelShort = lastToplevelShort;
-    enumsList.push_back(t);
+    }
     return true;
 }
+
+
+
+
 

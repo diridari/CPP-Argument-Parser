@@ -85,22 +85,22 @@ TEST(argvParser, CheckRequiredConfigFail8){
 
 TEST(argvParser,emptyConfig_testHelpMessage){
     argvParser parser("empty conf");
-    ASSERT_EQ("\x1B[1;32mempty conf\nusage:\n\x1B[0m \n"
-              ,parser.getHelpMessage());
+    ASSERT_EQ("empty conf\nusage:\n\n"
+              , parser.getHelpMessage(false));
 }
 
 TEST(argvParser,testHelpMessage){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr, 0, false));
-    ASSERT_EQ("\x1B[1;32mempty conf\nusage:\n\t<a> \t <aaa> \t : helpMessage\n\x1B[0m \n"
-              ,parser.getHelpMessage());
+    ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n\n"
+              , parser.getHelpMessage(false));
 }
 TEST(argvParser,testHelpMessageTwoArgs){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr, 0, false));
     ASSERT_TRUE(parser.addArg("b", "bbb", "helpMessage2", nullptr, 0, false));
-    ASSERT_EQ("\x1B[1;32mempty conf\nusage:\n\t<a> \t <aaa> \t : helpMessage\n\t<b> \t <bbb> \t : helpMessage2\n\x1B[0m \n"
-              ,parser.getHelpMessage());
+    ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n     <b>         <bbb>                        : helpMessage2\n\n"
+              , parser.getHelpMessage(false));
 }
 
 

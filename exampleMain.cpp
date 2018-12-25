@@ -39,21 +39,26 @@ int enumCallBack(int index, char** buff){
     return index;
 }
 
+bool disableCliH = false;
+int callBachCli(int index, char** buff){
+    disableCliH = true;
+    return index;
+}
 
 int main(int argvs, char** argv) {
     argvParser *p = new argvParser("example Programm\n\t this application intens to be an example ");
     p->addArg("-t","--test","test argument",testCallBacl);
-    p->addArg("-f","--foo","foo test argument  equired argument example",fooCallBack,0,true);
+    p->addArg("-f","--foo","foo test argument  equired argument example",fooCallBack,1,true);
     p->addArg("-p","--print","echo text",printCallBack,1);
-    p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->addEnum(3, "abc", "def", "xyz");
-    p->addArg("-o","--open","example to complete a file/dir",printCallBack,1);
+    p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->allowedParameter(3, "abc", "def", "xyz");
+    p->addArg("-o","--open","example to complete a file/dir",printCallBack,1)->asFile();
+    p->addArg("-nh","--noHighlight","disabledCli highlighting",callBachCli);
     p->addSection("logging");
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
     p->addArg("-logf","--logFile","generate logfile",logFileCallBack);
 
-
     if(!p->analyseArgv(argvs,argv)){
-        p->printHelpMessage();
+        p->printHelpMessage(!disableCliH);
     }
     if(!p->foundAllRequierdArgs()){
         cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
