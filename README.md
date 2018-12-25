@@ -1,4 +1,4 @@
-# CPP Argument Parser
+# CPP Argument Parser [![Build Status](https://travis-ci.org/diridari/CPP-Argument-Parser.svg?branch=dev)](https://travis-ci.org/diridari/CPP-Argument-Parser)
 ## Goal
 This library shall help you the receive program arguments in C++.
 
@@ -11,6 +11,7 @@ Each argument is separated by an space or is can be joined by  <”>
 If one argument needs e.g. an parameter like -p <portNumber> your callback function has access to further parameters.
 
 ## Features
+* os support : Linux, Windows
 * easy argument registration
 * help message generator
 * mark arguments as required
