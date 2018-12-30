@@ -1,1 +1,1 @@
--p "this text gets magically printed" -r
+-f "this text gets magically printed" 
