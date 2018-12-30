@@ -21,7 +21,7 @@ class argParserAdvancedConfiguration{
 
 public:
     /**
-     * defines a set of strings that are allowed parameter's
+     * defines a set of strings of allowed parameter's
      * @param numberOfEnums  number of arguments
      * @param enums first allowed argument
      * @param ... additional parameter's
