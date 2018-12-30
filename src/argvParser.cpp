@@ -87,16 +87,17 @@ void argvParser::printHelpMessage(bool colored) {
         if(colored)
             resetCLI();
     }
-    if (!lastFailedArg.empty()){
-        if(colored)
-            printRed();
-        cout<< "failed argument : " << lastFailedArg;
-        if(!errorMessage.empty()){
-            cout<< "\n  "+errorMessage;
-        }
-        if(colored)
-            resetCLI();
-    }
+    if(colored)
+        printRed();
+    if (!lastFailedArg.empty())
+        cout<< "failed argument : \"" << lastFailedArg<<"\"";
+
+    if(!errorMessage.empty())
+            cout<< " "+errorMessage;
+    if(colored)
+        resetCLI();
+
+    cout << endl << endl;
 
 }
 
@@ -119,7 +120,7 @@ bool argvParser::analyseArgv(int args, char **argv) {
                     argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
                 }
             }else{
-            helpMessage += "\n\nthe argument \"" + argconfig->at(x)->argLong + "\" does require: " + to_string(argconfig->at(x)->numberOfArguments) + "  arguments ";
+                errorMessage += "\n\nthe argument \"" + argconfig->at(x)->argLong + "\" does require: " + to_string(argconfig->at(x)->numberOfArguments) + " parameter";
                 return false;
             }
         }else{ // check config file
