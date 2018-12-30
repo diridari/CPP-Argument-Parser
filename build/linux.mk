@@ -23,6 +23,7 @@ all:: $(APP)
 
 clean::
 	rm -f $(APP) $(_APP_OBJS)
+	rm -f *.bash
 
 run:	all
 	./$(APP)

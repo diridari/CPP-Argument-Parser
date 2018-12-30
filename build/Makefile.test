@@ -13,8 +13,8 @@
 #    make
 #
 
-APP =		CPP-Argument-Parser-Test
-TEST =		CPP-Argument-Parser-TEST
+APP =		argParserExp-Test
+TEST =		argParserExp-TEST
 APP_SRCS =	$(shell find \
 			../src \
 			../tests \

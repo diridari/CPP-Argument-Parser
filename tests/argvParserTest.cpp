@@ -85,22 +85,22 @@ TEST(argvParser, CheckRequiredConfigFail8){
 
 TEST(argvParser,emptyConfig_testHelpMessage){
     argvParser parser("empty conf");
-    ASSERT_EQ("\x1B[1;32mempty conf\nusage:\n\x1B[0m \n"
-              ,parser.getHelpMessage());
+    ASSERT_EQ("empty conf\nusage:\n\n"
+              , parser.getHelpMessage());
 }
 
 TEST(argvParser,testHelpMessage){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr, 0, false));
-    ASSERT_EQ("\x1B[1;32mempty conf\nusage:\n\t<a> \t <aaa> \t : helpMessage\n\x1B[0m \n"
-              ,parser.getHelpMessage());
+    ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n\n"
+              , parser.getHelpMessage());
 }
 TEST(argvParser,testHelpMessageTwoArgs){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr, 0, false));
     ASSERT_TRUE(parser.addArg("b", "bbb", "helpMessage2", nullptr, 0, false));
-    ASSERT_EQ("\x1B[1;32mempty conf\nusage:\n\t<a> \t <aaa> \t : helpMessage\n\t<b> \t <bbb> \t : helpMessage2\n\x1B[0m \n"
-              ,parser.getHelpMessage());
+    ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n     <b>         <bbb>                        : helpMessage2\n\n"
+              , parser.getHelpMessage());
 }
 
 
@@ -156,6 +156,8 @@ TEST(argvParser,argWithCallBackLong){
 
 TEST(argvParser,NoArgumentsPassed){
     char *arg[] = {"program", "a" };
+    port_ = "61234";
+    d = true;
     argvParser parser("empty conf");
     parser.addArg("-p", "-port", "add Port", callBackPortTestMeth, 0, false);
     parser.addArg("-d", "-dd", "add d", callBackD, 0, false);
@@ -179,8 +181,6 @@ TEST(argvParser,addShortArgTwice){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-p", "-abc", "add Port", callBackPortTestMeth, 0, false));
     ASSERT_FALSE(parser.addArg("-p", "-dd", "add d", callBackD, 0, false));
-
-
 }
 
 TEST(argvParser,addLongArgTwice1){
@@ -188,16 +188,13 @@ TEST(argvParser,addLongArgTwice1){
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-xx", "-abc", "add Port", callBackPortTestMeth, 0, false));
     ASSERT_FALSE(parser.addArg("-p", "-abc", "add d", callBackD, 0, false));
-
-
 }
+
 TEST(argvParser,addLongArgumentEqToExistingShortArg){
     char *arg[] = {"program", "-a" };
     argvParser parser("empty conf");
     ASSERT_TRUE(parser.addArg("-abc", "-xx", "add Port", callBackPortTestMeth, 0, false));
     ASSERT_FALSE(parser.addArg("-p", "-abc", "add d", callBackD, 0, false));
-
-
 }
 
 TEST(argvParser,requiredArgsNotSearchedJet){

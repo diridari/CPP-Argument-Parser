@@ -1,3 +1,7 @@
+#include <utility>
+
+#include <utility>
+
 //
 // Created by basto on 4/15/18.
 //
@@ -7,8 +11,13 @@
 
 #include <string>
 #include <vector>
+#include <cstdarg>
+#include "../src/argParserAdvancedConfiguration.h"
+
 
 using namespace std;
+
+
 
 /**
  * Argument Parser.
@@ -32,26 +41,7 @@ using namespace std;
  *        return index;
         }
  */
-class argvParser {
-    typedef struct argument {
-        string argShort;
-        string argLong;
-
-        int (*callBack)(int, char **);
-        bool requiredAndNotHitJet;
-        int numberOfArguments;
-        argument(string argS, string argL, int (*callBack_)(int, char **), bool required_ = false, int numberOfArguments = -1) : argLong(argL),
-                                    argShort(argS), callBack(callBack_),requiredAndNotHitJet(required_),numberOfArguments(numberOfArguments) {};
-    } argument;
-
-    vector<argument *> *argconfig = new vector<argument *>();
-    string helpMessage;
-    string lastFailedArg;
-    string description;
-    string requiredArgs;
-
-    int checkArgs(string param);
-    bool existArg(string arg);
+class argvParser : private argParserAdvancedConfiguration {
 
 public:
 
@@ -61,7 +51,7 @@ public:
      * Help message = description + list of configured param + required param
      * @param description  description of the application
      */
-    argvParser(string description = "");
+    explicit argvParser(string description = "");
 
     /**
      * Add Argument.
@@ -79,18 +69,20 @@ public:
      * @param required      is this argument required
      * @return added to commands
      */
-    bool addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **), int numberOfArguments = -1,
-                bool required = false);
+    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **),
+                                  int numberOfArguments = -1,
+                                  bool required = false);
 
     /**
      * Help Message.
      * print colored helpmessage to the cli
      */
-    void printHelpMessage();
+    void printHelpMessage(bool colored = true);
 
     /**
      * Help Message.
      * returns the generated Help Message. And if analyseArgv() failed with the failed argument
+     * @param colored return string with cli highlighting
      * @return help string
      */
     string getHelpMessage();
@@ -107,8 +99,77 @@ public:
      */
     bool analyseArgv(int args, char *argv[]);
 
+    /**
+     * to order arguments in groups
+     * @param sectionName section name
+     */
+    void addSection(string sectionName);
+
+private:
+
+    /**
+    * generate one help message line.
+    * @param argvShort  arg short version
+    * @param argvLong   arg long version
+    * @param help       help message
+    * @return  generated line
+    */
+    string buildHelpLine(string argvShort, string argvLong, string help);
+
+    /**
+   * get the index of the argument
+   */
+    int checkArgs(string param);
+
+    /**
+     * check whether a argument has been configured
+     */
+    bool existArg(string arg);
+
+
+    /**
+     * argument description.
+     */
+    typedef struct argument {
+        string argShort;
+        string argLong;
+        int (*callBack)(int, char **);
+        bool requiredAndNotHitJet;
+        int numberOfArguments;
+        argument(string argS, string argL, int (*callBack_)(int, char **), bool required_ = false, int numberOfArguments = -1) : argLong(
+                std::move(argL)),argShort(std::move(argS)), callBack(callBack_),requiredAndNotHitJet(required_),numberOfArguments(numberOfArguments) {};
+    } argument;
+
+
+    /**
+     * list of configured arguments
+     */
+    vector<argument *> *argconfig = new vector<argument *>();
+
+
+    /**
+     * last failed argument
+     */
+    string lastFailedArg;
+
+    string errorMessage;
+
+    /**
+     * program descripton
+     */
+    string description;
+
+    /**
+     * list of required arguments
+     */
+    string requiredArgs;
+
+
+    bool checkNextArgumentIfEnum(string arg, char * nextElement);
 
 };
+
+
 
 
 #endif //GDBMANIPULATOR_ARGVPARSER_H
