@@ -82,7 +82,7 @@ The default value is -1.
 
 ## Configfile
 It is possible to swap often used arguments to an config file.
-Each additional unknown arguments gets checked whether it is an configfile or not. Is this the case the configfile gets decoded (like usual arguments)?
+Each additional unknown arguments gets checked whether it is an configfile or not. Is this the case the configfile gets decoded (like usual arguments)
 
 ## Bash auto completion
 To install bash auto completion on linux systems the framework generates out of your argument description a autogen script 
