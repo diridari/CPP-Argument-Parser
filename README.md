@@ -21,6 +21,7 @@ If one argument needs e.g. an parameter like -p <portNumber> your callback funct
 * argument validation
 * define argument parameter as filepath or as pre defined set
 
+***
 
 ![Alt text](doc/wrongArg.jpg?raw=true "example")
 
