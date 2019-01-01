@@ -13,19 +13,13 @@
 #    make
 #
 
-APP =		argParserExp-Test
-APP_SRCS =	$(shell find \
+APP =		extendedExample
+APP_SRCS =	../exampleMainExtended.cpp $(shell find \
 			../src \
-			../tests \
 			-name "*.cpp")
 
-
 APP_INCS = ../include
-
-APP_SLIB =  gtest \
-		gtest_main \
-		pthread \
-          
-          
+TEST_INCS =
+APP_SLIB =
 
 include		linux.mk

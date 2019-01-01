@@ -13,9 +13,8 @@
 #    make
 #
 
-APP =		argParserExp
-TEST =		argParserExp-TEST
-APP_SRCS =	../exampleMain.cpp $(shell find \
+APP =		simpleExample
+APP_SRCS =	../exampleMainSimple.cpp $(shell find \
 			../src \
 			-name "*.cpp")
 
