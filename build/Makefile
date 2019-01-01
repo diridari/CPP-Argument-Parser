@@ -15,7 +15,8 @@
 
 all::
 	make -f Makefile.test
-	make -f Makefile.app
+	make -f Makefile.app1
+	make -f Makefile.app2
 
 test :
 	make -f Makefile.test
@@ -25,7 +26,5 @@ clean ::
 	make  -f  Makefile.test clean
 	make  -f  Makefile.app clean
 
-run ::
-	make -f Makefile.app
-	./CPP-Argument-Parser
+
 

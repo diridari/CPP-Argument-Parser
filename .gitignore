@@ -44,10 +44,10 @@ CTestTestfile.cmake
 
 cmake-build-debug/
 
-build/CPPArgParserTest
 
-build/CPP-Argument-Parser-Test
-
-build/argParserExp
 
 build/argParserExp-Test
+
+build/extendedExample
+
+build/simpleExample
