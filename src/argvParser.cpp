@@ -39,13 +39,11 @@ void printGreen(){
 extern int callBackInstallAutoCompletion(int index, char **buff);
 
 
-argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **),
-                                          int numberOfArguments, bool required) {
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
-        argconfig->push_back(new argument(argvShort, argvLong, callBack, required,numberOfArguments));
+        argconfig->push_back(new argument(argvShort, argvLong,help, callBack));
         helpMessage += buildHelpLine(argvShort, argvLong, help);
-        if (required)
-            requiredArgs += buildHelpLine(argvShort,argvLong,help);
+
         topLevelArgs += argvLong +" " ;
         lastToplevelLong = argvLong;
         lastToplevelShort = argvShort;
@@ -54,19 +52,7 @@ argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string arg
     return nullptr;
 }
 
-string argvParser::buildHelpLine(const string argvShort, const string argvLong, const string help) {
-    string s = "";
-    if(!argvShort.empty())
-         s +=  "     <" + argvShort + ">";
-    while(s.size() < 16)
-        s += " ";
-    if(!argvLong.empty())
-        s += " <" + argvLong + "> ";
-    while(s.size() < 45)
-        s += " ";
-    s += " : " + help + "\n";
-    return s;
-}
+
 
 argvParser::argvParser(string description_):argParserAdvancedConfiguration() {
     description = description_ + "\n";
@@ -106,14 +92,16 @@ void argvParser::printHelpMessage(bool colored) {
 bool argvParser::analyseArgv(int args, char **argv) {
 #ifdef __linux__ // auto completion jet just under linux supported
     this->addSection("Argument auto completion");
-    this->addArg("-instAutoCompl","","install auto completion for cli usage", callBackInstallAutoCompletion,0);
+    this->addArg("-instAutoCompl","","install auto completion for cli usage", callBackInstallAutoCompletion);
    generateAutoCompletion();
 #endif
     for (int i = 1; i < args; i++) {
+        if(argv[i] == NULL)
+            return false;
         int x;
         if( (x = checkArgs(argv[i])) >=0){
             int reqSize = argconfig->at(x)->numberOfArguments +i +1;
-            bool enoughSpace =args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
+            bool enoughSpace = args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
             if(enoughSpace) {
                 if(checkNextArgumentIfEnum(argv[i],argv[i+1])) {
                     i = (*argconfig->at(x)->callBack)(i, argv); // call function
@@ -165,7 +153,7 @@ string argvParser::getHelpMessage() {
 }
 int argvParser::checkArgs(string param) {
     for (int x = 0; x < argconfig->size(); x++) {
-        if (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param) {
+        if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
             return x;
         } else if (x + 1 == argconfig->size()) { // no args hit
             lastFailedArg = param;

@@ -24,7 +24,7 @@ int main(int argvs, char** argv) {
     argvParser *p = new argvParser("simple example program\n\t this application intends to be an example ");
     // define program arguments
     p->addArg("-t","--test","test argument",testCallBacl);
-    p->addArg("-o","--open","example to complete a file/dir",printCallBack,1)->asFile();
+    p->addArg("-o","--open","example to complete a file/dir",printCallBack)->numberOfParameter(1);
 
     // check if all arguments are valid
     if(!p->analyseArgv(argvs,argv)){

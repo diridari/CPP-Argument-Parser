@@ -69,9 +69,7 @@ public:
      * @param required      is this argument required
      * @return added to commands
      */
-    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **),
-                                  int numberOfArguments = -1,
-                                  bool required = false);
+    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **));
 
     /**
      * Help Message.
@@ -107,14 +105,6 @@ public:
 
 private:
 
-    /**
-    * generate one help message line.
-    * @param argvShort  arg short version
-    * @param argvLong   arg long version
-    * @param help       help message
-    * @return  generated line
-    */
-    string buildHelpLine(string argvShort, string argvLong, string help);
 
     /**
    * get the index of the argument
@@ -126,25 +116,6 @@ private:
      */
     bool existArg(string arg);
 
-
-    /**
-     * argument description.
-     */
-    typedef struct argument {
-        string argShort;
-        string argLong;
-        int (*callBack)(int, char **);
-        bool requiredAndNotHitJet;
-        int numberOfArguments;
-        argument(string argS, string argL, int (*callBack_)(int, char **), bool required_ = false, int numberOfArguments = -1) : argLong(
-                std::move(argL)),argShort(std::move(argS)), callBack(callBack_),requiredAndNotHitJet(required_),numberOfArguments(numberOfArguments) {};
-    } argument;
-
-
-    /**
-     * list of configured arguments
-     */
-    vector<argument *> *argconfig = new vector<argument *>();
 
 
     /**
@@ -159,10 +130,7 @@ private:
      */
     string description;
 
-    /**
-     * list of required arguments
-     */
-    string requiredArgs;
+
 
 
     bool checkNextArgumentIfEnum(string arg, char * nextElement);

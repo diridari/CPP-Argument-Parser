@@ -43,7 +43,7 @@ int callBackInstallAutoCompletion(int index, char **buff){
 
 
 
-bool argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *enums, ...) {
+argParserAdvancedConfiguration * argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *enums, ...) {
 
     string list;
     va_list vl;
@@ -63,6 +63,7 @@ bool argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const c
     t.toplevelShort = lastToplevelShort;
     t.asFile = false;
     enumsList.push_back(t);
+    return this;
 
 }
 
@@ -89,11 +90,41 @@ string argParserAdvancedConfiguration::generateAutoCompletion() {
 
 }
 
-bool argParserAdvancedConfiguration::asFile() {
+argParserAdvancedConfiguration * argParserAdvancedConfiguration::asFile() {
     enumDesciption t;
     t.asFile = true;
     t.toplevelComannd = lastToplevelLong;
     t.toplevelShort = lastToplevelShort;
     enumsList.push_back(t);
-    return true;
+    return this;
 }
+
+argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
+    argument *x = argconfig->back();
+    x->requiredAndNotHitJet = true;
+    requiredArgs += buildHelpLine(x->argShort,x->argLong,x->helpMessage);
+    return this;
+}
+
+
+argParserAdvancedConfiguration *argParserAdvancedConfiguration::numberOfParameter(int number) {
+    argument *x = argconfig->back();
+    x->numberOfArguments = number;
+    return this;
+}
+
+
+string argParserAdvancedConfiguration::buildHelpLine(const string argvShort, const string argvLong, const string help) {
+    string s = "";
+    if(!argvShort.empty())
+        s +=  "     <" + argvShort + ">";
+    while(s.size() < 16)
+        s += " ";
+    if(!argvLong.empty())
+        s += " <" + argvLong + "> ";
+    while(s.size() < 45)
+        s += " ";
+    s += " : " + help + "\n";
+    return s;
+}
+

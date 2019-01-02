@@ -62,10 +62,10 @@ int main(int argvs, char** argv) {
     argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
     // define program arguments
     p->addArg("-t","--test","test argument",testCallBacl);
-    p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack,1,true);
-    p->addArg("-p","--print","echo text",printCallBack,1);
-    p->addArg("-e", "--enums", "enum example", enumCallBack, 1)->allowedParameter(3, "abc", "def", "xyz");
-    p->addArg("-o","--open","example to complete a file/dir",printCallBack,1)->asFile();
+    p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)->required()->numberOfParameter(1);
+    p->addArg("-p","--print","echo text",printCallBack)->numberOfParameter(1);
+    p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)->allowedParameter(3, "abc", "def", "xyz");
+    p->addArg("-o","--open","example to complete a file/dir",printCallBack)->numberOfParameter(1)->asFile();
     p->addArg("-nh","--noHighlight","disabledCli highlighting",callBachCli);
     p->addSection("logging");
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
