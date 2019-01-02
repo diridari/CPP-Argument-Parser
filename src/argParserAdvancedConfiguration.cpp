@@ -20,6 +20,7 @@ int callBackInstallAutoCompletion(int index, char **buff){
     }
     string location = programName+".bash";
     string script = autoCompletionScript + programName + " \n";
+    script += "complete -F _function ./" + programName + " \n";
     fstream fileWirter;
     fileWirter.open(location,fstream::out | ios::trunc);
     if(!fileWirter.is_open()){
