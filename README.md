@@ -28,22 +28,23 @@ If one argument needs e.g. an parameter like -p <portNumber> your callback funct
 source:
 
     // define program description
-      argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
+    argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
     // define program arguments
-      p->addArg("-t","--test","test argument",testCallBacl);
-      p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)
+    p->addArg("-t","--test","test argument",testCallBacl);
+    p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)
             ->required()->numberOfParameter(1);
-      p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)
+    p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)
             ->allowedParameter(3, "abc", "def", "xyz");
-      p->addSection("logging");
-      p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
+    p->addSection("logging");
+    p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
     // check if all arguments are valid
     if(!p->analyseArgv(argvs,argv)){
         p->printHelpMessage(!disableCliH);
     }
     // check if all required arguments have been parsed
     if(!p->foundAllRequierdArgs()){
-        cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
+        cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument" 
+         <<"try it         with -f"<<endl;
     }
     
 ## Usage
