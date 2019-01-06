@@ -2,25 +2,24 @@
 ## Goal
 This library shall help you the receive program arguments in C++.
 
-It is possible to define call back function that gets invoked if the corresponding argument get parsed.
+It is possible to define call back function that gets invoked if the corresponding arguments get parsed.
 
-For each argument is it possible to define a short version, a long version a help message and if this argument is 
-required to get called by the user.
+For each argument it is possible to define a short version, a long version a help message. Additional it is possible to mark one argument as required, an pre-defined set of additional parameters, the number of expected parameter’s (per argument e.g -o <file>). 
 
-Each argument is separated by an space or is can be joined by  <”>
+Each argument is separated by an space or is can be joined by <”>
 
-If one argument needs e.g. an parameter like -p <portNumber> your callback function has access to further parameters.
+If one argument needs e.g. a parameter like -p <portNumber> your callback function has access to further arguments.
 
 ## Features
 * os support : Linux, Windows, MacOs(not tested)
-* easy argument registration
-* help message generator
-* mark arguments as required
-* add section to order the arguments
-* linux bash auto completion
-* organize arguments in sections
-* argument validation
-* define argument parameter as filepath or as pre defined set
+* Easy argument registration
+* Help message generator
+* Mark arguments as required
+* Add section to order the arguments
+* Linux Bash auto completion
+* Organize arguments in sections
+* Argument validation
+* Define argument parameter as file path or as pre-defined set
 
 
 ![Alt text](doc/wrongArg.jpg?raw=true "example")
@@ -50,16 +49,16 @@ source:
 ## Usage
 
 ### Register an Argument
-To register an callback function:
+To register a callback function:
 
      argvParser parser("your program description"); // program description
      // short version | long version | description of argument | callBackFunction | required to use this argument default = false
      parser.addArg("shortARG", "longARG", "description of argument",callBackFunction);
 
-it is possible to add additional configuration after the addArg method like:
+It is possible to add additional configuration after the addArg method like:
 * mark as required
 * define number of parameters
-* auto completion definitions(as file or as set of pre defined parameters)
+* auto completion definitions(as file or as set of pre-defined parameters)
 
 e.g.
 
@@ -74,7 +73,7 @@ To check all Arguments use:
 it returns true if all required arguments or any unknown argument had been used
 
 ### Call Back Function
-If one argument gets transferred to the program the library searches the corresponding call back function and execute it.
+If one argument gets transferred to the program the library searches the corresponding call back function and executes it.
 Each call back function must have following signature:
 
      /**
@@ -84,14 +83,14 @@ Each call back function must have following signature:
      */
     int callBackFunction(int index, char *buff[]);
 
-this allows the call back function to access the buffer for further buffer elements like a argument.
-If the function does access those buffer it had to increase the index variable by the additional used elements and return it.
+This allows the call back function to access the buffer for further buffer elements like an argument.
+If the function does access the buffer it had to increase the index variable by the additional used elements and return it.
 
 ## Required Arguments 
 Sometimes it is necessary that the user has to call the program with one particular argument to get the program doing its job.
 
-In such cases the argument can be marked as 'required'. Does the application get not called with all as required marked 
-arguments the `analyseArgv` does return false.
+In such cases the argument can be marked as 'required'. Does the application get not called with all as “required“ marked
+argument’s the method `analyseArgv` does return false.
 
 e.g.
 
@@ -99,8 +98,7 @@ e.g.
 
 
 ## Defined number of Parameters
-It is possible to define the number of additional parameters. For Each Argument the framework does check if there is 
-enough given arguments to fulfil the callback function. 
+It is possible to define the number of additional parameters. For Each Argument the framework does check if there is enough given arguments to fulfil the callback function. 
 
       parser.addArg(short, long,description,callBack)
             ->numberOfParameter(<number of additional arguments>);
@@ -111,12 +109,12 @@ enough given arguments to fulfil the callback function.
  
 The default value is -1.      
 
-## Configfile
-It is possible to swap often used arguments to an config file.
-Each additional unknown arguments gets checked whether it is an configfile or not. Is this the case the configfile gets decoded (like usual arguments)?
+## Configuration Files
+It is possible to swap often used arguments to a configuration file.
+Each additional unknown argument’s gets checked whether it is a configfile or not. Is this the case the configfile gets decoded (like usual arguments)?
 
 ## Bash auto completion
-To install bash auto completion on linux systems the framework generates out of your argument description a autogen script 
+To install bash auto completion on Linux systems the framework generates out of your argument description a autogen script 
 that can be loaded temporary by `source XX.bash` or persist by copy the file into /etc/bash_completion.d/ 
 
 To generate this script call 'your' program with `-instAutoCompl`
@@ -124,8 +122,7 @@ To generate this script call 'your' program with `-instAutoCompl`
 ## Pre defined set of parameters 
 It is possible to allow just a predefine set of additional arguments by adding an `->allowedParameter(numb, set ...)`
 
-Each parsed argument get checked whether the additional parameters do match with the pre defined strings. Is this not 
-the case the call back function does not get invoked and the 'parser.analyseArgv' method return false 
+Each parsed argument get checked whether the additional parameters do match with the pre-defined strings. Is this not the case the call back function does not get invoked and the 'parser.analyseArgv' method return false 
 
     /**
      * defines a set of strings of allowed parameter's
@@ -145,8 +142,9 @@ e.g.
     
     
 ## Sections
-To organize the arguments into groups it is possible to define sets of argument's. Each set does have a head line.
+To organize the arguments into groups it is possible to define sets of arguments. Each set does have a head line.
 
     p->addSection("logging");
     
     
+
