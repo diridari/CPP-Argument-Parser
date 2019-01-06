@@ -31,15 +31,12 @@ source:
       argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
     // define program arguments
       p->addArg("-t","--test","test argument",testCallBacl);
-      p->addArg("-t","--test","test argument",testCallBacl);
-      p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)->required()->numberOfParameter(1);
-      p->addArg("-p","--print","echo text",printCallBack)->numberOfParameter(1);
-      p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)->allowedParameter(3, "abc", "def", "xyz");
-      p->addArg("-o","--open","example to complete a file/dir",printCallBack)->numberOfParameter(1)->asFile();
-      p->addArg("-nh","--noHighlight","disabledCli highlighting",callBachCli);
+      p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)
+            ->required()->numberOfParameter(1);
+      p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)
+            ->allowedParameter(3, "abc", "def", "xyz");
       p->addSection("logging");
       p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
-      p->addArg("-logf","--logFile","generate logfile",logFileCallBack);
     // check if all arguments are valid
     if(!p->analyseArgv(argvs,argv)){
         p->printHelpMessage(!disableCliH);
@@ -104,8 +101,10 @@ e.g.
 It is possible to define the number of additional parameters. For Each Argument the framework does check if there is 
 enough given arguments to fulfil the callback function. 
 
-      parser.addArg(short, long,description,callBack)->numberOfParameter(<number of additional arguments>);
-      parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1)->numberOfParameter(1);
+      parser.addArg(short, long,description,callBack)
+            ->numberOfParameter(<number of additional arguments>);
+      parser.addArg("p", "port","adjust the network port",callBackPortTestMeth1)
+            ->numberOfParameter(1);
       
  If the value is -1 no check gets executed.
  
@@ -139,8 +138,9 @@ the case the call back function does not get invoked and the 'parser.analyseArgv
 e.g.    
     
     // argument registration 
-    p->addArg("-l","--logging" ,"define log level",loggingCallBack)->allowedParameter(9,"None","UserInfo",
-    "CriticError", "Error","Message","Info","Debug","DebugL2","DebugL3");
+    p->addArg("-l","--logging" ,"define log level",loggingCallBack)
+            ->allowedParameter(9,"None","UserInfo" "CriticError", "Error","Message",
+                "Info","Debug","DebugL2","DebugL3");
     
     
 ## Sections
