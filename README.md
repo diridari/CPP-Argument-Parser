@@ -4,7 +4,7 @@ This library shall help you the receive program arguments in C++.
 
 It is possible to define call back function that gets invoked if the corresponding arguments get parsed.
 
-For each argument it is possible to define a short version, a long version a help message. Additional it is possible to mark one argument as required, an pre-defined set of additional parameters, the number of expected parameter’s (per argument e.g -o <file>). 
+For each argument it is possible to define a short version, a long version a help message. Additional it is possible to mark one argument as required, an pre-defined set of additional parameters, the number of expected parameter’s (per argument e.g `-o <file>`). 
 
 Each argument is separated by an space or is can be joined by <”>
 
@@ -30,8 +30,10 @@ source:
     argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
     // define program arguments
     p->addArg("-t","--test","test argument",testCallBacl);
+    
     p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)
             ->required()->numberOfParameter(1);
+            
     p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)
             ->allowedParameter(3, "abc", "def", "xyz");
     p->addSection("logging");
@@ -64,7 +66,6 @@ e.g.
 
      parser.addArg("short","long", "description",callBackFunction)->required()->asFile->[....];
      
-    
 ### Check all Arguments
 To check all Arguments use:
 
