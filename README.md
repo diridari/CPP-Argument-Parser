@@ -139,8 +139,8 @@ the case the call back function does not get invoked and the 'parser.analyseArgv
 e.g.    
     
     // argument registration 
-    p->addArg("-l","--logging" ,"define log level",loggingCallBack)->allowedParameter(9,"None","UserInfo","CriticError",
-    "Error","Message","Info","Debug","DebugL2","DebugL3");
+    p->addArg("-l","--logging" ,"define log level",loggingCallBack)->allowedParameter(9,"None","UserInfo",
+    "CriticError", "Error","Message","Info","Debug","DebugL2","DebugL3");
     
     
 ## Sections
