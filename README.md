@@ -126,7 +126,6 @@ It is possible to allow just a predefine set of additional arguments by adding a
 
 Each parsed argument get checked whether the additional parameters do match with the pre defined strings. Is this not 
 the case the call back function does not get invoked and the 'parser.analyseArgv' method return false 
-e.g.
 
     /**
      * defines a set of strings of allowed parameter's
@@ -136,7 +135,10 @@ e.g.
      * @return
      */
      bool allowedParameter(int numberOfEnums, const char *enums, ...);
-      
+
+e.g.    
+    
+    // argument registration 
     p->addArg("-l","--logging" ,"define log level",loggingCallBack)->allowedParameter(9,"None","UserInfo","CriticError",
     "Error","Message","Info","Debug","DebugL2","DebugL3");
     
