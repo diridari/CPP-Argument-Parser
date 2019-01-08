@@ -107,21 +107,14 @@ bool configFileReader::isEOF() {
                }
                return false;
            }
-
        }
        if(peekNextChar() != -1 )
            return false;
-
        return true;
-
    }
 }
 
-bool configFileReader::faildToOpen() {
-    openFile();
-    if(readFromString == false && isOpen && configFile->rdstate() && ios::failbit)
-    return false;
-}
+
 
 void configFileReader::openFile() {
     if(!isOpen){

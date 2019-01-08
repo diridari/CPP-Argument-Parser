@@ -69,13 +69,10 @@ TEST(configReader, readS2Word2Space){
 }
 TEST(configReader, readSomeCharsSomeSpace){
     configFileReader *reader = new configFileReader("");
-    ASSERT_FALSE(reader->faildToOpen());
     reader->inputSourceIsString("abc   def ");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
     ASSERT_EQ(reader->readUntilNextSeparator(),"def");
     ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_FALSE(reader->faildToOpen());
 }
 
 
@@ -194,40 +191,31 @@ TEST(confReaderFile,file3){
 
 TEST(confReaderFile,file4){
     configFileReader *reader = new configFileReader("../tests/configFiles/config4");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_EQ(reader->readUntilNextSeparator(),"def");
     ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
     ASSERT_EQ(reader->readUntilNextSeparator(),"hallo world");
     ASSERT_EQ(reader->readUntilNextSeparator(),"yyy");
     ASSERT_TRUE(reader->isEOF());
     ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_FALSE(reader->faildToOpen());
 
 }
 TEST(confReaderFile,file5){
     configFileReader *reader = new configFileReader("../tests/configFiles/config5");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_FALSE(reader->isEOF());
     ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_EQ(reader->readUntilNextSeparator(),"def");
     ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
     ASSERT_EQ(reader->readUntilNextSeparator(),"hallo world");
     ASSERT_EQ(reader->readUntilNextSeparator(),"yyy");
     ASSERT_TRUE(reader->isEOF());
     ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_FALSE(reader->faildToOpen());
 
 }
 TEST(confReaderFile,noSuchFile){
     configFileReader *reader = new configFileReader("../tests/configxx");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_FALSE(reader->faildToOpen());
     ASSERT_TRUE(reader->isEOF());
     ASSERT_EQ(reader->readUntilNextSeparator(),"");
 
