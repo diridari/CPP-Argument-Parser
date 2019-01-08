@@ -16,7 +16,6 @@ using  namespace std;
  *
  */
 class configFileReader {
-
     /**
      * type of current separator.
      */
@@ -25,7 +24,6 @@ class configFileReader {
         space,      // any kind of space
         separator   // any kind of Separator
     };
-
 
     /**
      * Name and location of the config file.
