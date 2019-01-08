@@ -121,11 +121,6 @@ public:
      */
     string readUntilNextSeparator();
 
-    /**
-     * check if opening the config file has failed
-     * @return
-     */
-    bool faildToOpen();
 
 };
 

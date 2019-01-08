@@ -114,12 +114,7 @@ bool configFileReader::isEOF() {
    }
 }
 
-bool configFileReader::faildToOpen() {
-    openFile();
-    if(readFromString == false && isOpen && configFile->rdstate() && ios::failbit)
-        return false;
-    return true;
-}
+
 
 void configFileReader::openFile() {
     if(!isOpen){
