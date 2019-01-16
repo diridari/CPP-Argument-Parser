@@ -148,6 +148,8 @@ To organize the arguments into groups it is possible to define sets of arguments
 
     p->addSection("logging");
     
+    
+*** 
 # Cmake Integration
 To include this project to you own project you can use following cmake configuration:
 
