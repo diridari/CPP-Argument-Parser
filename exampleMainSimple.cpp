@@ -1,14 +1,8 @@
 #include <iostream>
 #include "include/argvParser.h"
 using namespace std;
+#include <functional>
 
-/**
- * callback function that get called if the corresponding argument get parsed
- */
-int testCallBacl(int index,char** buff){
-    cout << "got \"test\""<<endl;
-    return index; // no further arguments used
-}
 
 /**
  * argument that has additional parameter
@@ -18,12 +12,17 @@ int printCallBack(int index, char** buff){
     cout << "print : " << buff[index]<<endl;
     return index; // +1 because one further argument has been used
 }
-
 int main(int argvs, char** argv) {
+
     // define program description
     argvParser *p = new argvParser("simple example program\n\t this application intends to be an example ");
     // define program arguments
-    p->addArg("-t","--test","test argument",testCallBacl);
+    // lambda expression
+    p->addArg("-t","--test","simple lambda expression",[]{cout << "got test"<<endl;});
+    // lambda expression
+    function <int(int,char**)> callBack = [](int i, char ** buff) {i++;  cout << "extended lambda with parameter : \"" << buff[i]<<"\""<<endl; return i;};
+    p->addArg("-x","--xx","lambda expression argument",callBack)->numberOfParameter(1);
+    // callBack function
     p->addArg("-o","--open","example to complete a file/dir",printCallBack)->numberOfParameter(1);
 
     // check if all arguments are valid

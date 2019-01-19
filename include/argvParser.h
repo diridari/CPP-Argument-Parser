@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <cstdarg>
+#include <functional>
 #include "../src/argParserAdvancedConfiguration.h"
 
 
@@ -64,12 +65,42 @@ public:
      * @param argvShort     short version of the argument
      * @param argvLong      long version of the argument
      * @param help          argument description message
-     * @param callBack      call back function
-     * @param numberOfArguments number of additional paramethers -1 == no check   default = -1
-     * @param required      is this argument required
-     * @return added to commands
+     * @param callBack      call back function that gets invoked
+     * @return advanced configuration
      */
     argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **));
+
+    /**
+     * Add Argument.
+     * Add an command line argument with its short and long version and an comment and Callback
+     * function with the signatur of : "int name(int i,char *buff[]){}"
+     * the the argument is markes ar required and the analyseArgv() does not found the argument in the
+     * arg array the result is false.
+     * i is not allowed to add duplicate arguments. In this case the new argument does not get added the this class
+     * and the function return false
+     * @param argvShort     short version of the argument
+     * @param argvLong      long version of the argument
+     * @param help          argument description message
+     * @param callBack      lamda that gets invoked. It takes the current index, buffer and returns the changed index
+     * @return advanced configuration
+     */
+    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, function<int(int,char**)> );
+
+    /**
+     * Add Argument.
+     * Add an command line argument with its short and long version and an comment and Callback
+     * function with the signatur of : "int name(int i,char *buff[]){}"
+     * the the argument is markes ar required and the analyseArgv() does not found the argument in the
+     * arg array the result is false.
+     * i is not allowed to add duplicate arguments. In this case the new argument does not get added the this class
+     * and the function return false
+     * @param argvShort     short version of the argument
+     * @param argvLong      long version of the argument
+     * @param help          argument description message
+     * @param callBack      lamda that gets invoked
+     * @return advanced configuration
+     */
+    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, function<void()> );
 
     /**
      * Help Message.
@@ -115,7 +146,6 @@ private:
      * check whether a argument has been configured
      */
     bool existArg(string arg);
-
 
 
     /**
