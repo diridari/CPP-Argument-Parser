@@ -1,4 +1,4 @@
-# CPP Argument Parser [![Build Status](https://travis-ci.org/diridari/CPP-Argument-Parser.svg?branch=dev)](https://travis-ci.org/diridari/CPP-Argument-Parser)
+# CPP Argument Parser [![Build Status](https://travis-ci.org/diridari/CPP-Argument-Parser.svg?branch=master)](https://travis-ci.org/diridari/CPP-Argument-Parser)
 ## Goal
 This library shall help you the receive program arguments in C++.
 
@@ -21,6 +21,7 @@ If one argument needs e.g. a parameter like -p <portNumber> your callback functi
 * Argument validation
 * Define argument parameter as file path or as pre-defined set
 
+***
 
 ![Alt text](doc/wrongArg.jpg?raw=true "example")
 
@@ -148,4 +149,27 @@ To organize the arguments into groups it is possible to define sets of arguments
     p->addSection("logging");
     
     
+*** 
+# Cmake Integration
+To include this project to you own project you can use following cmake configuration:
 
+    include(ExternalProject)
+    externalProject_add(
+            cppargparserlib
+            GIT_REPOSITORY      https://github.com/diridari/CPP-Argument-Parser.git
+            CONFIGURE_COMMAND   cmake CMakeLists.txt
+            BUILD_IN_SOURCE     ON
+            INSTALL_COMMAND     make CPPArgvParsLib    # make target
+
+    )
+    ExternalProject_Get_Property(cppargparserlib  SOURCE_DIR)
+    ExternalProject_Get_Property(cppargparserlib  BINARY_DIR)
+    include_directories(${SOURCE_DIR}/include) # include simpleLog/include
+    LINK_DIRECTORIES(${BINARY_DIR}) ## link git build lib
+
+    ...
+    
+    target_link_libraries(<youTarget> cppargparserlib)
+    ADD_DEPENDENCIES(<youTarget> CPPArgvParsLib)
+
+    
