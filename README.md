@@ -14,12 +14,12 @@ If one argument needs e.g. a parameter like -p <portNumber> your callback functi
 * os support : Linux, Windows, MacOs(not tested)
 * Easy argument registration
 * Help message generator
-* Mark arguments as required
-* Add section to order the arguments
 * Linux Bash auto completion
+* Mark arguments as required
 * Organize arguments in sections
 * Argument validation
 * Define argument parameter as file path or as pre-defined set
+* Lambda support
 
 ***
 
@@ -30,11 +30,12 @@ source:
     // define program description
     argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
     // define program arguments
-    p->addArg("-t","--test","test argument",testCallBacl);
+    // Simple Lambda CallBack
+    p->addArg("-t","--test","test argument",[](){ test = true;}); // no further arguments used
     
-    p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)
-            ->required()->numberOfParameter(1);
-            
+    // Lambda CallBack as required and one additional parameter
+    function <int(int,char**)> lambdaCallback = [](int index, char ** buff){ index++; cout << "got \"foo\" with : " << buff[index]<<endl;return index;};
+    p->addArg("-f","--foo","foo test argument  required argument example",lambdaCallback)->required()->numberOfParameter(1); // requiered  + one additional paramether      
     p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)
             ->allowedParameter(3, "abc", "def", "xyz");
     p->addSection("logging");
@@ -76,10 +77,45 @@ it returns true if all required arguments or any unknown argument had been used
 
 ### Call Back Function
 If one argument gets transferred to the program the library searches the corresponding call back function and executes it.
+
+#### Lambda Callback
+It is possible to define an lambda expression to get executed in case of that the corresponding argument has been parsed.
+
+There are two kind of expression:
+* simple lambda callback functions
+* extended lambda callback functions
+
+##### Simple Lambda callback function
+This expression has no access to additional parameter's.
+Such expression has following signature
+
+     function<void()>;
+
+example:
+
+    function<void()> callBack = [] {foo = true;};
+    parser.addArg("f","foo", "foo argument",callBack);
+
+or shorter:
+
+    parser.addArg("f","foo", "foo argument",[]{foo=true;});
+    
+    
+##### Extended Lambda callback function
+Those expressions do have access to additional parameter, but must return the changed index:
+    
+    /*  return changed index pointing to the last used buffer element
+        gets index and char buffer holding the arguemnts and parameters
+    */
+    function<int(int,char**)> callback = [](int index, char** buffer){
+            index ++; cout << buff[index];return index }
+    parser.addArg("f","foo", "foo argument",callback)->numberOfParameter(1);        
+
+#### Function Callback
 Each call back function must have following signature:
 
      /**
-     *   @param  index  	current index
+     *   @param  index  	last used buffer element
      *   @param  buff 		buffer of stored arguments
      *   @param  out    	next unused index
      */
