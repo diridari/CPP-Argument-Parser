@@ -20,7 +20,7 @@ to your application.
 
 ![Alt text](doc/wrongArg.jpg?raw=true "example")
 
-simple rxample:
+simple example:
     
     argvParser *p = new argvParser("simple example program");
     // Simple Lambda CallBack
