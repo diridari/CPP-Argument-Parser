@@ -5,6 +5,11 @@ help messages, bash auto completion and by providing a simple to use api. For ea
 a callback function or a lambda expressions, which gets invoked in case of that the corresponding argument gets parsed 
 to your application.
 
+Easy to use C++ argument parsing library. It intends to be easy to use and gain a good user experience by generating 
+help messages, bash auto completion and by providing a simple to use api. For each argument it is possible to register 
+a callback function or a lambda expressions, which gets invoked if the corresponding argument gets parsed 
+to your application.
+
 ## Features
 * Support OS: Linux, Windows, MacOs(not tested)
 * Easy argument registration
@@ -50,14 +55,13 @@ extended example:
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
     
     // check if all arguments are valid
-    if(!p->analyseArgv(argvs,argv)){
-        p->printHelpMessage(!disableCliH);
-    }
-    // check if all required arguments have been parsed
-    if(!p->foundAllRequierdArgs()){
-        cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument" 
-         <<"try it         with -f"<<endl;
-    }
+       if(!p->analyseArgv(argvs,argv)){
+           p->printHelpMessage(!disableCliH);
+           // check if all required arguments have been parsed
+           if(!p->foundAllRequierdArgs()){
+               cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
+           }
+       }
     
 ## Usage
 

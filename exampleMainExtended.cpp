@@ -63,10 +63,11 @@ int main(int argvs, char** argv) {
     // check if all arguments are valid
     if(!p->analyseArgv(argvs,argv)){
         p->printHelpMessage(!disableCliH);
+        // check if all required arguments have been parsed
+        if(!p->foundAllRequierdArgs()){
+            cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
+        }
     }
-    // check if all required arguments have been parsed
-    if(!p->foundAllRequierdArgs()){
-        cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
-    }
+
     return 0;
 }
