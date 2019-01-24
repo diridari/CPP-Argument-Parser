@@ -1,53 +1,67 @@
 # CPP Argument Parser [![Build Status](https://travis-ci.org/diridari/CPP-Argument-Parser.svg?branch=master)](https://travis-ci.org/diridari/CPP-Argument-Parser)
-## Goal
-This library shall help you the receive program arguments in C++.
 
-It is possible to define call back function that gets invoked if the corresponding arguments get parsed.
+Easy to use C++ argument parsing library. It intends to be easy to use and gain a good user experience by generating 
+help messages, bash auto completion and by providing a simple to use api. For each argument it is possible to register 
+a callback function or a lambda expressions, which gets invoked in case of that the corresponding argument gets parsed 
+to your application.
 
-For each argument it is possible to define a short version, a long version a help message. Additional it is possible to mark one argument as required, an pre-defined set of additional parameters, the number of expected parameter’s per argument e.g one additional parather for open, the filepath: `-o <file>`. 
-
-Each argument is separated by an space or is can be joined by <”>
-
-If one argument needs e.g. a parameter like -p <portNumber> your callback function has access to further arguments.
+Easy to use C++ argument parsing library. It intends to be easy to use and gain a good user experience by generating 
+help messages, bash auto completion and by providing a simple to use api. For each argument it is possible to register 
+a callback function or a lambda expressions, which gets invoked if the corresponding argument gets parsed 
+to your application.
 
 ## Features
-* os support : Linux, Windows, MacOs(not tested)
+* Support OS: Linux, Windows, MacOs(not tested)
 * Easy argument registration
 * Help message generator
-* Mark arguments as required
-* Add section to order the arguments
 * Linux Bash auto completion
+* Mark arguments as required
 * Organize arguments in sections
 * Argument validation
 * Define argument parameter as file path or as pre-defined set
+* Lambda support
 
 ***
 
 ![Alt text](doc/wrongArg.jpg?raw=true "example")
 
-source:
+simple example:
+    
+    argvParser *p = new argvParser("simple example program");
+    // Simple Lambda CallBack
+    p->addArg("-t","--test","test argument",[](){ testVar = true;}); // no further arguments used
+    p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
+    
+     // check if all arguments are valid
+    if(!p->analyseArgv(argvs,argv)){
+        p->printHelpMessage(); 
+    }
+    
+extended example:
 
     // define program description
     argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
     // define program arguments
-    p->addArg("-t","--test","test argument",testCallBacl);
+    // Simple Lambda CallBack
+    p->addArg("-t","--test","test argument",[](){ testVar = true;}); // no further arguments used
     
-    p->addArg("-f","--foo","foo test argument  required argument example",fooCallBack)
-            ->required()->numberOfParameter(1);
-            
+    // Lambda CallBack as required and one additional parameter
+    function <int(int,char**)> lambdaCallback = [](int index, char ** buff){ index++; cout << "got \"foo\" with : " << buff[index]<<endl;return index;};
+    p->addArg("-f","--foo","foo test argument  required argument example",lambdaCallback)
+            ->required()->numberOfParameter(1); // requiered  + one additional paramether      
     p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)
-            ->allowedParameter(3, "abc", "def", "xyz");
+            ->allowedParameter(3, "abc", "def", "xyz"); // checks that just <abc,def or xyz> are additional parameters
     p->addSection("logging");
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
+    
     // check if all arguments are valid
-    if(!p->analyseArgv(argvs,argv)){
-        p->printHelpMessage(!disableCliH);
-    }
-    // check if all required arguments have been parsed
-    if(!p->foundAllRequierdArgs()){
-        cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument" 
-         <<"try it         with -f"<<endl;
-    }
+       if(!p->analyseArgv(argvs,argv)){
+           p->printHelpMessage(!disableCliH);
+           // check if all required arguments have been parsed
+           if(!p->foundAllRequierdArgs()){
+               cout << "you have not entered at least one required argument  \n\t -f has been marked as an required argument try it with -f"<<endl;
+           }
+       }
     
 ## Usage
 
@@ -57,9 +71,11 @@ To register a callback function:
      argvParser parser("your program description"); // program description
      // short version | long version | description of argument | callBackFunction | required to use this argument default = false
      parser.addArg("shortARG", "longARG", "description of argument",callBackFunction);
+     
+The call back function can be an lambda expression or an function. (see: "Call Back Function")
 
 It is possible to add additional configuration after the addArg method like:
-* mark as required
+* mark argument as required (user must use the argument)
 * define number of parameters
 * auto completion definitions(as file or as set of pre-defined parameters)
 
@@ -70,16 +86,55 @@ e.g.
 ### Check all Arguments
 To check all Arguments use:
 
-    parser.analyseArgv(args,argv); // returns true if no unknown argumends and all required arguments have been called
+    parser.analyseArgv(args,argv); // returns true if no unknown arguments and all required arguments have been called
 
-it returns true if all required arguments or any unknown argument had been used
+It returns true if all required arguments or any unknown argument had been used
 
+It is additional possible to check if all required arguments has been parsed by:
+
+    parser.foundAllRequierdArgs();
+    
 ### Call Back Function
 If one argument gets transferred to the program the library searches the corresponding call back function and executes it.
+
+#### Lambda Callback
+It is possible to define an lambda expression to get executed in case of that the corresponding argument has been parsed.
+
+There are two kind of expression:
+* simple lambda callback functions
+* extended lambda callback functions
+
+##### Simple Lambda callback function
+This expression has no access to additional parameter's.
+Such expression has following signature
+
+     function<void()>;
+
+example:
+
+    function<void()> callBack = [] {foo = true;};
+    parser.addArg("f","foo", "foo argument",callBack);
+
+or shorter:
+
+    parser.addArg("f","foo", "foo argument",[]{foo=true;});
+    
+    
+##### Extended Lambda callback function
+Those expressions do have access to additional parameter, but must return the changed index:
+    
+    /*  return changed index pointing to the last used buffer element
+        gets index and char buffer holding the arguemnts and parameters
+    */
+    function<int(int,char**)> callback = [](int index, char** buffer){
+            index ++; cout << buff[index];return index }
+    parser.addArg("f","foo", "foo argument",callback)->numberOfParameter(1);        
+
+#### Function Callback
 Each call back function must have following signature:
 
      /**
-     *   @param  index  	current index
+     *   @param  index  	last used buffer element
      *   @param  buff 		buffer of stored arguments
      *   @param  out    	next unused index
      */

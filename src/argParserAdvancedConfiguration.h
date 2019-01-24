@@ -11,6 +11,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <functional>
 
 using namespace std;
 
@@ -97,11 +98,14 @@ protected:
         string argShort;
         string argLong;
         string helpMessage;
-        int (*callBack)(int, char **);
+        function <int(int,char**)> callBack = NULL;
+        function <void ()>simpleCallBack = NULL;
         bool requiredAndNotHitJet = false;
         int numberOfArguments = -1;
-        argument(string argS, string argL, string helpMessage, int (*callBack_)(int, char **)) : argLong(
+        argument(string argS, string argL, string helpMessage, function<int(int,char**)> callBack_ ) : argLong(
                 std::move(argL)),argShort(std::move(argS)), callBack(callBack_), helpMessage(std::move(helpMessage)) {};
+        argument(string argS, string argL, string helpMessage, function<void()>lambda_) : argLong(
+                std::move(argL)),argShort(std::move(argS)), simpleCallBack(lambda_), helpMessage(std::move(helpMessage)) {};
     } argument;
 
     /**

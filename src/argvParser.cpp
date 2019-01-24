@@ -39,7 +39,7 @@ void printGreen(){
 extern int callBackInstallAutoCompletion(int index, char **buff);
 
 
-argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, function<void()> callBack ){
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong,help, callBack));
         helpMessage += buildHelpLine(argvShort, argvLong, help);
@@ -50,6 +50,23 @@ argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string arg
         return this;
     }
     return nullptr;
+}
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, function<int(int,char**)> callBack ){
+    if (!existArg(argvShort) && !existArg(argvLong)) {
+        argconfig->push_back(new argument(argvShort, argvLong,help, callBack));
+        helpMessage += buildHelpLine(argvShort, argvLong, help);
+
+        topLevelArgs += argvLong +" " ;
+        lastToplevelLong = argvLong;
+        lastToplevelShort = argvShort;
+        return this;
+    }
+    return nullptr;
+}
+
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
+    function<int(int,char**)> tmpCallback = [callBack](int i, char**argv){ return callBack(i,argv);};
+    return addArg(argvShort,argvLong,help,tmpCallback);
 }
 
 
@@ -100,16 +117,23 @@ bool argvParser::analyseArgv(int args, char **argv) {
             return false;
         int x;
         if( (x = checkArgs(argv[i])) >=0){
-            int reqSize = argconfig->at(x)->numberOfArguments +i +1;
-            bool enoughSpace = args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
-            if(enoughSpace) {
-                if(checkNextArgumentIfEnum(argv[i],argv[i+1])) {
-                    i = (*argconfig->at(x)->callBack)(i, argv); // call function
-                    argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+            // Simple Callback
+            if(argconfig->at(x)->simpleCallBack != NULL){
+                argconfig->at(x)->simpleCallBack();
+            }
+            else {
+                int reqSize = argconfig->at(x)->numberOfArguments + i + 1;
+                bool enoughSpace = args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
+                if (enoughSpace) {
+                    if (checkNextArgumentIfEnum(argv[i], argv[i + 1])) {
+                        i = argconfig->at(x)->callBack(i, argv); // call function
+                        argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+                    }
+                } else {
+                    errorMessage += "\n\nthe argument \"" + argconfig->at(x)->argLong + "\" does require: " +
+                                    to_string(argconfig->at(x)->numberOfArguments) + " parameter";
+                    return false;
                 }
-            }else{
-                errorMessage += "\n\nthe argument \"" + argconfig->at(x)->argLong + "\" does require: " + to_string(argconfig->at(x)->numberOfArguments) + " parameter";
-                return false;
             }
         }else{ // check config file
             configFileReader * reader = new configFileReader(argv[i]);
