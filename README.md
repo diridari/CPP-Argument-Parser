@@ -2,7 +2,7 @@
 
 Easy to use C++ argument parsing library. It intends to be easy to use and gain a good user experience by generating 
 help messages, bash auto completion and by providing a simple to use api. For each argument it is possible to register 
-an callback function or an lambda expressions, which gets invoked in case of that the corresponding argument gets parsed 
+a callback function or a lambda expressions, which gets invoked in case of that the corresponding argument gets parsed 
 to your application.
 
 ## Features
@@ -82,7 +82,7 @@ e.g.
 ### Check all Arguments
 To check all Arguments use:
 
-    parser.analyseArgv(args,argv); // returns true if no unknown argumends and all required arguments have been called
+    parser.analyseArgv(args,argv); // returns true if no unknown arguments and all required arguments have been called
 
 It returns true if all required arguments or any unknown argument had been used
 
