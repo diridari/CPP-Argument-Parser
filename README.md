@@ -20,7 +20,7 @@ to your application.
 
 ![Alt text](doc/wrongArg.jpg?raw=true "example")
 
-main usage:
+simple rxample:
     
     argvParser *p = new argvParser("simple example program");
     // Simple Lambda CallBack
@@ -32,7 +32,7 @@ main usage:
         p->printHelpMessage(); 
     }
     
-extended usage:
+extended example:
 
     // define program description
     argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
