@@ -29,7 +29,7 @@ simple example:
     
     argvParser *p = new argvParser("simple example program");
     // Simple Lambda CallBack
-    p->addArg("-t","--test","test argument",[](){ testVar = true;}); // no further arguments used
+    p->addArg("-t","--test","test argument",[](){ testVar = true;}); // no additional arguments used
     p->addArg("-l","--logging" ,"enable logging",loggingCallBack);
     
      // check if all arguments are valid
