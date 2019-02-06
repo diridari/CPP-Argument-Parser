@@ -1,5 +1,5 @@
 title: C++ Argument-Parser
-description: Easy to use C++ argument parsing library. Features : generating help messages, bash auto completion, callback function or lambda for each argument.
+description: Easy to use C++ argument parsing library. Features: generating help messages, bash auto completion, callback function or lambda for each argument.
 url: https://diridari.github.io/CPP-Argument-Parser/ 
 show_downloads: true
 google_analytics:
