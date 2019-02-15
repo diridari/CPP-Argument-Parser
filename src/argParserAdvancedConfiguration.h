@@ -19,7 +19,7 @@ using namespace std;
  * helper class
  * show additional function just in case they are requested
  */
-class argParserAdvancedConfiguration{
+class argParserAdvancedConfiguration {
 
 public:
     /**
@@ -31,20 +31,20 @@ public:
      * @param ... additional parameter's
      * @return this
      */
-    argParserAdvancedConfiguration * allowedParameter(int numberOfEnums, const char *enums, ...);
+    argParserAdvancedConfiguration *allowedParameter(int numberOfEnums, const char *enums, ...);
 
     /**
      * defines the argument is a file or directory path
      * @return this
      */
-    argParserAdvancedConfiguration * asFile();
+    argParserAdvancedConfiguration *asFile();
 
     /**
      * mark the argument as required.
      * It the application does not called with this argument the 'analyseArgv' method does returns false
      * @return this
      */
-    argParserAdvancedConfiguration * required();
+    argParserAdvancedConfiguration *required();
 
     /**
      * define the number of additional parameters.
@@ -52,7 +52,7 @@ public:
      * @param number number of arguments
      * @return this
      */
-    argParserAdvancedConfiguration * numberOfParameter(int number);
+    argParserAdvancedConfiguration *numberOfParameter(int number);
 
 protected:
     /**
@@ -84,12 +84,12 @@ protected:
     /**
     * additional description for auto completion
     */
-    typedef struct enumDesciption{
+    typedef struct enumDesciption {
         string enums;
         string toplevelComannd;
         string toplevelShort;
         bool asFile;
-    }enumDesciption;
+    } enumDesciption;
 
     /**
     * argument description.
@@ -98,14 +98,18 @@ protected:
         string argShort;
         string argLong;
         string helpMessage;
-        function <int(int,char**)> callBack = NULL;
-        function <void ()>simpleCallBack = NULL;
+        function<int(int, char **)> callBack = NULL;
+        function<void()> simpleCallBack = NULL;
         bool requiredAndNotHitJet = false;
         int numberOfArguments = -1;
-        argument(string argS, string argL, string helpMessage, function<int(int,char**)> callBack_ ) : argLong(
-                std::move(argL)),argShort(std::move(argS)), callBack(callBack_), helpMessage(std::move(helpMessage)) {};
-        argument(string argS, string argL, string helpMessage, function<void()>lambda_) : argLong(
-                std::move(argL)),argShort(std::move(argS)), simpleCallBack(lambda_), helpMessage(std::move(helpMessage)) {};
+
+        argument(string argS, string argL, string helpMessage, function<int(int, char **)> callBack_) : argLong(
+                std::move(argL)), argShort(std::move(argS)), callBack(callBack_), helpMessage(
+                std::move(helpMessage)) {};
+
+        argument(string argS, string argL, string helpMessage, function<void()> lambda_) : argLong(
+                std::move(argL)), argShort(std::move(argS)), simpleCallBack(lambda_), helpMessage(
+                std::move(helpMessage)) {};
     } argument;
 
     /**

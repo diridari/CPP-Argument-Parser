@@ -4,9 +4,6 @@
 
 #include "../include/argvParser.h"
 #include "configFileReader.h"
-#include <iostream>
-#include <iostream>
-#include <argvParser.h>
 
 
 #ifdef __WIN32
@@ -26,37 +23,31 @@ void printGreen(){
 }
 #endif
 #ifdef __linux__
-void printRed(){
- cout << "\033[1;31m";
+
+void printRed() {
+    cout << "\033[1;31m";
 }
-void resetCLI(){
- cout << "\033[0;0m";
+
+void resetCLI() {
+    cout << "\033[0;0m";
 }
-void printGreen(){
- cout << "\u001B[1;32m";
+
+void printGreen() {
+    cout << "\u001B[1;32m";
 }
+
 #endif
+
 extern int callBackInstallAutoCompletion(int index, char **buff);
 
 
-argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, function<void()> callBack ){
+argParserAdvancedConfiguration *
+argvParser::addArg(string argvShort, string argvLong, string help, function<void()> callBack) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
-        argconfig->push_back(new argument(argvShort, argvLong,help, callBack));
+        argconfig->push_back(new argument(argvShort, argvLong, help, callBack));
         helpMessage += buildHelpLine(argvShort, argvLong, help);
 
-        topLevelArgs += argvLong +" " ;
-        lastToplevelLong = argvLong;
-        lastToplevelShort = argvShort;
-        return this;
-    }
-    return nullptr;
-}
-argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, function<int(int,char**)> callBack ){
-    if (!existArg(argvShort) && !existArg(argvLong)) {
-        argconfig->push_back(new argument(argvShort, argvLong,help, callBack));
-        helpMessage += buildHelpLine(argvShort, argvLong, help);
-
-        topLevelArgs += argvLong +" " ;
+        topLevelArgs += argvLong + " ";
         lastToplevelLong = argvLong;
         lastToplevelShort = argvShort;
         return this;
@@ -64,14 +55,28 @@ argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string arg
     return nullptr;
 }
 
-argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
-    function<int(int,char**)> tmpCallback = [callBack](int i, char**argv){ return callBack(i,argv);};
-    return addArg(argvShort,argvLong,help,tmpCallback);
+argParserAdvancedConfiguration *
+argvParser::addArg(string argvShort, string argvLong, string help, function<int(int, char **)> callBack) {
+    if (!existArg(argvShort) && !existArg(argvLong)) {
+        argconfig->push_back(new argument(argvShort, argvLong, help, callBack));
+        helpMessage += buildHelpLine(argvShort, argvLong, help);
+
+        topLevelArgs += argvLong + " ";
+        lastToplevelLong = argvLong;
+        lastToplevelShort = argvShort;
+        return this;
+    }
+    return nullptr;
+}
+
+argParserAdvancedConfiguration *
+argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
+    function<int(int, char **)> tmpCallback = [callBack](int i, char **argv) { return callBack(i, argv); };
+    return addArg(argvShort, argvLong, help, tmpCallback);
 }
 
 
-
-argvParser::argvParser(string description_):argParserAdvancedConfiguration() {
+argvParser::argvParser(string description_) : argParserAdvancedConfiguration() {
     description = description_ + "\n";
     requiredArgs = "";
 
@@ -79,25 +84,25 @@ argvParser::argvParser(string description_):argParserAdvancedConfiguration() {
 
 void argvParser::printHelpMessage(bool colored) {
     string s;
-    if(colored)
+    if (colored)
         printGreen();
-    cout<<description <<"usage:\n" << helpMessage <<endl;
+    cout << description << "usage:\n" << helpMessage << endl;
 
     if (!foundAllRequierdArgs()) {
-        if(colored)
+        if (colored)
             printRed();
-        cout<< "\nrequired arguments are : \n" << requiredArgs <<endl;
-        if(colored)
+        cout << "\nrequired arguments are : \n" << requiredArgs << endl;
+        if (colored)
             resetCLI();
     }
-    if(colored)
+    if (colored)
         printRed();
     if (!lastFailedArg.empty())
-        cout<< "failed argument : \"" << lastFailedArg<<"\"";
+        cout << "failed argument : \"" << lastFailedArg << "\"";
 
-    if(!errorMessage.empty())
-            cout<< " "+errorMessage;
-    if(colored)
+    if (!errorMessage.empty())
+        cout << " " + errorMessage;
+    if (colored)
         resetCLI();
 
     cout << endl << endl;
@@ -105,23 +110,21 @@ void argvParser::printHelpMessage(bool colored) {
 }
 
 
-
 bool argvParser::analyseArgv(int args, char **argv) {
 #ifdef __linux__ // auto completion jet just under linux supported
     this->addSection("Argument auto completion");
-    this->addArg("-instAutoCompl","","install auto completion for cli usage", callBackInstallAutoCompletion);
-   generateAutoCompletion();
+    this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion);
+    generateAutoCompletion();
 #endif
     for (int i = 1; i < args; i++) {
-        if(argv[i] == NULL)
+        if (argv[i] == NULL)
             return false;
         int x;
-        if( (x = checkArgs(argv[i])) >=0){
+        if ((x = checkArgs(argv[i])) >= 0) {
             // Simple Callback
-            if(argconfig->at(x)->simpleCallBack != NULL){
+            if (argconfig->at(x)->simpleCallBack != NULL) {
                 argconfig->at(x)->simpleCallBack();
-            }
-            else {
+            } else {
                 int reqSize = argconfig->at(x)->numberOfArguments + i + 1;
                 bool enoughSpace = args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
                 if (enoughSpace) {
@@ -135,22 +138,22 @@ bool argvParser::analyseArgv(int args, char **argv) {
                     return false;
                 }
             }
-        }else{ // check config file
-            configFileReader * reader = new configFileReader(argv[i]);
-            if(!reader->isEOF()){
-                vector <string> *arg  = new vector<string>();
+        } else { // check config file
+            configFileReader *reader = new configFileReader(argv[i]);
+            if (!reader->isEOF()) {
+                vector<string> *arg = new vector<string>();
                 arg->push_back("program Name");
-                while(!reader->isEOF()){
+                while (!reader->isEOF()) {
                     string param = reader->readUntilNextSeparator();
-                   arg->push_back(param);
+                    arg->push_back(param);
                 }
-                char*  buff[arg->size()];
-                for(int y = 0; y<arg->size();y++){
+                char *buff[arg->size()];
+                for (int y = 0; y < arg->size(); y++) {
                     buff[y] = const_cast<char *>(arg->at(y).c_str());
                 }
                 analyseArgv(arg->size(), buff);
                 delete reader;
-            }else {
+            } else {
                 delete reader;
                 return false;
             }
@@ -166,15 +169,16 @@ string argvParser::getHelpMessage() {
         s += "\nrequired arguments are : \n" + requiredArgs + "\n";
     }
 
-    if (!lastFailedArg.empty()){
+    if (!lastFailedArg.empty()) {
         s += "failed argument : " + lastFailedArg;
-        if(!errorMessage.empty()){
-            s+= "\n  "+errorMessage;
+        if (!errorMessage.empty()) {
+            s += "\n  " + errorMessage;
         }
     }
 
     return s;
 }
+
 int argvParser::checkArgs(string param) {
     for (int x = 0; x < argconfig->size(); x++) {
         if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
@@ -206,21 +210,23 @@ bool argvParser::foundAllRequierdArgs() {
 }
 
 void argvParser::addSection(string sectionName) {
-    helpMessage += "\n "+sectionName+":\n";
+    helpMessage += "\n " + sectionName + ":\n";
 }
 
-bool argvParser::checkNextArgumentIfEnum(string arg, char * nextElement) {
+bool argvParser::checkNextArgumentIfEnum(string arg, char *nextElement) {
     int i = checkArgs(arg);
-    if(i >= 0){
+    if (i >= 0) {
         string s = argconfig->at(i)->argShort;
-        if(!s.empty()){
-            for(int x = 0; x < enumsList.size();x++){
-                if(enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong || enumsList.at(x).toplevelShort == argconfig->at(i)->argShort){
-                    if( enumsList.at(x).enums.find(string(nextElement )+" ") != string::npos)
+        if (!s.empty()) {
+            for (int x = 0; x < enumsList.size(); x++) {
+                if (enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong ||
+                    enumsList.at(x).toplevelShort == argconfig->at(i)->argShort) {
+                    if (enumsList.at(x).enums.find(string(nextElement) + " ") != string::npos)
                         return true;
-                    else if(!enumsList.at(x).enums.empty() ){
+                    else if (!enumsList.at(x).enums.empty()) {
                         lastFailedArg = arg;
-                        errorMessage += "\""+ arg+"\" does  accept \"" + enumsList.at(x).enums+"\" but not \"" + nextElement + "\"\n";
+                        errorMessage += "\"" + arg + "\" does  accept \"" + enumsList.at(x).enums + "\" but not \"" +
+                                        nextElement + "\"\n";
                         return false;
                     }
                 }

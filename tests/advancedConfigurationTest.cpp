@@ -8,126 +8,134 @@
 using namespace std;
 string advtt;
 bool advtt2;
-int advCall2(int i, char *buff[]){
+
+int advCall2(int i, char *buff[]) {
     i++;
     advtt = buff[i];
     return i;
 }
-int advCall1(int i,char *buff[]){
+
+int advCall1(int i, char *buff[]) {
     advtt2 = true;
-    return i+1;
+    return i + 1;
 }
 
-TEST(advancedConfiguration, CheckRequiredConfigFail1){
-argvParser parser("test");
-parser.addArg("t", "tt", "test", advCall1)->required();
-char *arg[] = {"program", ""};
-ASSERT_FALSE(parser.analyseArgv(2,arg));
+TEST(advancedConfiguration, CheckRequiredConfigFail1) {
+    argvParser parser("test");
+    parser.addArg("t", "tt", "test", advCall1)->required();
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckRequiredConfigFail2){
+TEST(advancedConfiguration, CheckRequiredConfigFail2) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->required()->asFile();
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckRequiredConfigFail3){
+TEST(advancedConfiguration, CheckRequiredConfigFail3) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->asFile()->required();
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
-TEST(advancedConfiguration, CheckRequiredConfigFail4){
+
+TEST(advancedConfiguration, CheckRequiredConfigFail4) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(1)->required();
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
-TEST(advancedConfiguration, CheckRequiredConfigFail5){
+
+TEST(advancedConfiguration, CheckRequiredConfigFail5) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(0)->required();
     char *arg[] = {"program", ""};
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckRequiredConfigFail6){
+TEST(advancedConfiguration, CheckRequiredConfigFail6) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(-1)->required();
     char *arg[] = {"program", ""};
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckRequiredConfigFail7){
+TEST(advancedConfiguration, CheckRequiredConfigFail7) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(2)->required();
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckNumberOfParameter1){
+TEST(advancedConfiguration, CheckNumberOfParameter1) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(2);
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckNumberOfParameter2){
+TEST(advancedConfiguration, CheckNumberOfParameter2) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(1);
-    char *arg[] = {"program", "" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, CheckNumberOfParameter3){
+TEST(advancedConfiguration, CheckNumberOfParameter3) {
     argvParser parser("test");
     parser.addArg("t", "tt", "test", advCall1)->numberOfParameter(3);
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
 
-TEST(advancedConfiguration, Checkparam){
+TEST(advancedConfiguration, Checkparam) {
     argvParser parser("test");
-    parser.addArg("t", "tt", "test", advCall1)->allowedParameter(1,"abc")->required();
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    parser.addArg("t", "tt", "test", advCall1)->allowedParameter(1, "abc")->required();
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
-TEST(advancedConfiguration, Checkparam2){
+
+TEST(advancedConfiguration, Checkparam2) {
     argvParser parser("test");
-    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1,"abc");
-    char *arg[] = {"program","" };
-    ASSERT_FALSE(parser.analyseArgv(2,arg));
+    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1, "abc");
+    char *arg[] = {"program", ""};
+    ASSERT_FALSE(parser.analyseArgv(2, arg));
 }
-TEST(advancedConfiguration, Checkparam3){
+
+TEST(advancedConfiguration, Checkparam3) {
     argvParser parser("test");
     advtt2 = false;
-    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1,"abc");
-    char *arg[] = {"program","t","abc" };
-    ASSERT_TRUE(parser.analyseArgv(3,arg));
+    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1, "abc");
+    char *arg[] = {"program", "t", "abc"};
+    ASSERT_TRUE(parser.analyseArgv(3, arg));
     ASSERT_TRUE(advtt2);
 }
-TEST(advancedConfiguration, Checkparam4){
+
+TEST(advancedConfiguration, Checkparam4) {
     argvParser parser("test");
     advtt2 = false;
-    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1,"abc");
-    char *arg[] = {"program","t","abcc" };
-    ASSERT_FALSE(parser.analyseArgv(3,arg));
-    ASSERT_FALSE(advtt2);
-}
-TEST(advancedConfiguration, Checkparam5){
-    argvParser parser("test");
-    advtt2 = false;
-    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1,"abc");
-    char *arg[] = {"program","t","ab" };
-    ASSERT_FALSE(parser.analyseArgv(3,arg));
+    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1, "abc");
+    char *arg[] = {"program", "t", "abcc"};
+    ASSERT_FALSE(parser.analyseArgv(3, arg));
     ASSERT_FALSE(advtt2);
 }
 
-TEST(advancedConfiguration, Checkparam6){
+TEST(advancedConfiguration, Checkparam5) {
     argvParser parser("test");
     advtt2 = false;
-    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1,"abc");
-    char *arg[] = {"program","t","abc " };
-    ASSERT_FALSE(parser.analyseArgv(3,arg));
+    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1, "abc");
+    char *arg[] = {"program", "t", "ab"};
+    ASSERT_FALSE(parser.analyseArgv(3, arg));
+    ASSERT_FALSE(advtt2);
+}
+
+TEST(advancedConfiguration, Checkparam6) {
+    argvParser parser("test");
+    advtt2 = false;
+    parser.addArg("t", "tt", "test", advCall1)->required()->allowedParameter(1, "abc");
+    char *arg[] = {"program", "t", "abc "};
+    ASSERT_FALSE(parser.analyseArgv(3, arg));
     ASSERT_FALSE(advtt2);
 }

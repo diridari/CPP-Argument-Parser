@@ -5,42 +5,42 @@ compiler:
 env:
   global:
     - RUN_TESTS=true
-    
-os:
- - linux
-before_install:
- - sudo apt-get -qq update
- - sudo apt install cmake
- - sudo apt-get install -y libgtest-dev valgrind cmake
- - sudo wget https://github.com/google/googletest/archive/release-1.7.0.tar.gz
- - sudo tar xf release-1.7.0.tar.gz
- - cd googletest-release-1.7.0
- - sudo cmake -DBUILD_SHARED_LIBS=ON .
- - sudo make
- - sudo cp -a include/gtest /usr/include
- - sudo cp -a libgtest_main.so libgtest.so /usr/lib/
- - sudo wget https://github.com/Kitware/CMake/releases/download/v3.10.2/cmake-3.10.2-Linux-x86_64.sh
- - sudo sh cmake-3.10.2-Linux-x86_64.sh --skip-license  --prefix=/usr/local
- - cd "${TRAVIS_BUILD_DIR}"
 
-      
+os:
+  - linux
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt install cmake
+  - sudo apt-get install -y libgtest-dev valgrind cmake
+  - sudo wget https://github.com/google/googletest/archive/release-1.7.0.tar.gz
+  - sudo tar xf release-1.7.0.tar.gz
+  - cd googletest-release-1.7.0
+  - sudo cmake -DBUILD_SHARED_LIBS=ON .
+  - sudo make
+  - sudo cp -a include/gtest /usr/include
+  - sudo cp -a libgtest_main.so libgtest.so /usr/lib/
+  - sudo wget https://github.com/Kitware/CMake/releases/download/v3.10.2/cmake-3.10.2-Linux-x86_64.sh
+  - sudo sh cmake-3.10.2-Linux-x86_64.sh --skip-license  --prefix=/usr/local
+  - cd "${TRAVIS_BUILD_DIR}"
+
+
 addons:
   apt:
-    sources: 
+    sources:
       - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-5.0
-      
+
     packages:
       - gcc-6
       - g++-6
 
 
 script:
-    - mkdir bin
-    - cd bin 
-    - /usr/local/bin/cmake ..
-    - make argParser_Test 
-    - ctest
+  - mkdir bin
+  - cd bin
+  - /usr/local/bin/cmake ..
+  - make argParser_Test
+  - ctest
 
 notifications:
   email: false
