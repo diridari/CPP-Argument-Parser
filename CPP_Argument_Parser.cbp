@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CPP_Argument_Parser"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="test">
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 test"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CPPArgvParsLib">
+				<Option output="/home/basto/git/CPP-Argument-Parser/libCPPArgvParsLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 CPPArgvParsLib"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CPPArgvParsLib/fast">
+				<Option output="/home/basto/git/CPP-Argument-Parser/libCPPArgvParsLib.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 CPPArgvParsLib/fast"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="argParser_Test">
+				<Option output="/home/basto/git/CPP-Argument-Parser/argParser_Test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 argParser_Test"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="argParser_Test/fast">
+				<Option output="/home/basto/git/CPP-Argument-Parser/argParser_Test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 argParser_Test/fast"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="simpleExample">
+				<Option output="/home/basto/git/CPP-Argument-Parser/simpleExample" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 simpleExample"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="simpleExample/fast">
+				<Option output="/home/basto/git/CPP-Argument-Parser/simpleExample" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 simpleExample/fast"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="extendedExmple">
+				<Option output="/home/basto/git/CPP-Argument-Parser/extendedExmple" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 extendedExmple"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="extendedExmple/fast">
+				<Option output="/home/basto/git/CPP-Argument-Parser/extendedExmple" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/basto/git/CPP-Argument-Parser"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/basto/git/CPP-Argument-Parser/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 extendedExmple/fast"/>
+					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j3 -f &quot;/home/basto/git/CPP-Argument-Parser/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/exampleMainExtended.cpp">
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/exampleMainSimple.cpp">
+			<Option target="simpleExample"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/include/argvParser.h">
+			<Option target="CPPArgvParsLib"/>
+			<Option target="argParser_Test"/>
+			<Option target="simpleExample"/>
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/src/argParserAdvancedConfiguration.cpp">
+			<Option target="CPPArgvParsLib"/>
+			<Option target="argParser_Test"/>
+			<Option target="simpleExample"/>
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/src/argParserAdvancedConfiguration.h">
+			<Option target="CPPArgvParsLib"/>
+			<Option target="argParser_Test"/>
+			<Option target="simpleExample"/>
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/src/argvParser.cpp">
+			<Option target="CPPArgvParsLib"/>
+			<Option target="argParser_Test"/>
+			<Option target="simpleExample"/>
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/src/configFileReader.cpp">
+			<Option target="CPPArgvParsLib"/>
+			<Option target="argParser_Test"/>
+			<Option target="simpleExample"/>
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/src/configFileReader.h">
+			<Option target="CPPArgvParsLib"/>
+			<Option target="argParser_Test"/>
+			<Option target="simpleExample"/>
+			<Option target="extendedExmple"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/tests/advancedConfigurationTest.cpp">
+			<Option target="argParser_Test"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/tests/argvParserTest.cpp">
+			<Option target="argParser_Test"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/tests/configReaderTest.cpp">
+			<Option target="argParser_Test"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/tests/definedNumberOfArgs.cpp">
+			<Option target="argParser_Test"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/tests/exampleTest.cpp">
+			<Option target="argParser_Test"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/tests/lambdaTest.cpp">
+			<Option target="argParser_Test"/>
+		</Unit>
+		<Unit filename="/home/basto/git/CPP-Argument-Parser/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

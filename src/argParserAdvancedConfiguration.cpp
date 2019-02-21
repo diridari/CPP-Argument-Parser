@@ -44,12 +44,12 @@ int callBackInstallAutoCompletion(int index, char **buff) {
 string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
     int index = checkArgs(command);
     if(index <0 )
-        return "\n\nno command " + command + " found";
+        return "\n to get additional help type -h <command>";
     string help = argconfig->at(index)->additionalHelp;
     if(help == "")
-        return "\n\nno additional help for \"" + command + "\" defined ";
+        return "\nno additional help for \"" + command + "\" defined ";
     return
-        "\n\nadditioanl help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
+        "\nadditioanl help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
         argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage  + "\n\t" + help;
 }
 

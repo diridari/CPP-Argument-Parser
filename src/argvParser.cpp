@@ -75,8 +75,9 @@ argvParser::addArg(string argvShort, string argvLong, string help, int (*callBac
 }
 
 
-argvParser::argvParser(string description_) : argParserAdvancedConfiguration() {
+argvParser::argvParser(bool addDefaultHelpCommand, string description_) : argParserAdvancedConfiguration() {
     description = description_ + "\n";
+    addHelp = addDefaultHelpCommand;
     requiredArgs = "";
 
 }
@@ -115,9 +116,21 @@ bool argvParser::analyseArgv(int args, char **argv) {
     this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion);
     generateAutoCompletion();
 #endif
-    this->addArg("-h","help","help message or additional infomations about an command e.g. \"help <command>\"",[&](int i, char ** buff)
-    {printHelpMessage(); cout << getAdditionalHelpFor(string(buff[i+1]))<<endl;exit(0); return -1;});
+    if(addHelp) {
+        this->addSection("utils");
+        // Default help implementation
+        this->addArg("-h", "help", "help message or additional infomations about an command e.g. \"help <command>\"",
+                     [&](int i, char **buff) {
+                         printHelpMessage();
+                         string s = "";
+                         if(buff[i+1] != NULL)
+                             s = string(buff[i+1]);
+                         cout << getAdditionalHelpFor(s) << endl;
+                         exit(0);
+                         return -1;
+                     });
 
+    }
     for (int i = 1; i < args; i++) {
         if (argv[i] == NULL)
             return false;
