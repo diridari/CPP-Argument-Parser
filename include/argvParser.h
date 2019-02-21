@@ -41,7 +41,7 @@ using namespace std;
  *        return index;
         }
  */
-class argvParser : private argParserAdvancedConfiguration {
+class argvParser : public argParserAdvancedConfiguration {
 
 public:
 
@@ -137,15 +137,6 @@ public:
 private:
 
 
-    /**
-   * get the index of the argument
-   */
-    int checkArgs(string param);
-
-    /**
-     * check whether a argument has been configured
-     */
-    bool existArg(string arg);
 
 
     /**

@@ -54,6 +54,11 @@ public:
      */
     argParserAdvancedConfiguration *numberOfParameter(int number);
 
+
+    /**
+     * add additional Help messag.
+     */
+    argParserAdvancedConfiguration * addAdditianlHelp(string additionalHelp);
 protected:
     /**
     * generated help message
@@ -98,6 +103,7 @@ protected:
         string argShort;
         string argLong;
         string helpMessage;
+        string additionalHelp = "";
         function<int(int, char **)> callBack = NULL;
         function<void()> simpleCallBack = NULL;
         bool requiredAndNotHitJet = false;
@@ -137,6 +143,31 @@ protected:
     * @return  generated line
     */
     string buildHelpLine(string argvShort, string argvLong, string help);
+
+       string getAdditionalHelpFor(string command);
+
+    /**
+    * get the index of the argument
+    */
+    int checkArgs(string param);
+
+    /**
+     * check whether a argument has been configured
+     */
+    bool existArg(string arg);
+
+    /**
+    * last failed argument
+    */
+    string lastFailedArg;
+
+    string errorMessage;
+
+    /**
+     * program descripton
+     */
+    string description;
+
 
 };
 

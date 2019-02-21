@@ -41,6 +41,17 @@ int callBackInstallAutoCompletion(int index, char **buff) {
     return index;
 }
 
+string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
+    int index = checkArgs(command);
+    if(index <0 )
+        return "\n\nno command " + command + " found";
+    string help = argconfig->at(index)->additionalHelp;
+    if(help == "")
+        return "\n\nno additional help for \"" + command + "\" defined ";
+    return
+        "\n\nadditioanl help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
+        argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage  + "\n\t" + help;
+}
 
 argParserAdvancedConfiguration *
 argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *enums, ...) {
@@ -100,6 +111,12 @@ argParserAdvancedConfiguration *argParserAdvancedConfiguration::asFile() {
     return this;
 }
 
+argParserAdvancedConfiguration * argParserAdvancedConfiguration::addAdditianlHelp(string additionalHelp){
+    argument *x = argconfig->back();
+    x->additionalHelp = additionalHelp;
+    return this;
+}
+
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
     argument *x = argconfig->back();
     x->requiredAndNotHitJet = true;
@@ -129,3 +146,23 @@ string argParserAdvancedConfiguration::buildHelpLine(const string argvShort, con
     return s;
 }
 
+int argParserAdvancedConfiguration::checkArgs(string param) {
+    for (int x = 0; x < argconfig->size(); x++) {
+        if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
+            return x;
+        } else if (x + 1 == argconfig->size()) { // no args hit
+            lastFailedArg = param;
+            return -1;
+        }
+    }
+    return -1;
+}
+
+bool argParserAdvancedConfiguration::existArg(string arg) {
+    for (int x = 0; x < argconfig->size(); x++) {
+        if (argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) {
+            return true;
+        }
+    }
+    return false;
+}

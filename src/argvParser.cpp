@@ -41,8 +41,7 @@ void printGreen() {
 extern int callBackInstallAutoCompletion(int index, char **buff);
 
 
-argParserAdvancedConfiguration *
-argvParser::addArg(string argvShort, string argvLong, string help, function<void()> callBack) {
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, function<void()> callBack) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
         argconfig->push_back(new argument(argvShort, argvLong, help, callBack));
         helpMessage += buildHelpLine(argvShort, argvLong, help);
@@ -116,6 +115,9 @@ bool argvParser::analyseArgv(int args, char **argv) {
     this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion);
     generateAutoCompletion();
 #endif
+    this->addArg("-h","help","help message or additional infomations about an command e.g. \"help <command>\"",[&](int i, char ** buff)
+    {printHelpMessage(); cout << getAdditionalHelpFor(string(buff[i+1]))<<endl;exit(0); return -1;});
+
     for (int i = 1; i < args; i++) {
         if (argv[i] == NULL)
             return false;
@@ -179,26 +181,7 @@ string argvParser::getHelpMessage() {
     return s;
 }
 
-int argvParser::checkArgs(string param) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
-            return x;
-        } else if (x + 1 == argconfig->size()) { // no args hit
-            lastFailedArg = param;
-            return -1;
-        }
-    }
-    return -1;
-}
 
-bool argvParser::existArg(string arg) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if (argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) {
-            return true;
-        }
-    }
-    return false;
-}
 
 bool argvParser::foundAllRequierdArgs() {
     for (int x = 0; x < argconfig->size(); x++) {

@@ -55,12 +55,12 @@ int main(int argvs, char **argv) {
         return index;
     };
     p->addArg("-f", "--foo", "foo test argument  required argument example",
-              lambdaCallback)->required()->numberOfParameter(1);
+              lambdaCallback)->required()->numberOfParameter(1)->addAdditianlHelp("prints the next element to the cli");
     // Function as Callback
-    p->addArg("-p", "--print", "echo text", printCallBack)->numberOfParameter(1);
+    p->addArg("-p", "--print", "echo text", printCallBack)->numberOfParameter(1)->addAdditianlHelp("echo the next argument");
     // pre defined parameter for "-e"  with bash autocompletion
-    p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)->allowedParameter(3, "abc", "def",
-                                                                                                     "xyz");
+    p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)->allowedParameter(3, "abc", "def","xyz")
+        -> addAdditianlHelp("hear is just a pre defined set of arguments allowed");
     // autocompletion with filenames
     p->addArg("-o", "--open", "example to complete a file/dir", printCallBack)->numberOfParameter(1)->asFile();
     // lambda
