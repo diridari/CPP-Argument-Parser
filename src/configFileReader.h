@@ -9,7 +9,7 @@
 #include <vector>
 #include <fstream>
 
-using  namespace std;
+using namespace std;
 
 /**
  * This file defines an additional input source of arguments.
@@ -19,7 +19,7 @@ class configFileReader {
     /**
      * type of current separator.
      */
-    enum typeOfSeparator{
+    enum typeOfSeparator {
         none,       // no Separator
         space,      // any kind of space
         separator   // any kind of Separator
@@ -40,7 +40,7 @@ class configFileReader {
     /**
      * index in the additional input source
      */
-    unsigned  int index = 0;
+    unsigned int index = 0;
 
     /**
      * use the additional Input source
@@ -52,7 +52,7 @@ class configFileReader {
     /**
      * list of allowed separators
      */
-    vector<char> * septarators = new vector<char>();
+    vector<char> *septarators = new vector<char>();
 
     /**
      * check one singe char for its type.
@@ -94,7 +94,7 @@ public:
     /**
      * create an reader for an specific file
      */
-    configFileReader(string configFile){
+    configFileReader(string configFile) {
         fileName = configFile;
         text = "";
         septarators->push_back('"');
@@ -104,7 +104,7 @@ public:
      * use just for Debugging !!
      * @param searchText   aternativ text that migth be in the config file
      */
-    void inputSourceIsString(string searchText){
+    void inputSourceIsString(string searchText) {
         text = searchText;
         readFromString = true;
     }

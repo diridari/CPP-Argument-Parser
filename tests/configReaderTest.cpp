@@ -3,230 +3,233 @@
 //
 
 #include <gtest/gtest.h>
-#include "../include/argvParser.h"
 #include "../src/configFileReader.h"
 
-TEST(configReader, readEmptyText){
+TEST(configReader, readEmptyText) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readEmptyTextSpace){
+TEST(configReader, readEmptyTextSpace) {
     configFileReader *reader = new configFileReader(" ");
     reader->inputSourceIsString(" ");
     ASSERT_TRUE(!reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readEmptyTextSpaceOften){
+TEST(configReader, readEmptyTextSpaceOften) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString(" ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readEmptyTextManySpace){
+TEST(configReader, readEmptyTextManySpace) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("    ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readSingeChar){
+TEST(configReader, readSingeChar) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("a");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"a");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "a");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
-TEST(configReader, readSingeWord){
+
+TEST(configReader, readSingeWord) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readSingeWordSpace){
+TEST(configReader, readSingeWordSpace) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readS2Word2Space){
+TEST(configReader, readS2Word2Space) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc def ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
-TEST(configReader, readSomeCharsSomeSpace){
+
+TEST(configReader, readSomeCharsSomeSpace) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc   def ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
 
-TEST(configReader, readSomeWordSomeSpace){
+TEST(configReader, readSomeWordSomeSpace) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc   def ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readSomeWordSomeSpace2){
+TEST(configReader, readSomeWordSomeSpace2) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc   def hallo welt  i am a reader");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"welt");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"i");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"am");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"a");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"reader");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "welt");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "i");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "am");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "a");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "reader");
 
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }
 
-TEST(configReader, readSeperator){
+TEST(configReader, readSeperator) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("\"abc   def\"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc   def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc   def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
 
-TEST(configReader, justSeperator){
+TEST(configReader, justSeperator) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("\"\"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
     ASSERT_TRUE(reader->isEOF());
 
 }
 
-TEST(configReader, justSeperatorWithbefor){
+TEST(configReader, justSeperatorWithbefor) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc \"\"");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
     ASSERT_TRUE(!reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
     ASSERT_TRUE(reader->isEOF());
 
 }
 
-TEST(configReader, seperatorWithSomeText){
+TEST(configReader, seperatorWithSomeText) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("\"abc \" def  hallo \"a b c\" ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"a b c");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc ");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "a b c");
 
 }
-TEST(configReader, seperatorWithSomeText2){
+
+TEST(configReader, seperatorWithSomeText2) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("\"abc\"def  hallo \"a b c\" ");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"a b c");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "a b c");
 
 }
 
-TEST(configReader, justSeperatorWithAfter){
+TEST(configReader, justSeperatorWithAfter) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString(" \"\" abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
 
 
-
-TEST(confReaderFile,file1){
+TEST(confReaderFile, file1) {
     configFileReader *reader = new configFileReader("../tests/configFiles/config1");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "xxx");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
 
-TEST(confReaderFile,file2){
+TEST(confReaderFile, file2) {
     configFileReader *reader = new configFileReader("../tests/configFiles/config2");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"world");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "xxx");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "world");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
-TEST(confReaderFile,file3){
+
+TEST(confReaderFile, file3) {
     configFileReader *reader = new configFileReader("../tests/configFiles/config3");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo world");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"yyy");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "xxx");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo world");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "yyy");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
 
-TEST(confReaderFile,file4){
+TEST(confReaderFile, file4) {
     configFileReader *reader = new configFileReader("../tests/configFiles/config4");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo world");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"yyy");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "xxx");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo world");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "yyy");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
-TEST(confReaderFile,file5){
+
+TEST(confReaderFile, file5) {
     configFileReader *reader = new configFileReader("../tests/configFiles/config5");
     ASSERT_FALSE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"xxx");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"hallo world");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"yyy");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "xxx");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "hallo world");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "yyy");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
-TEST(confReaderFile,noSuchFile){
+
+TEST(confReaderFile, noSuchFile) {
     configFileReader *reader = new configFileReader("../tests/configxx");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
     ASSERT_TRUE(reader->isEOF());
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 
 }
 
 
-
-TEST(configReader, unfinishedJoin){
+TEST(configReader, unfinishedJoin) {
     configFileReader *reader = new configFileReader("");
     reader->inputSourceIsString("abc \"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"abc");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"def");
-    ASSERT_EQ(reader->readUntilNextSeparator(),"");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "def");
+    ASSERT_EQ(reader->readUntilNextSeparator(), "");
 }

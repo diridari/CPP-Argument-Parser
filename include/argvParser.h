@@ -19,7 +19,6 @@
 using namespace std;
 
 
-
 /**
  * Argument Parser.
  * this class is a generic argument parser
@@ -68,7 +67,8 @@ public:
      * @param callBack      call back function that gets invoked
      * @return advanced configuration
      */
-    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **));
+    argParserAdvancedConfiguration *
+    addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **));
 
     /**
      * Add Argument.
@@ -84,7 +84,7 @@ public:
      * @param callBack      lamda that gets invoked. It takes the current index, buffer and returns the changed index
      * @return advanced configuration
      */
-    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, function<int(int,char**)> );
+    argParserAdvancedConfiguration *addArg(string argvShort, string argvLong, string help, function<int(int, char **)>);
 
     /**
      * Add Argument.
@@ -100,7 +100,7 @@ public:
      * @param callBack      lamda that gets invoked
      * @return advanced configuration
      */
-    argParserAdvancedConfiguration * addArg(string argvShort, string argvLong, string help, function<void()> );
+    argParserAdvancedConfiguration *addArg(string argvShort, string argvLong, string help, function<void()>);
 
     /**
      * Help Message.
@@ -161,13 +161,9 @@ private:
     string description;
 
 
-
-
-    bool checkNextArgumentIfEnum(string arg, char * nextElement);
+    bool checkNextArgumentIfEnum(string arg, char *nextElement);
 
 };
-
-
 
 
 #endif //GDBMANIPULATOR_ARGVPARSER_H
