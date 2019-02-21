@@ -75,7 +75,7 @@ TEST(argvParser, CheckRequiredConfigFail6) {
 }
 
 TEST(argvParser, CheckRequiredConfigFail7) {
-    argvParser parser("test");
+    argvParser parser(false,"test");
     parser.addArg("t", "tt", "test", callBackD)->required();
     parser.addArg("x", "xx", "test", callBackD)->required();
     parser.addArg("a", "aa", "test", callBackD);
@@ -93,19 +93,19 @@ TEST(argvParser, CheckRequiredConfigFail8) {
 }
 
 TEST(argvParser, emptyConfig_testHelpMessage) {
-    argvParser parser("empty conf");
+    argvParser parser(false,"empty conf");
     ASSERT_EQ("empty conf\nusage:\n\n", parser.getHelpMessage());
 }
 
 TEST(argvParser, testHelpMessage) {
-    argvParser parser("empty conf");
+    argvParser parser(false,"empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr));
     ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n\n",
               parser.getHelpMessage());
 }
 
 TEST(argvParser, testHelpMessageTwoArgs) {
-    argvParser parser("empty conf");
+    argvParser parser(false,"empty conf");
     ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr));
     ASSERT_TRUE(parser.addArg("b", "bbb", "helpMessage2", nullptr));
     ASSERT_EQ(

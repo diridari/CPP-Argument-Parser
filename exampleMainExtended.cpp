@@ -60,7 +60,7 @@ int main(int argvs, char **argv) {
     p->addArg("-p", "--print", "echo text", printCallBack)->numberOfParameter(1)->addAdditianlHelp("echo the next argument");
     // pre defined parameter for "-e"  with bash autocompletion
     p->addArg("-e", "--enums", "enum example", enumCallBack)->numberOfParameter(1)->allowedParameter(3, "abc", "def","xyz")
-        -> addAdditianlHelp("hear is just a pre defined set of arguments allowed");
+        -> addAdditianlHelp("here is just a pre defined set of arguments allowed");
     // autocompletion with filenames
     p->addArg("-o", "--open", "example to complete a file/dir", printCallBack)->numberOfParameter(1)->asFile();
     // lambda

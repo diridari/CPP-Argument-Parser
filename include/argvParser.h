@@ -43,15 +43,17 @@ using namespace std;
  */
 class argvParser : public argParserAdvancedConfiguration {
 
+
 public:
 
     /**
      * Argument Paerser.
      * Pars arguments can call if arg eq long or short version the callback function.
      * Help message = description + list of configured param + required param
+     * @param addDefaultHelpCommand add the default help implementation it enables -h or -help with one optional argument
      * @param description  description of the application
      */
-    explicit argvParser(string description = "");
+    explicit argvParser(bool addDefaultHelpCommand = true,string description = "");
 
     /**
      * Add Argument.
@@ -154,6 +156,10 @@ private:
 
     bool checkNextArgumentIfEnum(string arg, char *nextElement);
 
+    /**
+     * Add default help argument
+     */
+    bool addHelp;
 };
 
 
