@@ -41,7 +41,8 @@ using namespace std;
  *        return index;
         }
  */
-class argvParser : private argParserAdvancedConfiguration {
+class argvParser : public argParserAdvancedConfiguration {
+
 
 public:
 
@@ -49,9 +50,10 @@ public:
      * Argument Paerser.
      * Pars arguments can call if arg eq long or short version the callback function.
      * Help message = description + list of configured param + required param
+     * @param addDefaultHelpCommand add the default help implementation it enables -h or -help with one optional argument
      * @param description  description of the application
      */
-    explicit argvParser(string description = "");
+    explicit argvParser(bool addDefaultHelpCommand = true,string description = "");
 
     /**
      * Add Argument.
@@ -137,15 +139,6 @@ public:
 private:
 
 
-    /**
-   * get the index of the argument
-   */
-    int checkArgs(string param);
-
-    /**
-     * check whether a argument has been configured
-     */
-    bool existArg(string arg);
 
 
     /**
@@ -163,6 +156,12 @@ private:
 
     bool checkNextArgumentIfEnum(string arg, char *nextElement);
 
+    /**
+     * Add default help argument
+     */
+    bool addHelp;
+
+    bool genAutoCompl = true;
 };
 
 

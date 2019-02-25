@@ -19,8 +19,6 @@ before_install:
   - sudo make
   - sudo cp -a include/gtest /usr/include
   - sudo cp -a libgtest_main.so libgtest.so /usr/lib/
-  - sudo wget https://github.com/Kitware/CMake/releases/download/v3.10.2/cmake-3.10.2-Linux-x86_64.sh
-  - sudo sh cmake-3.10.2-Linux-x86_64.sh --skip-license  --prefix=/usr/local
   - cd "${TRAVIS_BUILD_DIR}"
 
 
@@ -38,7 +36,7 @@ addons:
 script:
   - mkdir bin
   - cd bin
-  - /usr/local/bin/cmake ..
+  - cmake ..
   - make argParser_Test
   - ctest
 

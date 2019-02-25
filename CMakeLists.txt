@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.3)
 project(CPP_Argument_Parser)
 
 include_directories(include)
@@ -16,8 +16,11 @@ if (GTest_FOUND)
     add_executable(argParser_Test ${tests_src} ${src})
     target_link_libraries(argParser_Test ${GTEST_BOTH_LIBRARIES} pthread)
     enable_testing()
-    gtest_discover_tests(argParser_Test tests
-            )
+        if(VERSION VERSION_GREATER 3.10)
+            gtest_discover_tests(argParser_Test tests)
+        else()
+            add_test(argParser_Test argParser_Test)
+        endif()
 else ()
     message(WARNING "to enable self test install gtest")
 
