@@ -160,6 +160,8 @@ private:
      * Add default help argument
      */
     bool addHelp;
+
+    bool genAutoCompl = true;
 };
 
 

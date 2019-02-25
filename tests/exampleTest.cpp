@@ -33,7 +33,7 @@ TEST(argvParser, systemtest1) {
     parser.addArg("a", "aa", "test", callBack1)->required();
     parser.addArg("b", "bb", "test", callBack2)->required();
 
-    char *arg[] = {"program", "../tests/configFiles/config1.txt", "../tests/configFiles/config2.txt"};
+    char *arg[] = {"program", "../tests/configFiles/config1.txt", "../tests/configFiles/config2.txt",NULL};
 
     ASSERT_FALSE(parser.analyseArgv(3, arg));
     ASSERT_EQ(t1, "test");

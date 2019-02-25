@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.3)
 project(CPP_Argument_Parser)
 
 include_directories(include)

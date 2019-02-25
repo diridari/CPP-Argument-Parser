@@ -53,6 +53,7 @@ string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
         out += "\n\t" + help;
     else
         out += "\n\t no additional help available";
+    return out;
 }
 
 argParserAdvancedConfiguration *
@@ -162,7 +163,7 @@ int argParserAdvancedConfiguration::checkArgs(string param) {
 
 bool argParserAdvancedConfiguration::existArg(string arg) {
     for (int x = 0; x < argconfig->size(); x++) {
-        if (argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) {
+        if ((argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) && arg != "") {
             return true;
         }
     }
