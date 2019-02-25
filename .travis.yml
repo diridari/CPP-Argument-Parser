@@ -36,7 +36,7 @@ addons:
 script:
   - mkdir bin
   - cd bin
-  - cmake CMakeLists.txt
+  - cmake ..
   - make argParser_Test
   - ctest
 
