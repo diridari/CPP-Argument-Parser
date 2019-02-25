@@ -50,7 +50,7 @@ string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
     out = "\n additional help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
           argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage;
     if(help != "")
-        out += "\n\t" + help;
+        out += "\n" + help;
     else
         out += "\n\t no additional help available";
     return out;
