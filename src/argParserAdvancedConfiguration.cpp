@@ -43,14 +43,16 @@ int callBackInstallAutoCompletion(int index, char **buff) {
 
 string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
     int index = checkArgs(command);
+    string out = "";
     if(index <0 )
         return "\n to get additional help type -h <command>";
     string help = argconfig->at(index)->additionalHelp;
-    if(help == "")
-        return "\nno additional help for \"" + command + "\" defined ";
-    return
-        "\nadditioanl help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
-        argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage  + "\n\t" + help;
+    out = "\n additional help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
+          argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage;
+    if(help != "")
+        out += "\n\t" + help;
+    else
+        out += "\n\t no additional help available";
 }
 
 argParserAdvancedConfiguration *
@@ -111,7 +113,7 @@ argParserAdvancedConfiguration *argParserAdvancedConfiguration::asFile() {
     return this;
 }
 
-argParserAdvancedConfiguration * argParserAdvancedConfiguration::addAdditianlHelp(string additionalHelp){
+argParserAdvancedConfiguration * argParserAdvancedConfiguration::addAdditionalHelp(string additionalHelp){
     argument *x = argconfig->back();
     x->additionalHelp = additionalHelp;
     return this;

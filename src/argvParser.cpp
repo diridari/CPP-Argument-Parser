@@ -113,7 +113,8 @@ void argvParser::printHelpMessage(bool colored) {
 bool argvParser::analyseArgv(int args, char **argv) {
 #ifdef __linux__ // auto completion jet just under linux supported
     this->addSection("Argument auto completion");
-    this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion);
+    this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion)
+            ->addAdditionalHelp("This command generates a bash autocompletion script that can be loaded temporary or permanent.");
     generateAutoCompletion();
 #endif
     if(addHelp) {

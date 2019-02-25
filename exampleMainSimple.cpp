@@ -19,7 +19,8 @@ int main(int argvs, char **argv) {
     argvParser *p = new argvParser("simple example program\n\t this application intends to be an example ");
     // define program arguments
     // lambda expression
-    p->addArg("-t", "--test", "simple lambda expression", [] { cout << "got test" << endl; })->addAdditianlHelp("type \"help -t  to get this info \"");
+    p->addArg("-t", "--test", "simple lambda expression", [] { cout << "got test" << endl; })->addAdditionalHelp(
+            "type \"help -t  to get this info \"");
     // lambda expression
     function<int(int, char **)> callBack = [](int i, char **buff) {
         i++;

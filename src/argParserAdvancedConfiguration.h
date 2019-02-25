@@ -56,9 +56,15 @@ public:
 
 
     /**
-     * add additional Help messag.
+     * add additional Help messages.
+     * This method can be used add add more information about an specific.
+     * This information can be accessed via getAdditionalHelpFor(string) or by using the default help command implementation.
+     *  e.g -h  <command>  would return the long and the short version of this command and if defined the additional help
+     *
+     * @param additionalHelp   additional help the add
+     * @return this
      */
-    argParserAdvancedConfiguration * addAdditianlHelp(string additionalHelp);
+    argParserAdvancedConfiguration * addAdditionalHelp(string additionalHelp);
 protected:
     /**
     * generated help message
@@ -144,7 +150,12 @@ protected:
     */
     string buildHelpLine(string argvShort, string argvLong, string help);
 
-       string getAdditionalHelpFor(string command);
+    /**
+     * get the additional help for an spceffic command.
+     * @param command  command to get additional help
+     * @return if command is known additional help else information that no such command excised
+     */
+    string getAdditionalHelpFor(string command);
 
     /**
     * get the index of the argument
