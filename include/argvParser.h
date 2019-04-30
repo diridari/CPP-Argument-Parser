@@ -136,6 +136,17 @@ public:
      */
     void addSection(string sectionName);
 
+    /**
+     * check the default config file before reading user defined arguments.
+     * This function defines the location and name of the config files.
+     * Each location gets checked before parsing the cli arguments.
+     * At first the first location string gets checked
+     * the the second one     and so on
+     * so the last defines file location ca overwrite arguments from the first file
+     * locations are sperated with < > or <,>
+     */
+    void checkForDefaulConfigFilesIn(string defaultConfigFileName, string locations);
+
 private:
 
 
@@ -161,7 +172,14 @@ private:
      */
     bool addHelp;
 
-    bool genAutoCompl = true;
+    bool analyseArgvNotJetRun = true;
+
+    string nameOfDefaultConfigFile;
+    string defaultConfigFilesLocations;
+
+    bool analyzeConfigFile(string fileName);
+
+
 };
 
 
