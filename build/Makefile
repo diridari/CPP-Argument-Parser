@@ -20,7 +20,7 @@ all::
 
 test :
 	make -f Makefile.test
-	./CPP-Argument-Parser-Test
+	./argParserExp-Test
 
 clean ::
 	make  -f  Makefile.test clean
