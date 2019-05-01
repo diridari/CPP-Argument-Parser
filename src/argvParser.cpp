@@ -22,6 +22,8 @@ void resetCLI(){
 void printGreen(){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
 }
+#define FOLDER_SEPERATOR  ("\\")
+#define ENVIREMENT_HOME (getenv("USERPROFILE"))
 #endif
 #ifdef __linux__
 
@@ -36,7 +38,8 @@ void resetCLI() {
 void printGreen() {
     cout << "\u001B[1;32m";
 }
-
+#define FOLDER_SEPERATOR ( "/")
+#define ENVIREMENT_HOME (getenv("HOME"))
 #endif
 
 extern int callBackInstallAutoCompletion(int index, char **buff);
@@ -112,25 +115,27 @@ void argvParser::printHelpMessage(bool colored) {
 
 
 bool argvParser::analyseArgv(int args, char **argv) {
-#ifdef __linux__ // auto completion jet just under linux supported
+
     if(analyseArgvNotJetRun) {
         analyseArgvNotJetRun = false;
+#ifdef __linux__ // auto completion jet just under linux supported
         this->addSection("Argument auto completion");
         this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion)
                 ->addAdditionalHelp(
                         "This command generates a bash autocompletion script that can be loaded temporary or permanent.");
         generateAutoCompletion();
+#endif
         istringstream tokenStream(defaultConfigFilesLocations);
         string location = "loc not set";
         while(getline(tokenStream,location,' ')){
-            if(location.at(0) == '~'){
-                location.replace(0,1,getenv("HOME"));
+            if(location.size() >0 && location.at(0) == '~'){
+                location.replace(0,1,ENVIREMENT_HOME);
             }
             //cout << " open " << location+"/"+nameOfDefaultConfigFile<<endl;
-            analyzeConfigFile(location+"/"+nameOfDefaultConfigFile);
+            analyzeConfigFile(location+FOLDER_SEPERATOR+nameOfDefaultConfigFile);
         }
     }
-#endif
+
     if(addHelp) {
         addHelp = false;
         this->addSection("utils");
