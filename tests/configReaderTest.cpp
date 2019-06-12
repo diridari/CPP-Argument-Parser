@@ -3,6 +3,7 @@
 //
 
 #include <gtest/gtest.h>
+#include <argvParser.h>
 #include "../src/configFileReader.h"
 
 TEST(configReader, readEmptyText) {
@@ -232,4 +233,67 @@ TEST(configReader, unfinishedJoin) {
     ASSERT_EQ(reader->readUntilNextSeparator(), "abc");
     ASSERT_EQ(reader->readUntilNextSeparator(), "def");
     ASSERT_EQ(reader->readUntilNextSeparator(), "");
+}
+
+int xx = 0;
+TEST(commentsInConfigFile, comment1){
+    xx = 0;
+    argvParser parser(true,"test","");
+    parser.addArg("a", "-a", "test", [] {xx++;});
+    parser.addArg("#", "", "x", [] {});
+    char *arg[] = {"program", "../tests/configFiles/config8.txt"};
+    parser.analyseArgv(2,arg);
+    ASSERT_EQ(xx,2);
+}
+TEST(commentsInConfigFile, comment2){
+    xx = 0;
+    argvParser parser(true,"test","#");
+    parser.addArg("a", "-a", "test", [] {xx++;});
+    parser.addArg("#", "", "x", [] {});
+    char *arg[] = {"program", "../tests/configFiles/config8.txt"};
+    parser.analyseArgv(2,arg);
+    ASSERT_EQ(xx,1);
+}
+
+TEST(commentsInConfigFile, comment3){
+    xx = 0;
+    argvParser parser(true,"test","/%#");
+    parser.addArg("a", "-a", "test", [] {xx++;});
+    parser.addArg("#", "", "x", [] {});
+    char *arg[] = {"program", "../tests/configFiles/config8.txt"};
+    parser.analyseArgv(2,arg);
+    ASSERT_EQ(xx,1);
+}
+TEST(defaultConfigFile, comment4){
+    xx = 0;
+    argvParser parser(true,"test","/#%");
+    parser.addArg("a", "-a", "test", [] {xx++;});
+    parser.addArg("#", "", "x", [] {});
+    char *arg[] = {"program", "../tests/configFiles/config8.txt"};
+    parser.analyseArgv(2,arg);
+    ASSERT_EQ(xx,1);
+}
+TEST(commentsInConfigFile, comment5){
+    xx = 0;
+    argvParser parser(true,"test","#%/");
+    function<void()> f = []{
+        xx++;
+    };
+    parser.addArg("a", "-a", "test",f );
+    parser.addArg("#", "", "x", [] {});
+    char *arg[] = {"program", "../tests/configFiles/config8.txt"};
+    parser.analyseArgv(2,arg);
+    ASSERT_EQ(xx,1);
+}
+TEST(commentsInConfigFile, comment6){
+    xx = 0;
+    argvParser parser(true,"test","#%/");
+    function<void()> f = []{
+        xx++;
+    };
+    parser.addArg("a", "-a", "test",f );
+    parser.addArg("#", "", "x", [] {});
+    char *arg[] = {"program", "../tests/configFiles/config9.txt"};
+    parser.analyseArgv(2,arg);
+    ASSERT_EQ(xx,2);
 }

@@ -2,6 +2,7 @@
 // Created by basto on 4/15/18.
 //
 
+#include <sstream>
 #include "../include/argvParser.h"
 #include "configFileReader.h"
 
@@ -21,6 +22,8 @@ void resetCLI(){
 void printGreen(){
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
 }
+#define FOLDER_SEPERATOR  ("\\")
+#define ENVIREMENT_HOME (getenv("USERPROFILE"))
 #endif
 #ifdef __linux__
 
@@ -35,7 +38,8 @@ void resetCLI() {
 void printGreen() {
     cout << "\u001B[1;32m";
 }
-
+#define FOLDER_SEPERATOR ( "/")
+#define ENVIREMENT_HOME (getenv("HOME"))
 #endif
 
 extern int callBackInstallAutoCompletion(int index, char **buff);
@@ -75,11 +79,11 @@ argvParser::addArg(string argvShort, string argvLong, string help, int (*callBac
 }
 
 
-argvParser::argvParser(bool addDefaultHelpCommand, string description_) : argParserAdvancedConfiguration() {
+argvParser::argvParser(bool addDefaultHelpCommand, string description_, string commentToken) : argParserAdvancedConfiguration() {
     description = description_ + "\n";
     addHelp = addDefaultHelpCommand;
     requiredArgs = "";
-
+    this->commentToken = commentToken;
 }
 
 void argvParser::printHelpMessage(bool colored) {
@@ -111,21 +115,32 @@ void argvParser::printHelpMessage(bool colored) {
 
 
 bool argvParser::analyseArgv(int args, char **argv) {
+
+    if(analyseArgvNotJetRun) {
+        analyseArgvNotJetRun = false;
 #ifdef __linux__ // auto completion jet just under linux supported
-    if(genAutoCompl) {
-        genAutoCompl = false;
         this->addSection("Argument auto completion");
         this->addArg("-instAutoCompl", "", "install auto completion for cli usage", callBackInstallAutoCompletion)
                 ->addAdditionalHelp(
                         "This command generates a bash autocompletion script that can be loaded temporary or permanent.");
         generateAutoCompletion();
-    }
 #endif
+        istringstream tokenStream(defaultConfigFilesLocations);
+        string location = "loc not set";
+        while(getline(tokenStream,location,' ')){
+            if(location.size() >0 && location.at(0) == '~'){
+                location.replace(0,1,ENVIREMENT_HOME);
+            }
+            //cout << " open " << location+"/"+nameOfDefaultConfigFile<<endl;
+            analyzeConfigFile(location+FOLDER_SEPERATOR+nameOfDefaultConfigFile);
+        }
+    }
+
     if(addHelp) {
         addHelp = false;
         this->addSection("utils");
         // Default help implementation
-        this->addArg("-h", "help", "help message or additional infomations about an command e.g. \"help <command>\"",
+        this->addArg("-h", "help", "help message or additional information's about an command e.g. \"help <command>\"",
                      [&](int i, char **buff) {
                          printHelpMessage();
                          string s = "";
@@ -160,27 +175,35 @@ bool argvParser::analyseArgv(int args, char **argv) {
                 }
             }
         } else { // check config file
-            configFileReader *reader = new configFileReader(argv[i]);
-            if (!reader->isEOF()) {
-                vector<string> *arg = new vector<string>();
-                arg->push_back("program Name");
-                while (!reader->isEOF()) {
-                    string param = reader->readUntilNextSeparator();
-                    arg->push_back(param);
-                }
-                char *buff[arg->size()];
-                for (int y = 0; y < arg->size(); y++) {
-                    buff[y] = const_cast<char *>(arg->at(y).c_str());
-                }
-                analyseArgv(arg->size(), buff);
-                delete reader;
-            } else {
-                delete reader;
+            if(!analyzeConfigFile(argv[i]))
                 return false;
-            }
+
         }
     }
     return foundAllRequierdArgs();
+}
+
+bool argvParser::analyzeConfigFile(string fileName) {
+    configFileReader *reader = new configFileReader(fileName);
+    reader->setCommentChar(commentToken);
+    if (!reader->isEOF()) {
+        vector<string> *arg = new vector<string>();
+        arg->push_back("program Name");
+        while (!reader->isEOF()) {
+            string param = reader->readUntilNextSeparator();
+            arg->push_back(param);
+        }
+        char *buff[arg->size()];
+        for (int y = 0; y < arg->size(); y++) {
+            buff[y] = const_cast<char *>(arg->at(y).c_str());
+        }
+        analyseArgv(arg->size(), buff);
+        delete reader;
+    } else {
+        delete reader;
+        return false;
+    }
+    return true;
 }
 
 string argvParser::getHelpMessage() {
@@ -237,6 +260,12 @@ bool argvParser::checkNextArgumentIfEnum(string arg, char *nextElement) {
     }
     return true;
 }
+
+void argvParser::checkForDefaulConfigFilesIn(string defaultConfigFileName, string  location) {
+     nameOfDefaultConfigFile = defaultConfigFileName;
+     defaultConfigFilesLocations = location;
+}
+
 
 
 

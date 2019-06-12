@@ -52,8 +52,9 @@ public:
      * Help message = description + list of configured param + required param
      * @param addDefaultHelpCommand add the default help implementation it enables -h or -help with one optional argument
      * @param description  description of the application
+     * @param commentToken char's that define the start of a comment  the comment ends on the end of the line
      */
-    explicit argvParser(bool addDefaultHelpCommand = true,string description = "");
+    explicit argvParser(bool addDefaultHelpCommand = true,string description = "", string commentToken = "");
 
     /**
      * Add Argument.
@@ -136,10 +137,21 @@ public:
      */
     void addSection(string sectionName);
 
+    /**
+     * check the default config file before reading user defined arguments.
+     * This function defines the location and name of the config files.
+     * Each location gets checked before parsing the cli arguments.
+     * At first the first location string gets checked
+     * the the second one     and so on
+     * so the last defines file location ca overwrite arguments from the first file
+     * locations are sperated with < > or <,>
+     */
+    void checkForDefaulConfigFilesIn(string defaultConfigFileName, string locations);
+
 private:
 
 
-
+    string commentToken;
 
     /**
      * last failed argument
@@ -161,7 +173,14 @@ private:
      */
     bool addHelp;
 
-    bool genAutoCompl = true;
+    bool analyseArgvNotJetRun = true;
+
+    string nameOfDefaultConfigFile;
+    string defaultConfigFilesLocations;
+
+    bool analyzeConfigFile(string fileName);
+
+
 };
 
 
