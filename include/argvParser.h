@@ -52,8 +52,9 @@ public:
      * Help message = description + list of configured param + required param
      * @param addDefaultHelpCommand add the default help implementation it enables -h or -help with one optional argument
      * @param description  description of the application
+     * @param commentToken char's that define the start of a comment  the comment ends on the end of the line
      */
-    explicit argvParser(bool addDefaultHelpCommand = true,string description = "");
+    explicit argvParser(bool addDefaultHelpCommand = true,string description = "", string commentToken = "");
 
     /**
      * Add Argument.
@@ -150,7 +151,7 @@ public:
 private:
 
 
-
+    string commentToken;
 
     /**
      * last failed argument

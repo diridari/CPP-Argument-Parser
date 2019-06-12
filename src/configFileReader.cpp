@@ -12,7 +12,7 @@ string configFileReader::readUntilNextSeparator() {
     // go to the next element
     while (!isEOF()) {
         typeOfSeparator tmp = isSeparator(peekNextChar());
-        if (tmp == typeOfSeparator::none || tmp == typeOfSeparator::separator) {
+        if (tmp == typeOfSeparator::none || tmp == typeOfSeparator::separator || tmp == typeOfSeparator::isInComment) {
             if (tmp == typeOfSeparator::separator) {
                 isInSeperator = true;
                 skipNextChar(); // lift over separator
@@ -29,7 +29,10 @@ string configFileReader::readUntilNextSeparator() {
 
         } else if (isInSeperator && tmp == typeOfSeparator::space) {
             out += getNextChar();
-        } else {
+        } else if(tmp == typeOfSeparator::isInComment){
+            skipNextChar();
+        }
+        else{
             skipNextChar();
             if (out == "")
                 out = readUntilNextSeparator();
@@ -42,11 +45,21 @@ string configFileReader::readUntilNextSeparator() {
 }
 
 configFileReader::typeOfSeparator configFileReader::isSeparator(char toCheck) {
+    static bool isInComment = false;
     for (int i = 0; i < septarators->size(); i++) {
         if (toCheck == septarators->at(i)) {
             return typeOfSeparator::separator;
-        } else if (toCheck == ' ' || toCheck == '\n' || toCheck == '\t') {
+        } else if(toCheck == '\n' || toCheck == '\t'){
+            isInComment = false;
             return typeOfSeparator::space;
+        }else if(isInComment){
+            return typeOfSeparator::isInComment;
+        }
+        else if(toCheck == ' ') {
+            return typeOfSeparator::space;
+        }else if(commentToken.find(toCheck) != string::npos){
+            isInComment = true;
+            return typeOfSeparator::isInComment;
         }
     }
     return typeOfSeparator::none;
@@ -122,4 +135,8 @@ void configFileReader::openFile() {
         configFile->open(fileName.c_str(), std::ifstream::in);
         isOpen = true;
     }
+}
+
+void configFileReader::setCommentChar(string commentToken) {
+    this->commentToken = commentToken;
 }

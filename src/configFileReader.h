@@ -22,7 +22,8 @@ class configFileReader {
     enum typeOfSeparator {
         none,       // no Separator
         space,      // any kind of space
-        separator   // any kind of Separator
+        separator,   // any kind of Separator
+        isInComment
     };
 
     /**
@@ -89,6 +90,8 @@ class configFileReader {
      */
     ifstream *configFile;
     bool isOpen = false;
+
+    string commentToken;
 public:
 
     /**
@@ -120,6 +123,11 @@ public:
      * if one joined string does not get closed is get closed automatically at the end of each inout source
      */
     string readUntilNextSeparator();
+
+    /**
+     * define char as comment start
+     */
+    void setCommentChar(string commentToken);
 
 
 };

@@ -79,11 +79,11 @@ argvParser::addArg(string argvShort, string argvLong, string help, int (*callBac
 }
 
 
-argvParser::argvParser(bool addDefaultHelpCommand, string description_) : argParserAdvancedConfiguration() {
+argvParser::argvParser(bool addDefaultHelpCommand, string description_, string commentToken) : argParserAdvancedConfiguration() {
     description = description_ + "\n";
     addHelp = addDefaultHelpCommand;
     requiredArgs = "";
-
+    this->commentToken = commentToken;
 }
 
 void argvParser::printHelpMessage(bool colored) {
@@ -140,7 +140,7 @@ bool argvParser::analyseArgv(int args, char **argv) {
         addHelp = false;
         this->addSection("utils");
         // Default help implementation
-        this->addArg("-h", "help", "help message or additional infomations about an command e.g. \"help <command>\"",
+        this->addArg("-h", "help", "help message or additional information's about an command e.g. \"help <command>\"",
                      [&](int i, char **buff) {
                          printHelpMessage();
                          string s = "";
@@ -185,6 +185,7 @@ bool argvParser::analyseArgv(int args, char **argv) {
 
 bool argvParser::analyzeConfigFile(string fileName) {
     configFileReader *reader = new configFileReader(fileName);
+    reader->setCommentChar(commentToken);
     if (!reader->isEOF()) {
         vector<string> *arg = new vector<string>();
         arg->push_back("program Name");
