@@ -6,7 +6,7 @@ a callback function or a lambda expressions, which gets invoked if the correspon
 to your application.
 
 ## Features
-* Support OS: Linux, Windows, MacOs(not tested)
+* Support OS: Linux(with bash auto completion), Windows, MacOs
 * Easy argument registration
 * Help message generator
 * Linux Bash auto completion
