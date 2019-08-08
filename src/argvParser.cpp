@@ -79,11 +79,11 @@ argvParser::addArg(string argvShort, string argvLong, string help, int (*callBac
 }
 
 
-argvParser::argvParser(bool addDefaultHelpCommand, string description_, string commentToken) : argParserAdvancedConfiguration() {
+argvParser::argvParser(bool addDefaultHelpCommand, string description_, string commentToken_) : argParserAdvancedConfiguration() {
     description = description_ + "\n";
     addHelp = addDefaultHelpCommand;
     requiredArgs = "";
-    this->commentToken = commentToken;
+    commentToken = commentToken_;
 }
 
 void argvParser::printHelpMessage(bool colored) {
