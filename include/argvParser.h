@@ -148,6 +148,11 @@ public:
      */
     void checkForDefaulConfigFilesIn(string defaultConfigFileName, string locations);
 
+    /**
+     * generate a markdown argument overview
+     * This command generate a markdown script to get all information about the arguments
+     */
+    string generateMarkdownArgumentOverview(string applicationName);
 private:
 
 
