@@ -2,16 +2,11 @@
 
 Easy to use C++ argument parsing library. It intends to be easy to use and gain a good user experience by generating 
 help messages, bash auto completion and by providing a simple to use api. For each argument it is possible to register 
-a callback function or a lambda expressions, which gets invoked in case of that the corresponding argument gets parsed 
-to your application.
-
-Easy to use C++ argument parsing library. It intends to be easy to use and gain a good user experience by generating 
-help messages, bash auto completion and by providing a simple to use api. For each argument it is possible to register 
 a callback function or a lambda expressions, which gets invoked if the corresponding argument gets parsed 
 to your application.
 
 ## Features
-* Support OS: Linux, Windows, MacOs(not tested)
+* Support OS: Linux(with bash auto completion), Windows, MacOs
 * Easy argument registration
 * Help message generator
 * Linux Bash auto completion
