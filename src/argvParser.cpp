@@ -284,23 +284,21 @@ string argvParser::generateMarkdownArgumentOverview(string applicationName) {
     for(int i = 0; i< argconfig->size();i++) {
 
         md += "### " + argconfig->at(i)->argLong + "\n";
-        md += argconfig->at(i)->helpMessage + "\n";
-        md += argconfig->at(i)->additionalHelp + "\n\n";
+        md += argconfig->at(i)->helpMessage + "\n\n";
         md += "    short: " + argconfig->at(i)->argShort + " \n";
         md += "    long : " + argconfig->at(i)->argLong + " \n\n";
+        md += argconfig->at(i)->additionalHelp + "\n\n";
         if (argconfig->at(i)->numberOfArguments > 0)
-            md += "number of additional parameter: " + to_string(argconfig->at(i)->numberOfArguments) + " \n \n ";
+            md += "number of additional parameter: " + to_string(argconfig->at(i)->numberOfArguments) + " \n \n";
         for (int x = 0; x < enumsList.size(); x++) {
             if (enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong && enumsList.at(x).enums != "") {
                 md += "allowed parameter: " + enumsList.at(x).enums + "\n";
             }
 
         }
-        for (int i = 0; i < argconfig->size(); i++) {
-            if (argconfig->at(i)->requiredAndNotHitJet) {
-                md += "This argument is requires \n";
-            }
-        }
+       if(argconfig->at(i)->requiredAndNotHitJet){
+           md += "This argument is requires\n";
+       }
     }
     return md;
 }
