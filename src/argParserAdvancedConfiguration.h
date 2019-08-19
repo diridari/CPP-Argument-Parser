@@ -79,7 +79,7 @@ protected:
      * the last long top level arg
      */
     string lastToplevelLong = "";
-
+    string applicationName;
     /**
    * the last short top level arg
    */
@@ -110,6 +110,7 @@ protected:
         string argLong;
         string helpMessage;
         string additionalHelp = "";
+        string enums;
         function<int(int, char **)> callBack = NULL;
         function<void()> simpleCallBack = NULL;
         bool requiredAndNotHitJet = false;
@@ -124,6 +125,10 @@ protected:
                 std::move(helpMessage)) {};
     } argument;
 
+    typedef struct  section{
+        string sectionName = "";
+        vector <argument *> *arguments = new vector<argument*>();
+    }section;
     /**
      * list of defined enums
      */
@@ -138,7 +143,8 @@ protected:
     /**
     * list of configured arguments
     */
-    vector<argument *> *argconfig = new vector<argument *>();
+    //vector<argument *> *argconfig = new vector<argument *>();
+    vector<section*> *newargconfig ;
 
 
     /**
@@ -160,8 +166,8 @@ protected:
     /**
     * get the index of the argument
     */
-    int checkArgs(string param);
-
+   // int checkArgs(string param);
+    argument * getArgument(string param);
     /**
      * check whether a argument has been configured
      */

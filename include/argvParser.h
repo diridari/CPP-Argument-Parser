@@ -54,7 +54,7 @@ public:
      * @param description  description of the application
      * @param commentToken char's that define the start of a comment  the comment ends on the end of the line
      */
-    explicit argvParser(bool addDefaultHelpCommand = true,string description = "", string commentToken = "");
+    explicit argvParser(string applicationName = "", string description = "", bool addDefaultHelpCommand = true,  string commentToken = "");
 
     /**
      * Add Argument.
@@ -171,7 +171,7 @@ private:
     string description;
 
 
-    bool checkNextArgumentIfEnum(string arg, char *nextElement);
+    bool checkNextArgumentIfEnum(argument * arg, char *nextElement);
 
     /**
      * Add default help argument

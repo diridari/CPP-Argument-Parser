@@ -42,13 +42,14 @@ int callBackInstallAutoCompletion(int index, char **buff) {
 }
 
 string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
-    int index = checkArgs(command);
-    string out = "";
-    if(index <0 )
-        return "\n to get additional help type -h <command>";
-    string help = argconfig->at(index)->additionalHelp;
-    out = "\n additional help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
-          argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage;
+
+    argument * arg = getArgument(command);
+    if(arg == nullptr)
+        return "no such command \"" + command +"\"";
+
+    string help = arg->additionalHelp;
+    string out = "\n additional help for \"" + command + "\" \n\t <" +  arg->argShort+ ">  <" +
+            arg->argLong + ">  \t" + arg->helpMessage;
     if(help != "")
         out += "\n" + help;
     else
@@ -76,7 +77,8 @@ argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *
     t.toplevelComannd = lastToplevelLong;
     t.toplevelShort = lastToplevelShort;
     t.asFile = false;
-    enumsList.push_back(t);
+
+    newargconfig->back()->arguments->back()->enums = list +" ";
     return this;
 
 }
@@ -115,13 +117,13 @@ argParserAdvancedConfiguration *argParserAdvancedConfiguration::asFile() {
 }
 
 argParserAdvancedConfiguration * argParserAdvancedConfiguration::addAdditionalHelp(string additionalHelp){
-    argument *x = argconfig->back();
+    argument *x = newargconfig->back()->arguments->back();
     x->additionalHelp = additionalHelp;
     return this;
 }
 
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
-    argument *x = argconfig->back();
+    argument *x = newargconfig->back()->arguments->back();
     x->requiredAndNotHitJet = true;
     requiredArgs += buildHelpLine(x->argShort, x->argLong, x->helpMessage);
     return this;
@@ -129,8 +131,8 @@ argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
 
 
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::numberOfParameter(int number) {
-    argument *x = argconfig->back();
-    x->numberOfArguments = number;
+    newargconfig->back()->arguments->back()->numberOfArguments = number;
+
     return this;
 }
 
@@ -149,6 +151,7 @@ string argParserAdvancedConfiguration::buildHelpLine(const string argvShort, con
     return s;
 }
 
+/*
 int argParserAdvancedConfiguration::checkArgs(string param) {
     for (int x = 0; x < argconfig->size(); x++) {
         if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
@@ -160,11 +163,34 @@ int argParserAdvancedConfiguration::checkArgs(string param) {
     }
     return -1;
 }
+*/
+argParserAdvancedConfiguration::argument * argParserAdvancedConfiguration::getArgument(string param){
 
-bool argParserAdvancedConfiguration::existArg(string arg) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if ((argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) && arg != "") {
-            return true;
+    for(int secIndex = 0; secIndex < newargconfig->size();secIndex++)
+    {
+        section * sec;
+        sec = newargconfig->at(secIndex);
+
+        for(int argIndex = 0; argIndex < sec->arguments->size();argIndex++) {
+            argument * arg = sec->arguments->at(argIndex);
+                if (param != "" && (arg->argShort == param || arg->argLong == param)) {
+                    return arg;
+                }
+            }
+    }
+    lastFailedArg = param;
+    return nullptr;
+}
+bool argParserAdvancedConfiguration::existArg(string args) {
+    section * sec;
+    for (int x = 0; x < newargconfig->size(); x++) {
+        sec = newargconfig->at(x);
+
+        for (int y = 0; y < sec->arguments->size(); y++) {
+            argument * arg = sec->arguments->at(y);
+            if ((arg->argShort == args || arg->argLong == args) && args != "") {
+                return true;
+            }
         }
     }
     return false;

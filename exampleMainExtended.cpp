@@ -44,7 +44,7 @@ bool disableCliH = false;
 
 int main(int argvs, char **argv) {
     // define program description
-    argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
+    argvParser *p = new argvParser("Extendend Example","This application intends to be an example ");
     // define program arguments
     // Simple Lambda CallBack
     p->addArg("-t", "--test", "test argument", []() { cout << "got \"test\"" << endl; }); // no further arguments used);

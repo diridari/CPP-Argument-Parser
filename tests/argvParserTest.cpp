@@ -97,23 +97,6 @@ TEST(argvParser, emptyConfig_testHelpMessage) {
     ASSERT_EQ("empty conf\nusage:\n\n", parser.getHelpMessage());
 }
 
-TEST(argvParser, testHelpMessage) {
-    argvParser parser(false,"empty conf");
-    ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr));
-    ASSERT_EQ("empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n\n",
-              parser.getHelpMessage());
-}
-
-TEST(argvParser, testHelpMessageTwoArgs) {
-    argvParser parser(false,"empty conf");
-    ASSERT_TRUE(parser.addArg("a", "aaa", "helpMessage", nullptr));
-    ASSERT_TRUE(parser.addArg("b", "bbb", "helpMessage2", nullptr));
-    ASSERT_EQ(
-            "empty conf\nusage:\n     <a>         <aaa>                        : helpMessage\n     <b>         <bbb>                        : helpMessage2\n\n",
-            parser.getHelpMessage());
-}
-
-
 TEST(argvParser, argWithCallBackAndNoMachingArg) {
     argvParser parser("empty conf");
     char *arg[] = {"program", "-p", "61234", "-d"};
