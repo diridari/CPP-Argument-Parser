@@ -71,10 +71,6 @@ protected:
     */
     string helpMessage;
 
-    /**
-     * list of toplevel args
-     */
-    string topLevelArgs = "";
     string applicationName;
 
 

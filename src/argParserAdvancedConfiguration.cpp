@@ -86,12 +86,13 @@ string argParserAdvancedConfiguration::generateAutoCompletion() {
 
     string script = "#/usr/bin/env bash\n_function()\n{\n\n";
     argument * arg;
-
+    string topLevelArgs;
     for (int i = 0; i < newargconfig->size(); i++) {
         for(int y = 0; y<newargconfig->at(i)->arguments->size();y++){
             arg = newargconfig->at(i)->arguments->at(y);
+            topLevelArgs += arg->argLong + " ";
             script += R"(if [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argLong +
-                      R"(" ] || [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argLong +
+                      R"(" ] || [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argShort +
                       "\" ]; then\n";
             if (arg->enumIsFile) {
                 script += "    compopt -o nospace -o dirnames -o filenames\n"
@@ -103,6 +104,8 @@ string argParserAdvancedConfiguration::generateAutoCompletion() {
             script += "\n   el";
         }
     }
+
+
     script += "se\n     COMPREPLY=($(compgen -W \"" + topLevelArgs + "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
     script += "  fi\n compgen -o bashdefault\n}\n";
     script += "complete -F _function ";
