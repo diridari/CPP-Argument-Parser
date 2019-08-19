@@ -76,20 +76,7 @@ protected:
 
     const string SIXTYSPACES = "                                                           "; // /t independent
 
-    /**
-    * list of required arguments
-    */
-    string requiredArgs;
 
-    /**
-    * additional description for auto completion
-    */
-    typedef struct enumDesciption {
-        string enums;
-        string toplevelComannd;
-        string toplevelShort;
-        bool asFile;
-    } enumDesciption;
 
     /**
     * argument description.
@@ -131,7 +118,6 @@ protected:
     /**
     * list of configured arguments
     */
-    //vector<argument *> *argconfig = new vector<argument *>();
     vector<section*> *newargconfig ;
 
 

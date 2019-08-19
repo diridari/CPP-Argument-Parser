@@ -72,10 +72,6 @@ argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *
     }
     helpMessage.erase(helpMessage.size() - 2, 2);
     helpMessage += "}\n";
-    enumDesciption t;
-    t.enums = list + " ";
-
-    t.asFile = false;
 
     newargconfig->back()->arguments->back()->enums = list +" ";
     return this;
@@ -128,7 +124,6 @@ argParserAdvancedConfiguration * argParserAdvancedConfiguration::addAdditionalHe
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
     argument *x = newargconfig->back()->arguments->back();
     x->requiredAndNotHitJet = true;
-    requiredArgs += buildHelpLine(x->argShort, x->argLong, x->helpMessage);
     return this;
 }
 

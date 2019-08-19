@@ -155,22 +155,19 @@ public:
     string generateMarkdownArgumentOverview();
 private:
 
-
+    /**
+     * tokens that defines the start of a comment in a config file
+     */
     string commentToken;
 
     /**
-     * last failed argument
-     */
-    string lastFailedArg;
-
-    string errorMessage;
-
-    /**
-     * program descripton
+     * program description
      */
     string description;
 
-
+    /**
+     * check if the string containing in nextElement does match to the defined enums in arg
+     */
     bool checkNextArgumentIfEnum(argument * arg, char *nextElement);
 
     /**

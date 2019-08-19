@@ -77,7 +77,6 @@ argvParser::argvParser(string applicationNam_, string description_, bool addDefa
     applicationName = applicationNam_;
     description = description_ + "\n";
     addHelp = addDefaultHelpCommand_;
-    requiredArgs = "";
     commentToken = commentToken_;
     newargconfig = new vector<section*>();
     newargconfig->push_back(new section());
@@ -92,6 +91,7 @@ void argvParser::printHelpMessage(bool colored) {
         printGreen();
     s += applicationName + "\n";
     s += description + "\nUsage:\n";
+    string requiredArgs;
     for(int secIndex = 0; secIndex < newargconfig->size();secIndex++ ){
         section *sec = newargconfig->at(secIndex);
         if(!sec->sectionName.empty()){
@@ -100,6 +100,8 @@ void argvParser::printHelpMessage(bool colored) {
         for(int argIndex = 0; argIndex<sec->arguments->size();argIndex++){
             argument * arg = sec->arguments->at(argIndex);
             s += buildHelpLine(arg->argShort,arg->argLong,arg->helpMessage);
+            if(arg->requiredAndNotHitJet)
+                requiredArgs += buildHelpLine(arg->argShort, arg->argLong, arg->helpMessage);
         }
     }
     cout << s<<endl;
@@ -128,7 +130,7 @@ string argvParser::getHelpMessage() {
     string s;
     s += applicationName + "\n";
     s += description + "\nUsage:\n";
-
+    string requiredArgs;
     for(int secIndex = 0; secIndex < newargconfig->size();secIndex++ ){
         section *sec = newargconfig->at(secIndex);
         if(!sec->sectionName.empty()){
@@ -137,6 +139,8 @@ string argvParser::getHelpMessage() {
         for(int argIndex = 0; argIndex<sec->arguments->size();argIndex++){
             argument * arg = sec->arguments->at(argIndex);
             s += buildHelpLine(arg->argShort,arg->argLong,arg->helpMessage);
+            if(arg->requiredAndNotHitJet)
+                requiredArgs += buildHelpLine(arg->argShort, arg->argLong, arg->helpMessage);
         }
     }
     if (!foundAllRequierdArgs()) {
