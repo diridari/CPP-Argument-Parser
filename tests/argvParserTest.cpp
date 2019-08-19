@@ -75,7 +75,7 @@ TEST(argvParser, CheckRequiredConfigFail6) {
 }
 
 TEST(argvParser, CheckRequiredConfigFail7) {
-    argvParser parser(false,"test");
+    argvParser parser("test","",false,"");
     parser.addArg("t", "tt", "test", callBackD)->required();
     parser.addArg("x", "xx", "test", callBackD)->required();
     parser.addArg("a", "aa", "test", callBackD);
@@ -93,8 +93,8 @@ TEST(argvParser, CheckRequiredConfigFail8) {
 }
 
 TEST(argvParser, emptyConfig_testHelpMessage) {
-    argvParser parser(false,"empty conf");
-    ASSERT_EQ("empty conf\nusage:\n\n", parser.getHelpMessage());
+    argvParser parser("empty conf");
+    ASSERT_EQ("empty conf\n\n\nUsage:\n", parser.getHelpMessage());
 }
 
 TEST(argvParser, argWithCallBackAndNoMachingArg) {
