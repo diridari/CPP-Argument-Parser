@@ -74,8 +74,7 @@ argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *
     helpMessage += "}\n";
     enumDesciption t;
     t.enums = list + " ";
-    t.toplevelComannd = lastToplevelLong;
-    t.toplevelShort = lastToplevelShort;
+
     t.asFile = false;
 
     newargconfig->back()->arguments->back()->enums = list +" ";
@@ -86,18 +85,23 @@ argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *
 string argParserAdvancedConfiguration::generateAutoCompletion() {
 
     string script = "#/usr/bin/env bash\n_function()\n{\n\n";
-    for (int i = 0; i < enumsList.size(); i++) {
-        script += R"(if [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + enumsList.at(i).toplevelComannd +
-                  R"(" ] || [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + enumsList.at(i).toplevelShort +
-                  "\" ]; then\n";
-        if (enumsList.at(i).asFile) {
-            script += "    compopt -o nospace -o dirnames -o filenames\n"
-                      "    COMPREPLY=($(compgen  -f \"${COMP_WORDS[${COMP_CWORD}]}\"))      \n";
-        } else {
-            script += "     COMPREPLY=($(compgen -W \"" + enumsList.at(i).enums +
-                      "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+    argument * arg;
+
+    for (int i = 0; i < newargconfig->size(); i++) {
+        for(int y = 0; y<newargconfig->at(i)->arguments->size();y++){
+            arg = newargconfig->at(i)->arguments->at(y);
+            script += R"(if [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argLong +
+                      R"(" ] || [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argLong +
+                      "\" ]; then\n";
+            if (arg->enumIsFile) {
+                script += "    compopt -o nospace -o dirnames -o filenames\n"
+                          "    COMPREPLY=($(compgen  -f \"${COMP_WORDS[${COMP_CWORD}]}\"))      \n";
+            } else {
+                script += "     COMPREPLY=($(compgen -W \"" + arg->enums +
+                          "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+            }
+            script += "\n   el";
         }
-        script += "\n   el";
     }
     script += "se\n     COMPREPLY=($(compgen -W \"" + topLevelArgs + "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
     script += "  fi\n compgen -o bashdefault\n}\n";
@@ -108,11 +112,7 @@ string argParserAdvancedConfiguration::generateAutoCompletion() {
 }
 
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::asFile() {
-    enumDesciption t;
-    t.asFile = true;
-    t.toplevelComannd = lastToplevelLong;
-    t.toplevelShort = lastToplevelShort;
-    enumsList.push_back(t);
+    newargconfig->back()->arguments->back()->enumIsFile = true;
     return this;
 }
 
@@ -151,19 +151,6 @@ string argParserAdvancedConfiguration::buildHelpLine(const string argvShort, con
     return s;
 }
 
-/*
-int argParserAdvancedConfiguration::checkArgs(string param) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
-            return x;
-        } else if (x + 1 == argconfig->size()) { // no args hit
-            lastFailedArg = param;
-            return -1;
-        }
-    }
-    return -1;
-}
-*/
 argParserAdvancedConfiguration::argument * argParserAdvancedConfiguration::getArgument(string param){
 
     for(int secIndex = 0; secIndex < newargconfig->size();secIndex++)

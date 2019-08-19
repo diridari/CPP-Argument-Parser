@@ -75,15 +75,8 @@ protected:
      * list of toplevel args
      */
     string topLevelArgs = "";
-    /**
-     * the last long top level arg
-     */
-    string lastToplevelLong = "";
     string applicationName;
-    /**
-   * the last short top level arg
-   */
-    string lastToplevelShort = "";
+
 
     const string SIXTYSPACES = "                                                           "; // /t independent
 
@@ -111,6 +104,7 @@ protected:
         string helpMessage;
         string additionalHelp = "";
         string enums;
+        bool enumIsFile;
         function<int(int, char **)> callBack = NULL;
         function<void()> simpleCallBack = NULL;
         bool requiredAndNotHitJet = false;
@@ -129,10 +123,8 @@ protected:
         string sectionName = "";
         vector <argument *> *arguments = new vector<argument*>();
     }section;
-    /**
-     * list of defined enums
-     */
-    vector<enumDesciption> enumsList = vector<enumDesciption>();
+
+
 
     /**
      * generate a bash auto completion script
@@ -179,12 +171,7 @@ protected:
     string lastFailedArg;
 
     string errorMessage;
-
-    /**
-     * program descripton
-     */
-    string description;
-
+    
 
 };
 

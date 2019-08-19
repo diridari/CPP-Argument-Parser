@@ -291,45 +291,49 @@ void argvParser::checkForDefaulConfigFilesIn(string defaultConfigFileName, strin
      defaultConfigFilesLocations = location;
 }
 
-string argvParser::generateMarkdownArgumentOverview(string applicationName) {
+string argvParser::generateMarkdownArgumentOverview() {
 
-    string md = "";
-    /*
+  string md = "";
+
   md += "# "+ applicationName + "\n";
-  string req =  "## Required arguments: \n";
-  bool hasReq = false;
-  for(int i = 0; i< argconfig->size();i++) {
-      if(argconfig->at(i)->requiredAndNotHitJet){
-          if(!hasReq){
-              hasReq = true;
-              md += req;
+    string req =  "## Required arguments: \n";
+    bool hasReq = false;
+
+  for(int i = 0; i< newargconfig->size();i++) {
+      for(int x = 0; x< newargconfig->at(i)->arguments->size();x++) {
+          argument * arg = newargconfig->at(i)->arguments->at(x);
+          if(arg->requiredAndNotHitJet){
+              if(!hasReq){
+                  hasReq = true;
+                  md += req;
+              }
+              md += " * " +  arg->argLong + "\n";
           }
-          md += " * " +  argconfig->at(i)->argLong + "\n";
-      }
+    }
   }
   md+= "## Application Arguments \n";
-  for(int i = 0; i< argconfig->size();i++) {
-
-      md += "### " + argconfig->at(i)->argLong + "\n";
-      md += argconfig->at(i)->helpMessage + "\n";
-      md += argconfig->at(i)->additionalHelp + "\n\n";
-      md += "    short: " + argconfig->at(i)->argShort + " \n";
-      md += "    long : " + argconfig->at(i)->argLong + " \n\n";
-      if (argconfig->at(i)->numberOfArguments > 0)
-          md += "number of additional parameter: " + to_string(argconfig->at(i)->numberOfArguments) + " \n \n ";
-      for (int x = 0; x < enumsList.size(); x++) {
-          if (enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong && enumsList.at(x).enums != "") {
-              md += "allowed parameter: " + enumsList.at(x).enums + "\n";
+      for(int i = 0; i< newargconfig->size();i++) {
+          if (!newargconfig->at(i)->sectionName.empty()) {
+              md += "### " + newargconfig->at(i)->sectionName + "\n";
           }
+          for (int x = 0; x < newargconfig->at(i)->arguments->size(); x++) {
+              argument *arg = newargconfig->at(i)->arguments->at(x);
+              md += "#### " + arg->argLong + "\n";
+              md += arg->helpMessage + "\n\n";
+              md += arg->additionalHelp + "\n\n";
+              md += "    short: " + arg->argShort + " \n";
+              md += "    long : " + arg->argLong + " \n\n";
+              if (arg->numberOfArguments > 0)
+                  md += "number of additional parameter: " + to_string(arg->numberOfArguments) + " \n \n ";
+              if (arg->enums != "") {
+                  md += "allowed parameter: " + arg->enums + "\n";
+              }
+              if (arg->requiredAndNotHitJet) {
+                  md += "This argument is requires \n";
+              }
 
-      }
-      for (int i = 0; i < argconfig->size(); i++) {
-          if (argconfig->at(i)->requiredAndNotHitJet) {
-              md += "This argument is requires \n";
           }
       }
-  }
-   */
     return md;
 }
 

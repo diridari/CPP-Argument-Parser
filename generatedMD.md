@@ -1,17 +1,21 @@
-O:\Dokumente\Git\CPP-Argument-Parser\cmake-build-debug\extendedExmple.exe
-# test app
+
+
+# Extendend Example
 ## Required arguments:
  * --foo
 ## Application Arguments
-### --test
+#### --test
 test argument
 
+It is possible to add addition information for one command. Now the user can ype <-h -t> and see this additional informa
+tion
 
     short: -t
     long : --test
 
-### --foo
+#### --foo
 foo test argument  required argument example
+
 prints the next element to the cli
 
     short: -f
@@ -19,8 +23,10 @@ prints the next element to the cli
 
 number of additional parameter: 1
 
- ### --print
+ This argument is requires
+#### --print
 echo text
+
 echo the next argument
 
     short: -p
@@ -28,8 +34,9 @@ echo the next argument
 
 number of additional parameter: 1
 
- ### --enums
+ #### --enums
 enum example
+
 here is just a pre defined set of arguments allowed
 
     short: -e
@@ -38,8 +45,9 @@ here is just a pre defined set of arguments allowed
 number of additional parameter: 1
 
  allowed parameter:  abc def xyz
-### --open
+#### --open
 example to complete a file/dir
+
 
 
     short: -o
@@ -47,26 +55,27 @@ example to complete a file/dir
 
 number of additional parameter: 1
 
- ### --noHighlight
+ #### --noHighlight
 disabledCli highlighting
+
 
 
     short: -nh
     long : --noHighlight
 
-### --logging
+### logging
+#### --logging
 enable logging
+
 
 
     short: -l
     long : --logging
 
-### --logFile
+#### --logFile
 generate logfile
+
 
 
     short: -logf
     long : --logFile
-
-
-Process finished with exit code 0

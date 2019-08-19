@@ -47,7 +47,8 @@ int main(int argvs, char **argv) {
     argvParser *p = new argvParser("Extendend Example","This application intends to be an example ");
     // define program arguments
     // Simple Lambda CallBack
-    p->addArg("-t", "--test", "test argument", []() { cout << "got \"test\"" << endl; }); // no further arguments used);
+    p->addArg("-t", "--test", "test argument", []() { cout << "got \"test\"" << endl; })
+    ->addAdditionalHelp("It is possible to add addition information for one command. Now the user can ype <-h -t> and see this additional information"); // no further arguments used);
     // Lambda CallBack as required and one additional parameter
     function<int(int, char **)> lambdaCallback = [](int index, char **buff) {
         index++;
