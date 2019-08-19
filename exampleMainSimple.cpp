@@ -16,7 +16,7 @@ int printCallBack(int index, char **buff) {
 int main(int argvs, char **argv) {
 
     // define program description
-    argvParser *p = new argvParser("simple example program\n\t this application intends to be an example ");
+    argvParser *p = new argvParser("Simple example","This application intends to be an example ");
     // define program arguments
     // lambda expression
     p->addArg("-t", "--test", "simple lambda expression", [] { cout << "got test" << endl; })->addAdditionalHelp(
@@ -32,8 +32,10 @@ int main(int argvs, char **argv) {
     p->addArg("-o", "--open", "example to complete a file/dir", printCallBack)->numberOfParameter(1);
 
     // check if all arguments are valid
-    if (!p->analyseArgv(argvs, argv)) {
+    /*if (!p->analyseArgv(argvs, argv)) {
         p->printHelpMessage(true);
     }
+     */
+   cout << p->generateMarkdownArgumentOverview("test app");
     return 0;
 }

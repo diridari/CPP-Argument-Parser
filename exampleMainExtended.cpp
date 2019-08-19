@@ -44,10 +44,11 @@ bool disableCliH = false;
 
 int main(int argvs, char **argv) {
     // define program description
-    argvParser *p = new argvParser("extended example program\n\t this application intends to be an example ");
+    argvParser *p = new argvParser("Extendend Example","This application intends to be an example ");
     // define program arguments
     // Simple Lambda CallBack
-    p->addArg("-t", "--test", "test argument", []() { cout << "got \"test\"" << endl; }); // no further arguments used);
+    p->addArg("-t", "--test", "test argument", []() { cout << "got \"test\"" << endl; })
+    ->addAdditionalHelp("It is possible to add addition information for one command. Now the user can ype <-h -t> and see this additional information"); // no further arguments used);
     // Lambda CallBack as required and one additional parameter
     function<int(int, char **)> lambdaCallback = [](int index, char **buff) {
         index++;

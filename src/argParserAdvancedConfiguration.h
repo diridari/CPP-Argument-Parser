@@ -75,15 +75,8 @@ protected:
      * list of toplevel args
      */
     string topLevelArgs = "";
-    /**
-     * the last long top level arg
-     */
-    string lastToplevelLong = "";
+    string applicationName;
 
-    /**
-   * the last short top level arg
-   */
-    string lastToplevelShort = "";
 
     const string SIXTYSPACES = "                                                           "; // /t independent
 
@@ -110,6 +103,8 @@ protected:
         string argLong;
         string helpMessage;
         string additionalHelp = "";
+        string enums;
+        bool enumIsFile;
         function<int(int, char **)> callBack = NULL;
         function<void()> simpleCallBack = NULL;
         bool requiredAndNotHitJet = false;
@@ -124,10 +119,12 @@ protected:
                 std::move(helpMessage)) {};
     } argument;
 
-    /**
-     * list of defined enums
-     */
-    vector<enumDesciption> enumsList = vector<enumDesciption>();
+    typedef struct  section{
+        string sectionName = "";
+        vector <argument *> *arguments = new vector<argument*>();
+    }section;
+
+
 
     /**
      * generate a bash auto completion script
@@ -138,7 +135,8 @@ protected:
     /**
     * list of configured arguments
     */
-    vector<argument *> *argconfig = new vector<argument *>();
+    //vector<argument *> *argconfig = new vector<argument *>();
+    vector<section*> *newargconfig ;
 
 
     /**
@@ -160,8 +158,8 @@ protected:
     /**
     * get the index of the argument
     */
-    int checkArgs(string param);
-
+   // int checkArgs(string param);
+    argument * getArgument(string param);
     /**
      * check whether a argument has been configured
      */
@@ -173,12 +171,7 @@ protected:
     string lastFailedArg;
 
     string errorMessage;
-
-    /**
-     * program descripton
-     */
-    string description;
-
+    
 
 };
 

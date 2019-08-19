@@ -42,13 +42,14 @@ int callBackInstallAutoCompletion(int index, char **buff) {
 }
 
 string argParserAdvancedConfiguration::getAdditionalHelpFor(string command){
-    int index = checkArgs(command);
-    string out = "";
-    if(index <0 )
-        return "\n to get additional help type -h <command>";
-    string help = argconfig->at(index)->additionalHelp;
-    out = "\n additional help for \"" + command + "\" \n\t <" +  argconfig->at(index)->argShort+ ">  <" +
-          argconfig->at(index)->argLong + ">  \t" + argconfig->at(index)->helpMessage;
+
+    argument * arg = getArgument(command);
+    if(arg == nullptr)
+        return "no such command \"" + command +"\"";
+
+    string help = arg->additionalHelp;
+    string out = "\n additional help for \"" + command + "\" \n\t <" +  arg->argShort+ ">  <" +
+            arg->argLong + ">  \t" + arg->helpMessage;
     if(help != "")
         out += "\n" + help;
     else
@@ -73,10 +74,10 @@ argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *
     helpMessage += "}\n";
     enumDesciption t;
     t.enums = list + " ";
-    t.toplevelComannd = lastToplevelLong;
-    t.toplevelShort = lastToplevelShort;
+
     t.asFile = false;
-    enumsList.push_back(t);
+
+    newargconfig->back()->arguments->back()->enums = list +" ";
     return this;
 
 }
@@ -84,18 +85,23 @@ argParserAdvancedConfiguration::allowedParameter(int numberOfEnums, const char *
 string argParserAdvancedConfiguration::generateAutoCompletion() {
 
     string script = "#/usr/bin/env bash\n_function()\n{\n\n";
-    for (int i = 0; i < enumsList.size(); i++) {
-        script += R"(if [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + enumsList.at(i).toplevelComannd +
-                  R"(" ] || [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + enumsList.at(i).toplevelShort +
-                  "\" ]; then\n";
-        if (enumsList.at(i).asFile) {
-            script += "    compopt -o nospace -o dirnames -o filenames\n"
-                      "    COMPREPLY=($(compgen  -f \"${COMP_WORDS[${COMP_CWORD}]}\"))      \n";
-        } else {
-            script += "     COMPREPLY=($(compgen -W \"" + enumsList.at(i).enums +
-                      "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+    argument * arg;
+
+    for (int i = 0; i < newargconfig->size(); i++) {
+        for(int y = 0; y<newargconfig->at(i)->arguments->size();y++){
+            arg = newargconfig->at(i)->arguments->at(y);
+            script += R"(if [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argLong +
+                      R"(" ] || [ "${COMP_WORDS[${COMP_CWORD} -1 ]}" == ")" + arg->argLong +
+                      "\" ]; then\n";
+            if (arg->enumIsFile) {
+                script += "    compopt -o nospace -o dirnames -o filenames\n"
+                          "    COMPREPLY=($(compgen  -f \"${COMP_WORDS[${COMP_CWORD}]}\"))      \n";
+            } else {
+                script += "     COMPREPLY=($(compgen -W \"" + arg->enums +
+                          "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
+            }
+            script += "\n   el";
         }
-        script += "\n   el";
     }
     script += "se\n     COMPREPLY=($(compgen -W \"" + topLevelArgs + "\" -- \"${COMP_WORDS[${COMP_CWORD}]}\"))   \n";
     script += "  fi\n compgen -o bashdefault\n}\n";
@@ -106,22 +112,18 @@ string argParserAdvancedConfiguration::generateAutoCompletion() {
 }
 
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::asFile() {
-    enumDesciption t;
-    t.asFile = true;
-    t.toplevelComannd = lastToplevelLong;
-    t.toplevelShort = lastToplevelShort;
-    enumsList.push_back(t);
+    newargconfig->back()->arguments->back()->enumIsFile = true;
     return this;
 }
 
 argParserAdvancedConfiguration * argParserAdvancedConfiguration::addAdditionalHelp(string additionalHelp){
-    argument *x = argconfig->back();
+    argument *x = newargconfig->back()->arguments->back();
     x->additionalHelp = additionalHelp;
     return this;
 }
 
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
-    argument *x = argconfig->back();
+    argument *x = newargconfig->back()->arguments->back();
     x->requiredAndNotHitJet = true;
     requiredArgs += buildHelpLine(x->argShort, x->argLong, x->helpMessage);
     return this;
@@ -129,8 +131,8 @@ argParserAdvancedConfiguration *argParserAdvancedConfiguration::required() {
 
 
 argParserAdvancedConfiguration *argParserAdvancedConfiguration::numberOfParameter(int number) {
-    argument *x = argconfig->back();
-    x->numberOfArguments = number;
+    newargconfig->back()->arguments->back()->numberOfArguments = number;
+
     return this;
 }
 
@@ -149,22 +151,33 @@ string argParserAdvancedConfiguration::buildHelpLine(const string argvShort, con
     return s;
 }
 
-int argParserAdvancedConfiguration::checkArgs(string param) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if (param != "" && (argconfig->at(x)->argShort == param || argconfig->at(x)->argLong == param)) {
-            return x;
-        } else if (x + 1 == argconfig->size()) { // no args hit
-            lastFailedArg = param;
-            return -1;
-        }
-    }
-    return -1;
-}
+argParserAdvancedConfiguration::argument * argParserAdvancedConfiguration::getArgument(string param){
 
-bool argParserAdvancedConfiguration::existArg(string arg) {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if ((argconfig->at(x)->argShort == arg || argconfig->at(x)->argLong == arg) && arg != "") {
-            return true;
+    for(int secIndex = 0; secIndex < newargconfig->size();secIndex++)
+    {
+        section * sec;
+        sec = newargconfig->at(secIndex);
+
+        for(int argIndex = 0; argIndex < sec->arguments->size();argIndex++) {
+            argument * arg = sec->arguments->at(argIndex);
+                if (param != "" && (arg->argShort == param || arg->argLong == param)) {
+                    return arg;
+                }
+            }
+    }
+    lastFailedArg = param;
+    return nullptr;
+}
+bool argParserAdvancedConfiguration::existArg(string args) {
+    section * sec;
+    for (int x = 0; x < newargconfig->size(); x++) {
+        sec = newargconfig->at(x);
+
+        for (int y = 0; y < sec->arguments->size(); y++) {
+            argument * arg = sec->arguments->at(y);
+            if ((arg->argShort == args || arg->argLong == args) && args != "") {
+                return true;
+            }
         }
     }
     return false;

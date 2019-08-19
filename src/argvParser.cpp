@@ -47,12 +47,10 @@ extern int callBackInstallAutoCompletion(int index, char **buff);
 
 argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, function<void()> callBack) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
-        argconfig->push_back(new argument(argvShort, argvLong, help, callBack));
-        helpMessage += buildHelpLine(argvShort, argvLong, help);
-
-        topLevelArgs += argvLong + " ";
-        lastToplevelLong = argvLong;
-        lastToplevelShort = argvShort;
+        if (!existArg(argvShort) && !existArg(argvLong)) {
+            newargconfig->push_back(new section());
+        }
+        newargconfig->back()->arguments->push_back(new argument(argvShort, argvLong, help, callBack));
         return this;
     }
     return nullptr;
@@ -61,37 +59,50 @@ argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string arg
 argParserAdvancedConfiguration *
 argvParser::addArg(string argvShort, string argvLong, string help, function<int(int, char **)> callBack) {
     if (!existArg(argvShort) && !existArg(argvLong)) {
-        argconfig->push_back(new argument(argvShort, argvLong, help, callBack));
-        helpMessage += buildHelpLine(argvShort, argvLong, help);
-
-        topLevelArgs += argvLong + " ";
-        lastToplevelLong = argvLong;
-        lastToplevelShort = argvShort;
+        if(newargconfig->size() == 0){ // no section defined jet
+            newargconfig->push_back(new section());
+        }
+        newargconfig->back()->arguments->push_back(new argument(argvShort, argvLong, help, callBack));
         return this;
     }
     return nullptr;
 }
 
-argParserAdvancedConfiguration *
-argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
+argParserAdvancedConfiguration * argvParser::addArg(string argvShort, string argvLong, string help, int (*callBack)(int, char **)) {
     function<int(int, char **)> tmpCallback = [callBack](int i, char **argv) { return callBack(i, argv); };
     return addArg(argvShort, argvLong, help, tmpCallback);
 }
 
-
-argvParser::argvParser(bool addDefaultHelpCommand, string description_, string commentToken_) : argParserAdvancedConfiguration() {
+argvParser::argvParser(string applicationNam_, string description_, bool addDefaultHelpCommand_, string commentToken_) {
+    applicationName = applicationNam_;
     description = description_ + "\n";
-    addHelp = addDefaultHelpCommand;
+    addHelp = addDefaultHelpCommand_;
     requiredArgs = "";
     commentToken = commentToken_;
+    newargconfig = new vector<section*>();
+    newargconfig->push_back(new section());
 }
+
+
+
 
 void argvParser::printHelpMessage(bool colored) {
     string s;
     if (colored)
         printGreen();
-    cout << description << "usage:\n" << helpMessage << endl;
-
+    s += applicationName + "\n";
+    s += description + "\nUsage:\n";
+    for(int secIndex = 0; secIndex < newargconfig->size();secIndex++ ){
+        section *sec = newargconfig->at(secIndex);
+        if(!sec->sectionName.empty()){
+            s+= "\n " + sec->sectionName + ": \n";
+        }
+        for(int argIndex = 0; argIndex<sec->arguments->size();argIndex++){
+            argument * arg = sec->arguments->at(argIndex);
+            s += buildHelpLine(arg->argShort,arg->argLong,arg->helpMessage);
+        }
+    }
+    cout << s<<endl;
     if (!foundAllRequierdArgs()) {
         if (colored)
             printRed();
@@ -112,6 +123,36 @@ void argvParser::printHelpMessage(bool colored) {
     cout << endl << endl;
 
 }
+
+string argvParser::getHelpMessage() {
+    string s;
+    s += applicationName + "\n";
+    s += description + "\nUsage:\n";
+
+    for(int secIndex = 0; secIndex < newargconfig->size();secIndex++ ){
+        section *sec = newargconfig->at(secIndex);
+        if(!sec->sectionName.empty()){
+            s+= " " + sec->sectionName + ": \n";
+        }
+        for(int argIndex = 0; argIndex<sec->arguments->size();argIndex++){
+            argument * arg = sec->arguments->at(argIndex);
+            s += buildHelpLine(arg->argShort,arg->argLong,arg->helpMessage);
+        }
+    }
+    if (!foundAllRequierdArgs()) {
+        s += "\nrequired arguments are : \n" + requiredArgs + "\n";
+    }
+
+    if (!lastFailedArg.empty()) {
+        s += "failed argument : " + lastFailedArg;
+        if (!errorMessage.empty()) {
+            s += "\n  " + errorMessage;
+        }
+    }
+
+    return s;
+}
+
 
 
 bool argvParser::analyseArgv(int args, char **argv) {
@@ -152,25 +193,27 @@ bool argvParser::analyseArgv(int args, char **argv) {
                      });
 
     }
+
     for (int i = 1; i < args; i++) {
         if (argv[i] == NULL)
             return false;
         int x;
-        if ((x = checkArgs(argv[i])) >= 0) {
+        argument * arg;
+        if ((arg = getArgument(argv[i])) != nullptr) {
             // Simple Callback
-            if (argconfig->at(x)->simpleCallBack != NULL) {
-                argconfig->at(x)->simpleCallBack();
+            if (arg->simpleCallBack != NULL) {
+                arg->simpleCallBack();
             } else {
-                int reqSize = argconfig->at(x)->numberOfArguments + i + 1;
-                bool enoughSpace = args >= reqSize || argconfig->at(x)->numberOfArguments == -1;
+                int reqSize = arg->numberOfArguments + i + 1;
+                bool enoughSpace = args >= reqSize || arg->numberOfArguments == -1;
                 if (enoughSpace) {
-                    if (checkNextArgumentIfEnum(argv[i], argv[i + 1])) {
-                        i = argconfig->at(x)->callBack(i, argv); // call function
-                        argconfig->at(x)->requiredAndNotHitJet = false; // set to hit if required
+                    if (checkNextArgumentIfEnum(arg, argv[i + 1])) {
+                        i = arg->callBack(i, argv); // call function
+                        arg->requiredAndNotHitJet = false; // set to hit if required
                     }
                 } else {
-                    errorMessage += "\n\nthe argument \"" + argconfig->at(x)->argLong + "\" does require: " +
-                                    to_string(argconfig->at(x)->numberOfArguments) + " parameter";
+                    errorMessage += "\n\nthe argument \"" + arg->argLong + "\" does require: " +
+                                    to_string(arg->numberOfArguments) + " parameter";
                     return false;
                 }
             }
@@ -206,57 +249,39 @@ bool argvParser::analyzeConfigFile(string fileName) {
     return true;
 }
 
-string argvParser::getHelpMessage() {
-    string s;
-    s += description + "usage:\n" + helpMessage + "\n";
-    if (!foundAllRequierdArgs()) {
-        s += "\nrequired arguments are : \n" + requiredArgs + "\n";
-    }
-
-    if (!lastFailedArg.empty()) {
-        s += "failed argument : " + lastFailedArg;
-        if (!errorMessage.empty()) {
-            s += "\n  " + errorMessage;
-        }
-    }
-
-    return s;
-}
-
 
 
 bool argvParser::foundAllRequierdArgs() {
-    for (int x = 0; x < argconfig->size(); x++) {
-        if (argconfig->at(x)->requiredAndNotHitJet) {
-            return false;
+    for (int x = 0; x < newargconfig->size(); x++) {
+        for(int y = 0; y<newargconfig->at(x)->arguments->size();y++){
+            if (newargconfig->at(x)->arguments->at(y)->requiredAndNotHitJet)
+                return false;
         }
+
     }
     return true;
 }
 
 void argvParser::addSection(string sectionName) {
-    helpMessage += "\n " + sectionName + ":\n";
+    section * sec = new section();
+    sec->sectionName = sectionName;
+    newargconfig->push_back(sec);
+   // helpMessage += "\n " + sectionName + ":\n";
 }
 
-bool argvParser::checkNextArgumentIfEnum(string arg, char *nextElement) {
-    int i = checkArgs(arg);
-    if (i >= 0) {
-        string s = argconfig->at(i)->argShort;
-        if (!s.empty()) {
-            for (int x = 0; x < enumsList.size(); x++) {
-                if (enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong ||
-                    enumsList.at(x).toplevelShort == argconfig->at(i)->argShort) {
-                    if (enumsList.at(x).enums.find(string(nextElement) + " ") != string::npos)
-                        return true;
-                    else if (!enumsList.at(x).enums.empty()) {
-                        lastFailedArg = arg;
-                        errorMessage += "\"" + arg + "\" does  accept \"" + enumsList.at(x).enums + "\" but not \"" +
-                                        nextElement + "\"\n";
-                        return false;
-                    }
-                }
-            }
+bool argvParser::checkNextArgumentIfEnum(argument * arg, char *nextElement) {
+
+    if (arg != nullptr && arg->enums != "") {
+        if (arg->enums.find(string(nextElement) + " ") != string::npos)
+            return true;
+        else if (!arg->enums.empty()) {
+            lastFailedArg = arg->argLong;
+            errorMessage += "\"" + arg->argLong + "\" does  accept \"" + arg->enums + "\" but not \"" +
+                            nextElement + "\"\n";
+            return false;
         }
+
+
     }
     return true;
 }
@@ -266,42 +291,52 @@ void argvParser::checkForDefaulConfigFilesIn(string defaultConfigFileName, strin
      defaultConfigFilesLocations = location;
 }
 
-string argvParser::generateMarkdownArgumentOverview(string applicationName) {
-    string md = "";
-    md += "# "+ applicationName + "\n";
+string argvParser::generateMarkdownArgumentOverview() {
+
+  string md = "";
+
+  md += "# "+ applicationName + "\n";
     string req =  "## Required arguments: \n";
     bool hasReq = false;
-    for(int i = 0; i< argconfig->size();i++) {
-        if(argconfig->at(i)->requiredAndNotHitJet){
-            if(!hasReq){
-                hasReq = true;
-                md += req;
-            }
-            md += " * " +  argconfig->at(i)->argLong + "\n";
-        }
-    }
-    md+= "## Application Arguments \n";
-    for(int i = 0; i< argconfig->size();i++) {
 
-        md += "### " + argconfig->at(i)->argLong + "\n";
-        md += argconfig->at(i)->helpMessage + "\n\n";
-        md += "    short: " + argconfig->at(i)->argShort + " \n";
-        md += "    long : " + argconfig->at(i)->argLong + " \n\n";
-        md += argconfig->at(i)->additionalHelp + "\n\n";
-        if (argconfig->at(i)->numberOfArguments > 0)
-            md += "number of additional parameter: " + to_string(argconfig->at(i)->numberOfArguments) + " \n \n";
-        for (int x = 0; x < enumsList.size(); x++) {
-            if (enumsList.at(x).toplevelComannd == argconfig->at(i)->argLong && enumsList.at(x).enums != "") {
-                md += "allowed parameter: " + enumsList.at(x).enums + "\n";
-            }
-
-        }
-       if(argconfig->at(i)->requiredAndNotHitJet){
-           md += "This argument is requires\n";
-       }
+  for(int i = 0; i< newargconfig->size();i++) {
+      for(int x = 0; x< newargconfig->at(i)->arguments->size();x++) {
+          argument * arg = newargconfig->at(i)->arguments->at(x);
+          if(arg->requiredAndNotHitJet){
+              if(!hasReq){
+                  hasReq = true;
+                  md += req;
+              }
+              md += " * " +  arg->argLong + "\n";
+          }
     }
+  }
+  md+= "## Application Arguments \n";
+      for(int i = 0; i< newargconfig->size();i++) {
+          if (!newargconfig->at(i)->sectionName.empty()) {
+              md += "### " + newargconfig->at(i)->sectionName + "\n";
+          }
+          for (int x = 0; x < newargconfig->at(i)->arguments->size(); x++) {
+              argument *arg = newargconfig->at(i)->arguments->at(x);
+              md += "#### " + arg->argLong + "\n";
+              md += arg->helpMessage + "\n\n";
+              md += arg->additionalHelp + "\n\n";
+              md += "    short: " + arg->argShort + " \n";
+              md += "    long : " + arg->argLong + " \n\n";
+              if (arg->numberOfArguments > 0)
+                  md += "number of additional parameter: " + to_string(arg->numberOfArguments) + " \n \n ";
+              if (arg->enums != "") {
+                  md += "allowed parameter: " + arg->enums + "\n";
+              }
+              if (arg->requiredAndNotHitJet) {
+                  md += "This argument is requires \n";
+              }
+
+          }
+      }
     return md;
 }
+
 
 
 
