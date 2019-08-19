@@ -32,10 +32,10 @@ int main(int argvs, char **argv) {
     p->addArg("-o", "--open", "example to complete a file/dir", printCallBack)->numberOfParameter(1);
 
     // check if all arguments are valid
-    /*if (!p->analyseArgv(argvs, argv)) {
+    if (!p->analyseArgv(argvs, argv)) {
         p->printHelpMessage(true);
     }
-     */
-   cout << p->generateMarkdownArgumentOverview("test app");
+  
+
     return 0;
 }
