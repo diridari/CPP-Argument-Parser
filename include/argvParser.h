@@ -54,7 +54,7 @@ public:
      * @param description  description of the application
      * @param commentToken char's that define the start of a comment  the comment ends on the end of the line
      */
-    explicit argvParser(bool addDefaultHelpCommand = true,string description = "", string commentToken = "");
+    explicit argvParser(string applicationName = "", string description = "", bool addDefaultHelpCommand = true,  string commentToken = "");
 
     /**
      * Add Argument.
@@ -148,25 +148,27 @@ public:
      */
     void checkForDefaulConfigFilesIn(string defaultConfigFileName, string locations);
 
+    /**
+     * generate a markdown argument overview
+     * This command generate a markdown script to get all information about the arguments
+     */
+    string generateMarkdownArgumentOverview();
 private:
 
-
+    /**
+     * tokens that defines the start of a comment in a config file
+     */
     string commentToken;
 
     /**
-     * last failed argument
-     */
-    string lastFailedArg;
-
-    string errorMessage;
-
-    /**
-     * program descripton
+     * program description
      */
     string description;
 
-
-    bool checkNextArgumentIfEnum(string arg, char *nextElement);
+    /**
+     * check if the string containing in nextElement does match to the defined enums in arg
+     */
+    bool checkNextArgumentIfEnum(argument * arg, char *nextElement);
 
     /**
      * Add default help argument

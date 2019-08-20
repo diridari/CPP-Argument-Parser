@@ -238,7 +238,7 @@ TEST(configReader, unfinishedJoin) {
 int xx = 0;
 TEST(commentsInConfigFile, comment1){
     xx = 0;
-    argvParser parser(true,"test","");
+    argvParser parser("test");
     parser.addArg("a", "-a", "test", [] {xx++;});
     parser.addArg("#", "", "x", [] {});
     char *arg[] = {"program", "../tests/configFiles/config8.txt"};
@@ -247,7 +247,7 @@ TEST(commentsInConfigFile, comment1){
 }
 TEST(commentsInConfigFile, comment2){
     xx = 0;
-    argvParser parser(true,"test","#");
+    argvParser parser("test","",true,"#");
     parser.addArg("a", "-a", "test", [] {xx++;});
     parser.addArg("#", "", "x", [] {});
     char *arg[] = {"program", "../tests/configFiles/config8.txt"};
@@ -257,7 +257,7 @@ TEST(commentsInConfigFile, comment2){
 
 TEST(commentsInConfigFile, comment3){
     xx = 0;
-    argvParser parser(true,"test","/%#");
+    argvParser parser("test","",true,"/%#");
     parser.addArg("a", "-a", "test", [] {xx++;});
     parser.addArg("#", "", "x", [] {});
     char *arg[] = {"program", "../tests/configFiles/config8.txt"};
@@ -266,7 +266,7 @@ TEST(commentsInConfigFile, comment3){
 }
 TEST(defaultConfigFile, comment4){
     xx = 0;
-    argvParser parser(true,"test","/#%");
+    argvParser parser("test","",true,"/#%");
     parser.addArg("a", "-a", "test", [] {xx++;});
     parser.addArg("#", "", "x", [] {});
     char *arg[] = {"program", "../tests/configFiles/config8.txt"};
@@ -275,7 +275,7 @@ TEST(defaultConfigFile, comment4){
 }
 TEST(commentsInConfigFile, comment5){
     xx = 0;
-    argvParser parser(true,"test","#%/");
+    argvParser parser("test","",true,"#%/");
     function<void()> f = []{
         xx++;
     };
@@ -287,7 +287,7 @@ TEST(commentsInConfigFile, comment5){
 }
 TEST(commentsInConfigFile, comment6){
     xx = 0;
-    argvParser parser(true,"test","#%/");
+    argvParser parser("test","",true,"#%/");
     function<void()> f = []{
         xx++;
     };
